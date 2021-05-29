@@ -3,8 +3,8 @@ import http from 'http'
 
 export default class HttpConfig
 {
-	static HTTP_PORT = process.env.HTTP_PORT || 80
-	static HTTPS_PORT = process.env.HTTPS_PORT || 443
+	private static HTTP_PORT = process.env.HTTP_PORT || 80
+	private static HTTPS_PORT = process.env.HTTPS_PORT || 443
 
 	static setupHttpConnection = (app: Express) =>
 	{

@@ -1,4 +1,4 @@
-import testcall from './testcall'
+import status from './status'
 import {Express} from 'express'
 
 export default class Routes
@@ -9,7 +9,7 @@ export default class Routes
 
 	static setupRoutes = (app: Express) =>
 	{
-		app.use(Routes.API_STATUS_URI, testcall)
+		app.use(Routes.API_STATUS_URI, status)
 	}
 
 }

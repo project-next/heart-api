@@ -10,7 +10,7 @@ export default class RequestErrorHandling
 	}
 
 
-	static setupGenericErrorHandling = (app: Express) =>
+	private static setupGenericErrorHandling = (app: Express) =>
 	{
 		app.use(function (err: any, req: Request, res: Response, next: NextFunction)
 		{
@@ -27,7 +27,7 @@ export default class RequestErrorHandling
 	}
 
 
-	static setup404ErrorHandling = (app: Express) =>
+	private static setup404ErrorHandling = (app: Express) =>
 	{
 		app.use(function (req: Request, res: Response, next: NextFunction)
 		{
