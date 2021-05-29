@@ -1,0 +1,65 @@
+repository:
+  # See https://developer.github.com/v3/repos/#edit for all available settings.
+  name: heart-api
+  description: Node.js API using Express that serves info on various projects being worked on by Javi Gomez.
+  homepage:
+  topics: node, express, api
+  private: false
+  has_issues: false
+  has_wiki: false
+  delete_branch_on_merge: false
+  enable_vulnerability_alerts: true
+
+  # Either `true` to enable downloads for this repository, `false` to disable them.
+  has_downloads: false
+
+  # Updates the default branch for this repository.
+  default_branch: master
+
+  # Either `true` to allow squash-merging pull requests, or `false` to prevent
+  # squash-merging.
+  allow_squash_merge: true
+
+  # Either `true` to allow merging pull requests with a merge commit, or `false`
+  # to prevent merging pull requests with merge commits.
+  allow_merge_commit: true
+
+  # Either `true` to allow rebase-merging pull requests, or `false` to prevent
+  # rebase-merging.
+  allow_rebase_merge: true
+
+labels:
+  - name: bug
+    color: CC0000
+  - name: feature
+    color: 336699
+
+# Collaborators: give specific users access to this repository.
+collaborators:
+  - username: rtomyj
+    # Note: Only valid on organization-owned repositories.
+    # The permission to grant the collaborator. Can be one of:
+    # * `pull` - can pull, but not push to or administer this repository.
+    # * `push` - can pull and push, but not administer this repository.
+    # * `admin` - can pull, push and administer this repository.
+    permission: admin
+
+branches:
+  - name: master
+    # https://developer.github.com/v3/repos/branches/#update-branch-protection
+    # Branch Protection settings. Set to null to disable
+    protection:
+
+      # Required. Require at least one approving review on a pull request, before merging. Set to null to disable.
+      required_pull_request_reviews: null
+
+      # Required. Require status checks to pass before merging. Set to null to disable
+      required_status_checks: null
+
+      # Required. Enforce all configured restrictions for administrators. Set to true to enforce required status checks for repository administrators. Set to null to disable.
+      enforce_admins: true
+
+      # Required. Restrict who can push to this branch. Team and user restrictions are only available for organization-owned repositories. Set to null to disable.
+      restrictions: null
+
+      allow_force_pushes: true
