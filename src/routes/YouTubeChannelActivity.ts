@@ -34,11 +34,20 @@ export default class YouTubeChannelActivity
 		{
 			const channelId: string = req.body.channelId
 
+			if (channelId === undefined || channelId === null)
+			{
+				res.status(422)
+				res.json({errorDescription: 'Empty or null channelId.'})
+				res.end()
+				return
+			}
 			// prevent malicious use of API
-			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )
+			else if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )
 			{
 				res.status(400)
 				res.json({errorDescription: 'This API cannot use provided channelId'})
+				res.end()
+				return
 			}
 
 
@@ -63,6 +72,7 @@ export default class YouTubeChannelActivity
 
 				res.status(200)
 				res.json({'total': formattedYtResponse.length, 'videos': formattedYtResponse})
+				res.end()
 			})
 			.catch((error: AxiosError) => {
 				console.error(`YouTube Data API (v3) returned with error: ${error.code}`)
@@ -72,6 +82,7 @@ export default class YouTubeChannelActivity
 
 				res.status(500)
 				res.json({youtubeApiStatus: error.response.status, description: description})
+				res.end()
 			})
 		})
 	}
