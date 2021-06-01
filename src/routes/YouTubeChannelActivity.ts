@@ -21,7 +21,6 @@ export default class YouTubeChannelActivity
 			YouTubeChannelActivity.ytAxiosInstance
 			.get('/activities')
 			.then((ytResponse: AxiosResponse) => {
-				console.log(ytResponse)
 				res.json(ytResponse.data)
 			})
 			.catch((error: AxiosError) => {
