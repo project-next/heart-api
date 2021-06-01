@@ -5,7 +5,7 @@ export default class Status
 {
 	private static getStatus = (router: Router) =>
 	{
-		router.get('/', (req: Request, res: Response) =>
+		router.get('/status', (req: Request, res: Response) =>
 		{
 			res.json(Status.statusMessage)
 		})
