@@ -10,6 +10,11 @@ export default class YouTubeChannelActivity
 	{
 		router.post('/yt/channel/activity', (req: Request, res: Response) =>
 		{
+			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.body.channelId) )
+			{
+				res.status(400)
+				res.json({errorDescription: 'This API cannot use provided channelId'})
+			}
 			YouTubeAxiosConfig.BASE_CONFIG
 			.get('/activities'
 				, {

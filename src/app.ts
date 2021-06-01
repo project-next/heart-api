@@ -7,10 +7,11 @@ import RequestErrorHandling from './http/RequestErrorHandling'
 
 const app = express()
 
-app.use(morgan('dev'))
-app.use(express.urlencoded( { extended: true } ))
-
 HttpConfig.setupHttpConnection(app)
+
+app.use(morgan('dev'))
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 
 Routes.setupRoutes(app)
 RequestErrorHandling.setupErrorHandling(app)
