@@ -16,7 +16,7 @@ export default class HttpConfig
 			, ca: fs.readFileSync(__dirname + '/certs/ca_bundle.crt', 'utf-8')
 		}
 
-		console.log(`App starting on port ${ HttpConfig.HTTP_PORT } for unsecured connections and ${ HttpConfig.HTTPS_PORT } for secured connections`)
+		console.log(`App starting on port ${HttpConfig.HTTP_PORT} for unsecured connections and ${HttpConfig.HTTPS_PORT} for secured connections`)
 
 		https.createServer(options, app).listen(HttpConfig.HTTPS_PORT)
 		http.createServer(app).listen( HttpConfig.HTTP_PORT )
