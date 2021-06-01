@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  heart-api:
+    image: "node:alpine"
+    working_dir: /home/node/app
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - "./package.json:/home/node/app/package.json"
+      - "./.env-cmdrc.json:/home/node/app/.env-cmdrc.json"
+      - "./dist:/home/node/app/dist"
+    command: sh -c "npm install --global env-cmd && npm install && npm run docker-start-dev"
