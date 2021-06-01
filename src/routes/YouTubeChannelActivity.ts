@@ -19,13 +19,18 @@ export default class YouTubeChannelActivity
 				}
 			)
 			.then((ytResponse: AxiosResponse) => {
+				const videoIds = []
+
 				const formattedYtResponse = ytResponse.data.items.map((item: any) => {
 					if (item.snippet.type === 'upload') {
+						videoIds.push(item.contentDetails.upload.videoId)
 						return {
-							title: item.snippet.title
+							id: item.contentDetails.upload.videoId
+							, title: item.snippet.title
 							, description: item.snippet.description
 							, publishedAt: item.snippet.publishedAt
-							, thumbnail: item.snippet.thumbnails.high
+							, thumbnailUrl: item.snippet.thumbnails.high.url
+							, url: `https://www.youtube.com/watch?v=${item.contentDetails.upload.videoId}`
 						}
 					}
 				})

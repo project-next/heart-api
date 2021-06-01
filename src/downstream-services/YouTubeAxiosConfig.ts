@@ -7,7 +7,7 @@ export default class YouTubeAxiosConfig
 		baseURL: `${Constants.YOUTUBE_API_URL}`
 		, params: {
 			key: Constants.YOUTUBE_API_KEY
-			, part: 'snippet'
+			, part: 'snippet,contentDetails'
 			, maxResults: 15
 		}
 	})
