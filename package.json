@@ -5,9 +5,10 @@
   "main": "./src/app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "env-cmd -f .env.json npx ts-node ./src/app.ts",
-    "dev": "env-cmd -f .env.json nodemon ./src/app.ts",
-    "build": "env-cmd -f .env.json npx tsc"
+    "start": "env-cmd -e default ts-node ./src/app.ts",
+    "dev": "env-cmd -e default nodemon ./src/app.ts",
+    "build": "rm -rf dist; tsc",
+    "start-build": "env-cmd -e default node ./dist/app.js"
   },
   "keywords": [
     "heart",
