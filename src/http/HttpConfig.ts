@@ -11,9 +11,9 @@ export default class HttpConfig
 	static setupHttpConnection = (app: Express) =>
 	{
 		const options = {
-			key: fs.readFileSync(__dirname + '/certs/private.key', 'utf8')
-			, cert: fs.readFileSync(__dirname + '/certs/certificate.crt', 'utf8')
-			, ca: fs.readFileSync(__dirname + '/certs/ca_bundle.crt', 'utf-8')
+			key: fs.readFileSync('./certs/private.key', 'utf8')
+			, cert: fs.readFileSync('./certs/certificate.crt', 'utf8')
+			, ca: fs.readFileSync('./certs/ca_bundle.crt', 'utf-8')
 		}
 
 		console.log(`App starting on port ${HttpConfig.HTTP_PORT} for unsecured connections and ${HttpConfig.HTTPS_PORT} for secured connections`)
