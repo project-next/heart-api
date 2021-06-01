@@ -119,3 +119,6 @@ dist
 
 # Environment Files
 .env*
+
+# Certs
+**/certs/
