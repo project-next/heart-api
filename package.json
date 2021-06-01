@@ -7,9 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "env-cmd -e default ts-node ./src/app.ts",
     "dev": "env-cmd -e default nodemon ./src/app.ts",
-    "build": "rm -rf dist; tsc",
-	 "uploadProduction": "npm run build; bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
+    "build": "rm -rf dist && tsc",
+	 "uploadProduction": "npm run build && bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
 	 "restageProduction": "bash docker-restage.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
+	 "deployProduction": "npm run uploadProduction && npm run restageProduction",
     "docker-start-dev": "env-cmd -e default node ./dist/app.js"
   },
   "keywords": [
