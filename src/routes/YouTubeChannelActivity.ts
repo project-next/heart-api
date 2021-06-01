@@ -7,6 +7,9 @@ import moize from 'moize'
 
 export default class YouTubeChannelActivity
 {
+	/**
+	 * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
+	 */
 	static YouTubeRequestMemoized = moize((channelId: string) => {
 		return YouTubeAxiosConfig.BASE_CONFIG
 		.get('/activities'
@@ -19,7 +22,13 @@ export default class YouTubeChannelActivity
 	}, { maxAge: 1000 * 60 * 8, updateExpire: false })
 
 
-	static retrieveYTChannelActivity = (router: Router) =>
+	/**
+	 * Function that updates a Router object to expose an endpoint that clients can use to get information about YouTube Video Uploads.
+	 * There will be checks to prevent unwanted users from using this API to prevent Quota Limit errors.
+	 * YouTube API output is cleaned up and only the most useful info is returned to client.
+	 * @param router object that will be used to expose functionality.
+	 */
+	static retrieveYTChannelUploads = (router: Router) =>
 	{
 		router.post('/yt/channel/activity', (req: Request, res: Response) =>
 		{
@@ -71,7 +80,7 @@ export default class YouTubeChannelActivity
 	{
 		const router = Router()
 
-		YouTubeChannelActivity.retrieveYTChannelActivity(router)
+		YouTubeChannelActivity.retrieveYTChannelUploads(router)
 		return router
 	}
 
