@@ -30,9 +30,9 @@ export default class YouTubeChannelActivity
 	 */
 	static retrieveYTChannelUploads = (router: Router) =>
 	{
-		router.post('/yt/channel/activity', (req: Request, res: Response) =>
+		router.get('/yt/channel/activity', (req: Request, res: Response) =>
 		{
-			const channelId: string = req.body.channelId
+			const channelId: string = req.query.channelId.toString()
 
 			if (channelId === undefined || channelId === null)
 			{

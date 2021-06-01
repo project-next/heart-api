@@ -5,7 +5,7 @@ import {Express} from 'express'
 export default class Routes
 {
 
-	static BASE_URI = '/heart/api/v1'
+	static BASE_URI = '/v1'
 
 	static setupRoutes = (app: Express) =>
 	{
