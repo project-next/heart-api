@@ -1,6 +1,5 @@
 import express from 'express'
 import morgan from 'morgan'
-import dotenv from 'dotenv'
 
 import HttpConfig from './http/HttpConfig'
 import Routes from './routes/Routes'
