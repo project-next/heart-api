@@ -11,23 +11,41 @@ export default class YouTubeChannelActivity
 			key: Constants.YOUTUBE_API_KEY
 			, channelId: Constants.SKC_CHANNEL_ID
 			, part: 'snippet'
+			, maxResults: 15
 		}
 	})
 
 	static retrieveYTChannelActivity = (router: Router) =>
 	{
-		router.get('/yt/channel/activity', (req: Request, res: Response) =>
+		router.post('/yt/channel/activity', (req: Request, res: Response) =>
 		{
 			YouTubeChannelActivity.ytAxiosInstance
 			.get('/activities')
 			.then((ytResponse: AxiosResponse) => {
-				res.json(ytResponse.data)
+				const formattedYtResponse = ytResponse.data.items.map((item: any) => {
+					if (item.snippet.type === 'upload') {
+						return {
+							title: item.snippet.title
+							, description: item.snippet.description
+							, publishedAt: item.snippet.publishedAt
+							, thumbnail: item.snippet.thumbnails.high
+						}
+					}
+				})
+
+
+				res.status(200)
+				res.json({'total': formattedYtResponse.length, 'videos': formattedYtResponse})
 			})
 			.catch((error: AxiosError) => {
-				console.log(error)
+				console.log(`YouTube Data API (v3) returned with error: ${error.code}`)
+
+				let description = 'YouTube API call encountered error.'
+				if (error.response.status === 403)	description = 'Request has incorrect API key or no API key.'
+
+				res.status(500)
+				res.json({youtubeApiStatus: error.response.status, description: description})
 			})
-			.then(function () {
-			});
 		})
 	}
 
