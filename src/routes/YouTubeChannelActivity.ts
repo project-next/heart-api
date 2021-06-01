@@ -2,27 +2,38 @@ import {Router, Request, Response} from 'express'
 import {AxiosError, AxiosResponse} from 'axios'
 import Constants from '../downstream-services/Constants';
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
+import moize from 'moize'
 
 
 export default class YouTubeChannelActivity
 {
+	static YouTubeRequestMemoized = moize((channelId: string) => {
+		return YouTubeAxiosConfig.BASE_CONFIG
+		.get('/activities'
+			, {
+				params: {
+					channelId: channelId
+				}
+			}
+		)
+	}, { maxAge: 1000 * 60 * 8, updateExpire: false })
+
+
 	static retrieveYTChannelActivity = (router: Router) =>
 	{
 		router.post('/yt/channel/activity', (req: Request, res: Response) =>
 		{
-			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.body.channelId) )
+			const channelId: string = req.body.channelId
+
+			// prevent malicious use of API
+			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )
 			{
 				res.status(400)
 				res.json({errorDescription: 'This API cannot use provided channelId'})
 			}
-			YouTubeAxiosConfig.BASE_CONFIG
-			.get('/activities'
-				, {
-					params: {
-						channelId: Constants.SKC_CHANNEL_ID
-					}
-				}
-			)
+
+
+			YouTubeChannelActivity.YouTubeRequestMemoized(channelId)
 			.then((ytResponse: AxiosResponse) => {
 				const videoIds = []
 
