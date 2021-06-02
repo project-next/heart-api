@@ -1,12 +1,25 @@
 import {Router, Request, Response} from 'express'
-const status = Router()
 
-const statusMessage = { status: 'API up and running' }
 
-/* GET home page. */
-status.get('/', (req: Request, res: Response) =>
+export default class Status
 {
-	res.json( statusMessage )
-})
+	private static getStatus = (router: Router) =>
+	{
+		router.get('/status', (req: Request, res: Response) =>
+		{
+			res.json(Status.statusMessage)
+		})
+	}
 
-export default status;
+
+	private static initRouter = () : Router =>
+	{
+		const router = Router()
+		Status.getStatus(router)
+		return router
+	}
+
+
+	static router: Router = Status.initRouter()
+	private static statusMessage = { status: 'API up and running' }
+}

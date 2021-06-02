@@ -1,5 +1,7 @@
 import {Express} from 'express'
 import http from 'http'
+import https from 'https'
+import fs from 'fs'
 
 export default class HttpConfig
 {
@@ -8,7 +10,15 @@ export default class HttpConfig
 
 	static setupHttpConnection = (app: Express) =>
 	{
-		console.log(`App starting on port ${ HttpConfig.HTTP_PORT } for unsecured connections and ${ HttpConfig.HTTPS_PORT } for secured connections`)
-		http.createServer( app ).listen( HttpConfig.HTTP_PORT )
+		const options = {
+			key: fs.readFileSync('./certs/private.key', 'utf8')
+			, cert: fs.readFileSync('./certs/certificate.crt', 'utf8')
+			, ca: fs.readFileSync('./certs/ca_bundle.crt', 'utf-8')
+		}
+
+		console.log(`App starting on port ${HttpConfig.HTTP_PORT} for unsecured connections and ${HttpConfig.HTTPS_PORT} for secured connections`)
+
+		https.createServer(options, app).listen(HttpConfig.HTTPS_PORT)
+		http.createServer(app).listen( HttpConfig.HTTP_PORT )
 	}
 }
