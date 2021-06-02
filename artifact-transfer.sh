@@ -16,4 +16,5 @@ sftp -i ~/.ssh/skc-server-creds.pem "${user}@${server}" << EOF
 	put package.json
 	put .env-cmdrc.json
 	put -r dist/
+	put -r certs/
 EOF
