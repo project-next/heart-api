@@ -12,7 +12,7 @@ export default class YouTubeChannelActivity
 	 */
 	static YouTubeRequestMemoized = moize((channelId: string) => {
 		return YouTubeAxiosConfig.BASE_CONFIG
-		.get('/activities'
+		.get('/activities'	// documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
 			, {
 				params: {
 					channelId: channelId
