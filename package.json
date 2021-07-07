@@ -1,7 +1,7 @@
 {
   "name": "heart-api",
-  "version": "1.0.0",
-  "description": "API at the core of services offered by Javi",
+  "version": "1.0.1",
+  "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
   "main": "./src/app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

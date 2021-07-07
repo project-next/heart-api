@@ -16,10 +16,11 @@ export default class YouTubeChannelActivity
 			, {
 				params: {
 					channelId: channelId
+					, maxResults: 10
 				}
 			}
 		)
-	}, { maxAge: 1000 * 60 * 8, updateExpire: false })
+	}, { maxAge: 1000 * 60 * 15, updateExpire: false })
 
 
 	/**
