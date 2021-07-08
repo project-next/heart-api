@@ -3,24 +3,20 @@ import {AxiosError, AxiosResponse} from 'axios'
 import Constants from '../downstream-services/Constants';
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import moize from 'moize'
+import Endpoint from './Endpoint';
 
 
-export default class YouTubeChannelActivity
+export default class YouTubeChannelActivity implements Endpoint
 {
-	/**
-	 * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
-	 */
-	static YouTubeRequestMemoized = moize((channelId: string) => {
-		return YouTubeAxiosConfig.BASE_CONFIG
-		.get('/activities'	// documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
-			, {
-				params: {
-					channelId: channelId
-					, maxResults: 10
-				}
-			}
-		)
-	}, { maxAge: 1000 * 60 * 15, updateExpire: false })
+
+	public readonly router: Router
+
+
+	constructor()
+	{
+		this.router = Router()
+		this.get()
+	}
 
 
 	/**
@@ -29,9 +25,9 @@ export default class YouTubeChannelActivity
 	 * YouTube API output is cleaned up and only the most useful info is returned to client.
 	 * @param router object that will be used to expose functionality.
 	 */
-	static retrieveYTChannelUploads = (router: Router) =>
+	get(): void
 	{
-		router.get('/yt/channel/uploads', (req: Request, res: Response) =>
+		this.router.get('/yt/channel/uploads', (req: Request, res: Response) =>
 		{
 			const channelId: string = req.query.channelId.toString()
 
@@ -52,7 +48,7 @@ export default class YouTubeChannelActivity
 			}
 
 
-			YouTubeChannelActivity.YouTubeRequestMemoized(channelId)
+			this.memoizedYouTubeRequest(channelId)
 			.then((ytResponse: AxiosResponse) => {
 				const videoIds = []
 
@@ -88,14 +84,24 @@ export default class YouTubeChannelActivity
 		})
 	}
 
-	static initRouter = (): Router =>
-	{
-		const router = Router()
 
-		YouTubeChannelActivity.retrieveYTChannelUploads(router)
-		return router
+	post(): void {
+		throw new Error('Method not implemented.');
 	}
 
 
-	static router: Router = YouTubeChannelActivity.initRouter()
+	/**
+	 * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
+	 */
+	private memoizedYouTubeRequest = moize((channelId: string) => {
+		return YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG
+		.get('/activities'	// documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
+			, {
+				params: {
+					channelId: channelId
+				}
+			}
+		)
+	}, { maxAge: 1000 * 60 * 15, updateExpire: false })
+
 }

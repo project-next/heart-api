@@ -9,8 +9,8 @@ export default class Routes
 
 	static setupRoutes = (app: Express) =>
 	{
-		app.use(Routes.BASE_URI, Status.router)
-		app.use(Routes.BASE_URI, YouTubeChannelActivity.router)
+		app.use(Routes.BASE_URI, new Status().router)
+		app.use(Routes.BASE_URI, new YouTubeChannelActivity().router)
 	}
 
 }
