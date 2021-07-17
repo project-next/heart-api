@@ -4,6 +4,8 @@ import Constants from '../downstream-services/Constants';
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import moize from 'moize'
 import Endpoint from './Endpoint';
+import HeartAPIError from './HeartAPIError'
+import YouTubeUploadsResponse, {FormattedUploadResponse} from './YouTubeUploadsResponse';
 
 
 type YouTubeAPIResponse = {
@@ -52,15 +54,6 @@ type YouTubeAPIResponse = {
 	}
 }
 
-type FormattedUploadResponse = {
-	id: string
-	title: string;
-	description: string;
-	publishedAt: string;
-	thumbnailUrl: string;
-	url: string;
-}
-
 export default class YouTubeChannelActivity implements Endpoint
 {
 
@@ -85,8 +78,11 @@ export default class YouTubeChannelActivity implements Endpoint
 		{
 			if (req.query.channelId === undefined || req.query.channelId === null)
 			{
-				res.status(422)
-				res.json({description: 'Empty or null channelId.'})
+				const status = 422
+
+				res.status(status)
+				res.json(new HeartAPIError('Empty or null channelId.', status))
+
 				res.end()
 				return
 			}
@@ -94,15 +90,19 @@ export default class YouTubeChannelActivity implements Endpoint
 			let channelId = req.query.channelId.toString()
 			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )	// prevent malicious use of API
 			{
-				res.status(400)
-				res.json({description: 'This API cannot use provided channelId. Only certain Id\'s are permitted.'})
+				const status = 400
+
+				res.status(status)
+				res.json(new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status))
+
 				res.end()
 				return
 			}
 
 
 			this.memoizedYouTubeRequest(channelId)
-			.then((ytResponse: AxiosResponse) => {
+			.then((ytResponse: AxiosResponse) =>
+			{
 				const videoIds = []
 
 				const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
@@ -123,17 +123,18 @@ export default class YouTubeChannelActivity implements Endpoint
 
 
 				res.status(200)
-				res.json({'total': formattedYtResponse.length, 'videos': formattedYtResponse})
+				res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
 				res.end()
 			})
 			.catch((error: AxiosError) => {
-				console.error(`YouTube Data API (v3) returned with error: ${error.code}`)
+				console.error(`YouTube Data API (v3) returned with error: ${error.code} ${error.response.status}`)
 
 				let description = 'YouTube API call encountered error.'
 				if (error.response.status === 403)	description = 'Request has incorrect API key or no API key.'
 
-				res.status(500)
-				res.json({youtubeApiStatus: error.response.status, description: description})
+				const status = 500
+				res.status(status)
+				res.json(new HeartAPIError(description, status))
 				res.end()
 			})
 		})
