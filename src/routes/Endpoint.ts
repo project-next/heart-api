@@ -1,4 +1,5 @@
-export default interface Endpoint{
+export default interface Endpoint
+{
 	get(): void
 	post(): void
 }

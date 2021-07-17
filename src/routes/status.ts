@@ -6,12 +6,11 @@ export default class Status implements Endpoint
 {
 	private static statusMessage = { status: 'API up and running' }
 
-	public readonly router: Router
+	public readonly router = Router()
 
 
 	constructor()
 	{
-		this.router = Router()
 		this.get()
 	}
 

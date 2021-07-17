@@ -6,15 +6,69 @@ import moize from 'moize'
 import Endpoint from './Endpoint';
 
 
+type YouTubeAPIResponse = {
+	kind: string
+	etag: string
+	id: string
+	snippet: {
+		publishedAt: string;
+		channelId: string,
+		title: string,
+		description: string,
+		thumbnails: {
+			default: {
+				url: string
+				width: string
+				height: string
+			}
+			medium: {
+				url: string
+				width: string
+				height: string
+			}
+			high: {
+				url: string
+				width: string
+				height: string
+			}
+			standard: {
+				url: string
+				width: string
+				height: string
+			}
+			maxres: {
+				url: string
+				width: string
+				height: string
+			}
+		}
+		channelTitle: string
+		type: string
+	}
+	contentDetails: {
+		upload: {
+			videoId: string
+		}
+	}
+}
+
+type FormattedUploadResponse = {
+	id: string
+	title: string;
+	description: string;
+	publishedAt: string;
+	thumbnailUrl: string;
+	url: string;
+}
+
 export default class YouTubeChannelActivity implements Endpoint
 {
 
-	public readonly router: Router
+	public readonly router = Router()
 
 
 	constructor()
 	{
-		this.router = Router()
 		this.get()
 	}
 
@@ -29,20 +83,19 @@ export default class YouTubeChannelActivity implements Endpoint
 	{
 		this.router.get('/yt/channel/uploads', (req: Request, res: Response) =>
 		{
-			const channelId: string = req.query.channelId.toString()
-
-			if (channelId === undefined || channelId === null)
+			if (req.query.channelId === undefined || req.query.channelId === null)
 			{
 				res.status(422)
-				res.json({errorDescription: 'Empty or null channelId.'})
+				res.json({description: 'Empty or null channelId.'})
 				res.end()
 				return
 			}
-			// prevent malicious use of API
-			else if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )
+
+			let channelId = req.query.channelId.toString()
+			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )	// prevent malicious use of API
 			{
 				res.status(400)
-				res.json({errorDescription: 'This API cannot use provided channelId'})
+				res.json({description: 'This API cannot use provided channelId. Only certain Id\'s are permitted.'})
 				res.end()
 				return
 			}
@@ -52,16 +105,18 @@ export default class YouTubeChannelActivity implements Endpoint
 			.then((ytResponse: AxiosResponse) => {
 				const videoIds = []
 
-				const formattedYtResponse = ytResponse.data.items.map((item: any) => {
-					if (item.snippet.type === 'upload') {
-						videoIds.push(item.contentDetails.upload.videoId)
+				const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
+					if (youTubeVidInfo.snippet.type === 'upload') {
+						const videoId = youTubeVidInfo.contentDetails.upload.videoId
+						videoIds.push(videoId)
+
 						return {
-							id: item.contentDetails.upload.videoId
-							, title: item.snippet.title
-							, description: item.snippet.description
-							, publishedAt: item.snippet.publishedAt
-							, thumbnailUrl: item.snippet.thumbnails.high.url
-							, url: `https://www.youtube.com/watch?v=${item.contentDetails.upload.videoId}`
+							id: videoId
+							, title: youTubeVidInfo.snippet.title
+							, description: youTubeVidInfo.snippet.description
+							, publishedAt: youTubeVidInfo.snippet.publishedAt
+							, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
+							, url: `https://www.youtube.com/watch?v=${videoId}`
 						}
 					}
 				})

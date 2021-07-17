@@ -6,5 +6,5 @@ export default class Constants
 	static SKC_CHANNEL_ID = 'UCBZ_1wWyLQI3SV9IgLbyiNQ'
 	static RBF_CHANNEL_ID = 'UCKSWgpqi8BnNgDYh_jwYQNw'
 
-	static VALID_YOUTUBE_CHANNEL_IDS = [Constants.SKC_CHANNEL_ID, Constants.RBF_CHANNEL_ID]
+	static VALID_YOUTUBE_CHANNEL_IDS: [string, string] = [Constants.SKC_CHANNEL_ID, Constants.RBF_CHANNEL_ID]
 }
