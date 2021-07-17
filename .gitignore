@@ -122,3 +122,5 @@ dist
 
 # Certs
 **/certs/
+
+**/.vscode/
