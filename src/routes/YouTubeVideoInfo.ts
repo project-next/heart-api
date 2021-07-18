@@ -1,7 +1,44 @@
 import {Router, Request, Response} from 'express'
+import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import Constants from '../downstream-services/Constants';
 import Endpoint from "./Endpoint";
 import HeartAPIError from './HeartAPIError';
+import { AxiosResponse } from 'axios';
+
+
+type YouTubeAPIResponse = {
+   kind: string,
+   etag: string,
+   items: [YouTubeAPIResponseItem],
+   pageInfo: {
+      totalResults: number,
+      resultsPerPage: number
+   }
+}
+
+type YouTubeAPIResponseItem =
+{
+	kind: string,
+	etag: string,
+	id: string,
+	statistics: {
+		viewCount: string,
+		likeCount: string,
+		dislikeCount: string,
+		favoriteCount: string,
+		commentCount: string
+	}
+}
+
+
+type VideoInfo = {
+	views: number,
+	likes: number,
+	dislikes: number,
+	favorites: number,
+	numComments: number
+}
+
 
 export default class YouTubeVideoInfo implements Endpoint
 {
@@ -32,7 +69,26 @@ export default class YouTubeVideoInfo implements Endpoint
 				res.json(new HeartAPIError("API key is incorrect.", status))
 				res.send()
 			} else {
-				res.send()
+				const r = YouTubeAxiosConfig
+					.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
+					.get('/videos', {
+						params: {
+							id: req.query.videoId
+						}
+					})
+					.then((ytResponse: AxiosResponse) => {
+						const info: YouTubeAPIResponseItem = ytResponse.data.items[0]
+
+						res.status(status)
+						res.json({
+							views: info.statistics.viewCount,
+							likes: info.statistics.likeCount,
+							dislikes: info.statistics.dislikeCount,
+							favorites: info.statistics.favoriteCount,
+							numComments: info.statistics.commentCount
+						})
+						res.send()
+					})
 			}
 		})
 	}
