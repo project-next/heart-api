@@ -12,4 +12,9 @@ services:
       - "./.env-cmdrc.json:/home/node/app/.env-cmdrc.json"
       - "./dist:/home/node/app/dist"
       - "./certs:/home/node/app/certs"
-    command: sh -c "npm install --global env-cmd && npm install && npm run docker-start-dev"
+    command: sh -c "npm install express && npm install --global env-cmd && npm install && npm run docker-start-dev"
+    deploy:
+      resources:
+        limits:
+          cpus: 0.3
+          memory: 200M

@@ -3,23 +3,67 @@ import {AxiosError, AxiosResponse} from 'axios'
 import Constants from '../downstream-services/Constants';
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import moize from 'moize'
+import Endpoint from './Endpoint';
+import HeartAPIError from './HeartAPIError'
+import YouTubeUploadsResponse, {FormattedUploadResponse} from './YouTubeUploadsResponse';
 
 
-export default class YouTubeChannelActivity
-{
-	/**
-	 * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
-	 */
-	static YouTubeRequestMemoized = moize((channelId: string) => {
-		return YouTubeAxiosConfig.BASE_CONFIG
-		.get('/activities'
-			, {
-				params: {
-					channelId: channelId
-				}
+type YouTubeAPIResponse = {
+	kind: string
+	etag: string
+	id: string
+	snippet: {
+		publishedAt: string;
+		channelId: string,
+		title: string,
+		description: string,
+		thumbnails: {
+			default: {
+				url: string
+				width: string
+				height: string
 			}
-		)
-	}, { maxAge: 1000 * 60 * 8, updateExpire: false })
+			medium: {
+				url: string
+				width: string
+				height: string
+			}
+			high: {
+				url: string
+				width: string
+				height: string
+			}
+			standard: {
+				url: string
+				width: string
+				height: string
+			}
+			maxres: {
+				url: string
+				width: string
+				height: string
+			}
+		}
+		channelTitle: string
+		type: string
+	}
+	contentDetails: {
+		upload: {
+			videoId: string
+		}
+	}
+}
+
+export default class YouTubeChannelActivity implements Endpoint
+{
+
+	public readonly router = Router()
+
+
+	constructor()
+	{
+		this.get()
+	}
 
 
 	/**
@@ -28,73 +72,92 @@ export default class YouTubeChannelActivity
 	 * YouTube API output is cleaned up and only the most useful info is returned to client.
 	 * @param router object that will be used to expose functionality.
 	 */
-	static retrieveYTChannelUploads = (router: Router) =>
+	get(): void
 	{
-		router.get('/yt/channel/uploads', (req: Request, res: Response) =>
+		this.router.get('/yt/channel/uploads', (req: Request, res: Response) =>
 		{
-			const channelId: string = req.query.channelId.toString()
+			if (req.query.channelId === undefined || req.query.channelId === null)
+			{
+				const status = 422
 
-			if (channelId === undefined || channelId === null)
-			{
-				res.status(422)
-				res.json({errorDescription: 'Empty or null channelId.'})
-				res.end()
-				return
-			}
-			// prevent malicious use of API
-			else if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )
-			{
-				res.status(400)
-				res.json({errorDescription: 'This API cannot use provided channelId'})
+				res.status(status)
+				res.json(new HeartAPIError('Empty or null channelId.', status))
+
 				res.end()
 				return
 			}
 
+			let channelId = req.query.channelId.toString()
+			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )	// prevent malicious use of API
+			{
+				const status = 400
 
-			YouTubeChannelActivity.YouTubeRequestMemoized(channelId)
-			.then((ytResponse: AxiosResponse) => {
+				res.status(status)
+				res.json(new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status))
+
+				res.end()
+				return
+			}
+
+
+			this.memoizedYouTubeRequest(channelId)
+			.then((ytResponse: AxiosResponse) =>
+			{
 				const videoIds = []
 
-				const formattedYtResponse = ytResponse.data.items.map((item: any) => {
-					if (item.snippet.type === 'upload') {
-						videoIds.push(item.contentDetails.upload.videoId)
+				const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
+					if (youTubeVidInfo.snippet.type === 'upload') {
+						const videoId = youTubeVidInfo.contentDetails.upload.videoId
+						videoIds.push(videoId)
+
 						return {
-							id: item.contentDetails.upload.videoId
-							, title: item.snippet.title
-							, description: item.snippet.description
-							, publishedAt: item.snippet.publishedAt
-							, thumbnailUrl: item.snippet.thumbnails.high.url
-							, url: `https://www.youtube.com/watch?v=${item.contentDetails.upload.videoId}`
+							id: videoId
+							, title: youTubeVidInfo.snippet.title
+							, description: youTubeVidInfo.snippet.description
+							, publishedAt: youTubeVidInfo.snippet.publishedAt
+							, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
+							, url: `https://www.youtube.com/watch?v=${videoId}`
 						}
 					}
 				})
 
 
 				res.status(200)
-				res.json({'total': formattedYtResponse.length, 'videos': formattedYtResponse})
+				res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
 				res.end()
 			})
 			.catch((error: AxiosError) => {
-				console.error(`YouTube Data API (v3) returned with error: ${error.code}`)
+				console.error(`YouTube Data API (v3) returned with error: ${error.code} ${error.response.status}`)
 
 				let description = 'YouTube API call encountered error.'
 				if (error.response.status === 403)	description = 'Request has incorrect API key or no API key.'
 
-				res.status(500)
-				res.json({youtubeApiStatus: error.response.status, description: description})
+				const status = 500
+				res.status(status)
+				res.json(new HeartAPIError(description, status))
 				res.end()
 			})
 		})
 	}
 
-	static initRouter = (): Router =>
-	{
-		const router = Router()
 
-		YouTubeChannelActivity.retrieveYTChannelUploads(router)
-		return router
+	post(): void {
+		throw new Error('Method not implemented.');
 	}
 
 
-	static router: Router = YouTubeChannelActivity.initRouter()
+	/**
+	 * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
+	 */
+	private memoizedYouTubeRequest = moize((channelId: string) => {
+		return YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG
+		.get('/activities'	// documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
+			, {
+				params: {
+					channelId: channelId
+				}
+			}
+		)
+	}, { maxAge: 1000 * 60 * 15, updateExpire: false })
+
 }
