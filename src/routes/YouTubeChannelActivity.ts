@@ -101,42 +101,32 @@ export default class YouTubeChannelActivity implements Endpoint
 
 
 			this.memoizedYouTubeRequest(channelId)
-			.then((ytResponse: AxiosResponse) =>
-			{
-				const videoIds = []
+					.then((ytResponse: AxiosResponse) =>
+					{
+						const videoIds = []
 
-				const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
-					if (youTubeVidInfo.snippet.type === 'upload') {
-						const videoId = youTubeVidInfo.contentDetails.upload.videoId
-						videoIds.push(videoId)
+						const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
+							if (youTubeVidInfo.snippet.type === 'upload') {
+								const videoId = youTubeVidInfo.contentDetails.upload.videoId
+								videoIds.push(videoId)
 
-						return {
-							id: videoId
-							, title: youTubeVidInfo.snippet.title
-							, description: youTubeVidInfo.snippet.description
-							, publishedAt: youTubeVidInfo.snippet.publishedAt
-							, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
-							, url: `https://www.youtube.com/watch?v=${videoId}`
-						}
-					}
-				})
+								return {
+									id: videoId
+									, title: youTubeVidInfo.snippet.title
+									, description: youTubeVidInfo.snippet.description
+									, publishedAt: youTubeVidInfo.snippet.publishedAt
+									, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
+									, url: `https://www.youtube.com/watch?v=${videoId}`
+								}
+							}
+						})
 
 
-				res.status(200)
-				res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
-				res.end()
-			})
-			.catch((error: AxiosError) => {
-				console.error(`YouTube Data API (v3) returned with error: ${error.code} ${error.response.status}`)
-
-				let description = 'YouTube API call encountered error.'
-				if (error.response.status === 403)	description = 'Request has incorrect API key or no API key.'
-
-				const status = 500
-				res.status(status)
-				res.json(new HeartAPIError(description, status))
-				res.end()
-			})
+						res.status(200)
+						res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
+						res.end()
+					})
+					.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
 		})
 	}
 
