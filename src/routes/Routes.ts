@@ -1,6 +1,7 @@
 import Status from './Status'
 import YouTubeChannelActivity from './YouTubeChannelActivity'
 import {Express} from 'express'
+import YouTubeVideoInfo from './YouTubeVideoInfo'
 
 export default class Routes
 {
@@ -10,5 +11,6 @@ export default class Routes
 	{
 		app.use(Routes.BASE_URI, new Status().router)
 		app.use(Routes.BASE_URI, new YouTubeChannelActivity().router)
+		app.use(Routes.BASE_URI, new YouTubeVideoInfo().router)
 	}
 }
