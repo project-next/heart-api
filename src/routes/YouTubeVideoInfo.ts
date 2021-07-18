@@ -4,6 +4,7 @@ import Constants from '../downstream-services/Constants';
 import Endpoint from "./Endpoint";
 import HeartAPIError from './HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
+import moize from 'moize';
 
 
 type YouTubeAPIResponse = {
@@ -69,13 +70,7 @@ export default class YouTubeVideoInfo implements Endpoint
 				res.json(new HeartAPIError("API key is incorrect.", status))
 				res.send()
 			} else {
-				YouTubeAxiosConfig
-						.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
-						.get('/videos', {
-							params: {
-								id: req.query.videoId
-							}
-						})
+				this.memoizedYouTubeRequest(req.query.videoId as string)
 						.then((ytResponse: AxiosResponse) => {
 							const info: YouTubeAPIResponseItem = ytResponse.data.items[0]
 
@@ -99,4 +94,15 @@ export default class YouTubeVideoInfo implements Endpoint
 	{
 		throw new Error("Method not implemented.");
 	}
+
+
+	private memoizedYouTubeRequest = moize((videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> => {
+		return YouTubeAxiosConfig
+				.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
+				.get('/videos', {
+					params: {
+						id: videoId
+					}
+				})
+	}, { maxAge: 1000 * 60 * 3, updateExpire: false })
 }
