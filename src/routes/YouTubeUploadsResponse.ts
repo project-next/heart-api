@@ -11,11 +11,10 @@ export default class YouTubeUploadsResponse {
 	readonly videos: [FormattedUploadResponse]
 	readonly total: number
 
-	constructor(videos: [FormattedUploadResponse], total: number)
-	{
+	constructor(videos: [FormattedUploadResponse], total: number) {
 		this.videos = videos
 		this.total = total
 	}
 }
 
-export {FormattedUploadResponse}
+export { FormattedUploadResponse }

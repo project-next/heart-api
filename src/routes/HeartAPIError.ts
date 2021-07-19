@@ -3,8 +3,7 @@ export default class HeartAPIError {
 	readonly code: number
 
 
-	constructor(description: string, code: number)
-	{
+	constructor(description: string, code: number) {
 		this.description = description
 		this.code = code
 	}

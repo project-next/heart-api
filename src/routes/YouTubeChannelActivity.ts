@@ -1,11 +1,11 @@
-import {Router, Request, Response} from 'express'
-import {AxiosError, AxiosResponse} from 'axios'
+import { Router, Request, Response } from 'express'
+import { AxiosError, AxiosResponse } from 'axios'
 import Constants from '../downstream-services/Constants';
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import moize from 'moize'
 import Endpoint from './Endpoint';
 import HeartAPIError from './HeartAPIError'
-import YouTubeUploadsResponse, {FormattedUploadResponse} from './YouTubeUploadsResponse';
+import YouTubeUploadsResponse, { FormattedUploadResponse } from './YouTubeUploadsResponse';
 
 
 type YouTubeAPIResponse = {
@@ -54,14 +54,12 @@ type YouTubeAPIResponse = {
 	}
 }
 
-export default class YouTubeChannelActivity implements Endpoint
-{
+export default class YouTubeChannelActivity implements Endpoint {
 
 	public readonly router = Router()
 
 
-	constructor()
-	{
+	constructor() {
 		this.get()
 	}
 
@@ -72,12 +70,9 @@ export default class YouTubeChannelActivity implements Endpoint
 	 * YouTube API output is cleaned up and only the most useful info is returned to client.
 	 * @param router object that will be used to expose functionality.
 	 */
-	get(): void
-	{
-		this.router.get('/yt/channel/uploads', (req: Request, res: Response) =>
-		{
-			if (req.query.channelId === undefined || req.query.channelId === null)
-			{
+	get(): void {
+		this.router.get('/yt/channel/uploads', (req: Request, res: Response) => {
+			if (req.query.channelId === undefined || req.query.channelId === null) {
 				const status = 422
 
 				res.status(status)
@@ -88,7 +83,7 @@ export default class YouTubeChannelActivity implements Endpoint
 			}
 
 			let channelId = req.query.channelId.toString()
-			if ( !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId) )	// prevent malicious use of API
+			if (!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId))	// prevent malicious use of API
 			{
 				const status = 400
 
@@ -101,32 +96,31 @@ export default class YouTubeChannelActivity implements Endpoint
 
 
 			this.memoizedYouTubeRequest(channelId)
-					.then((ytResponse: AxiosResponse) =>
-					{
-						const videoIds = []
+				.then((ytResponse: AxiosResponse) => {
+					const videoIds = []
 
-						const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
-							if (youTubeVidInfo.snippet.type === 'upload') {
-								const videoId = youTubeVidInfo.contentDetails.upload.videoId
-								videoIds.push(videoId)
+					const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
+						if (youTubeVidInfo.snippet.type === 'upload') {
+							const videoId = youTubeVidInfo.contentDetails.upload.videoId
+							videoIds.push(videoId)
 
-								return {
-									id: videoId
-									, title: youTubeVidInfo.snippet.title
-									, description: youTubeVidInfo.snippet.description
-									, publishedAt: youTubeVidInfo.snippet.publishedAt
-									, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
-									, url: `https://www.youtube.com/watch?v=${videoId}`
-								}
+							return {
+								id: videoId
+								, title: youTubeVidInfo.snippet.title
+								, description: youTubeVidInfo.snippet.description
+								, publishedAt: youTubeVidInfo.snippet.publishedAt
+								, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
+								, url: `https://www.youtube.com/watch?v=${videoId}`
 							}
-						})
-
-
-						res.status(200)
-						res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
-						res.end()
+						}
 					})
-					.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
+
+
+					res.status(200)
+					res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
+					res.end()
+				})
+				.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
 		})
 	}
 
@@ -141,13 +135,13 @@ export default class YouTubeChannelActivity implements Endpoint
 	 */
 	private memoizedYouTubeRequest = moize((channelId: string) => {
 		return YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG
-		.get('/activities'	// documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
-			, {
-				params: {
-					channelId: channelId
+			.get('/activities'	// documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
+				, {
+					params: {
+						channelId: channelId
+					}
 				}
-			}
-		)
+			)
 	}, { maxAge: 1000 * 60 * 15, updateExpire: false })
 
 }
