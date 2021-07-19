@@ -4,7 +4,6 @@ import Constants from '../downstream-services/Constants';
 import Endpoint from "./Endpoint";
 import HeartAPIError from './HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
-import moize from 'moize';
 import sample from 'lodash.sample'
 
 
@@ -124,13 +123,11 @@ export default class YouTubeGiveAway implements Endpoint {
 				const code = req.query.giveAwayCode.toString()
 
 				YouTubeAxiosConfig
-					.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
+					.YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG
 					.get('/commentThreads', {
 						params: {
-							part: 'snippet'
+							searchTerms: code
 							, videoId: req.query.videoId
-							, maxResults: 100
-							, textFormat: 'plainText'
 						}
 					})
 					.then((ytResponse: AxiosResponse) => {

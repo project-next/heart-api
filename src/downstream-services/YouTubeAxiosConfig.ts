@@ -23,6 +23,17 @@ export default class YouTubeAxiosConfig {
 	})
 
 
+	static YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG = axios.create({
+		baseURL: `${Constants.YOUTUBE_API_URL}`
+		, params: {
+			key: Constants.YOUTUBE_API_KEY
+			, part: 'snippet'
+			, maxResults: 100
+			, textFormat: 'plainText'
+		}
+	})
+
+
 	static YOUTUBE_API_ERROR_CALLBACK = (error: AxiosError, res: Response) => {
 		console.error(`YouTube Data API (v3) returned with error: ${error.code} ${error.response.status}`)
 
