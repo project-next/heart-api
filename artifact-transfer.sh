@@ -13,7 +13,5 @@ EOF
 sftp -i ~/.ssh/skc-server-creds.pem "${user}@${server}" << EOF
 	cd heart-api
 	put docker-compose.yml
-	put .env-cmdrc.json
 	put -r dist/
-	put -r certs/
 EOF

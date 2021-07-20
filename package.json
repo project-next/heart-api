@@ -5,13 +5,13 @@
   "main": "./src/app.ts",
   "scripts": {
     "dev": "env-cmd -e default nodemon ./src/app.ts",
-    "build": "rm -rf dist && tsc && cp ./package.json ./dist",
+    "build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist",
 
     "uploadProduction": "npm run build && bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
     "restageProduction": "bash docker-restage.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
     "deployProduction": "npm run uploadProduction && npm run restageProduction",
 
-    "local-start": "npm run build && env-cmd -e default node ./dist/app.js",
+    "local-start": "npm run build && cd ./dist && env-cmd -e default node ./app.js",
     "docker-start": "env-cmd -e default node ./app.js"
   },
   "keywords": [
