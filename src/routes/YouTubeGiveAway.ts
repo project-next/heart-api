@@ -157,7 +157,6 @@ export default class YouTubeGiveAway implements Endpoint {
 				if (pageToken != null) {
 					this.getGiveAwayWinner(info, code, videoId, pageToken, res)
 				} else {
-					console.log(info)
 					const winner = sample(info)
 
 					const giveAwayInfo: GiveAwayInfo = {
