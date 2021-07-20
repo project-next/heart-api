@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express'
 import Endpoint from './Endpoint'
+import * as packageJson from '../../package.json'
 
 
 export default class Status implements Endpoint {
-	private static statusMessage = { status: 'API up and running' }
+	private static statusMessage = { status: 'API up and running', version: packageJson.version }
 
 	public readonly router = Router()
 
