@@ -1,4 +1,8 @@
 # heart-api
-The heart pumps blood to organs. This API pumps information to other services. The first thing to have flow is information about YouTube channel uploads so SKC can query sub info.
+This API provides various information to other services. Information includes:
 
-In the end, any and all Websites, channels and podcasts will use this API to get social media info and news for each service.
+- YouTube data
+- Social media posts (not yet implemented)
+- News for services (not yet implemented)
+
+In the end, any and all Websites, channels and podcasts will use this API to get social media info and news.
