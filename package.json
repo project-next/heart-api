@@ -4,14 +4,15 @@
   "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
   "main": "./src/app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "env-cmd -e default ts-node ./src/app.ts",
     "dev": "env-cmd -e default nodemon ./src/app.ts",
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc && cp ./package.json ./dist",
+
     "uploadProduction": "npm run build && bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
     "restageProduction": "bash docker-restage.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
     "deployProduction": "npm run uploadProduction && npm run restageProduction",
-    "docker-start-dev": "env-cmd -e default node ./dist/app.js"
+
+    "local-start": "npm run build && env-cmd -e default node ./dist/app.js",
+    "docker-start": "env-cmd -e default node ./app.js"
   },
   "keywords": [
     "heart",
