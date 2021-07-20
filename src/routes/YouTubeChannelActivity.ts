@@ -97,11 +97,11 @@ export default class YouTubeChannelActivity implements Endpoint {
 
 			this.memoizedYouTubeRequest(channelId)
 				.then((ytResponse: AxiosResponse) => {
-					const videoIds = []
+					const videoIds: string[] = []
 
 					const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
 						if (youTubeVidInfo.snippet.type === 'upload') {
-							const videoId = youTubeVidInfo.contentDetails.upload.videoId
+							const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
 							videoIds.push(videoId)
 
 							return {

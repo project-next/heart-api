@@ -10,7 +10,7 @@ import moize from 'moize';
 type YouTubeAPIResponse = {
 	kind: string,
 	etag: string,
-	items: [YouTubeAPIResponseItem],
+	items: YouTubeAPIResponseItem[],
 	pageInfo: {
 		totalResults: number,
 		resultsPerPage: number
