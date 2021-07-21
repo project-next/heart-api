@@ -92,6 +92,11 @@ export default class YouTubeVideoInfo implements Endpoint {
 
 
 	private memoizedYouTubeRequest = moize((videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> => {
+		return this.youtubeRequest(videoId)
+	}, { maxAge: 1000 * 60 * 3, updateExpire: false })
+
+
+	private youtubeRequest = (videoId: string) => {
 		return YouTubeAxiosConfig
 			.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
 			.get('/videos', {
@@ -99,5 +104,6 @@ export default class YouTubeVideoInfo implements Endpoint {
 					id: videoId
 				}
 			})
-	}, { maxAge: 1000 * 60 * 3, updateExpire: false })
+	}
+
 }
