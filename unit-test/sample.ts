@@ -48,10 +48,10 @@ describe('YouTubeVideoInfo tests', () => {
 		expect(videoInfoResponse.favorites).to.not.be.null
 		expect(videoInfoResponse.numComments).to.not.be.null
 
-		expect(videoInfoResponse.views).to.be.equal(52)
-		expect(videoInfoResponse.likes).to.be.equal(5)
-		expect(videoInfoResponse.dislikes).to.be.equal(0)
-		expect(videoInfoResponse.favorites).to.be.equal(0)
-		expect(videoInfoResponse.numComments).to.be.equal(6)
+		expect(videoInfoResponse.views).to.equal(52)
+		expect(videoInfoResponse.likes).to.equal(5)
+		expect(videoInfoResponse.dislikes).to.equal(0)
+		expect(videoInfoResponse.favorites).to.equal(0)
+		expect(videoInfoResponse.numComments).to.equal(6)
 	})
 })
