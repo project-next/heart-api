@@ -32,7 +32,7 @@ type YouTubeAPIResponseItem =
 	}
 
 
-type VideoInfo = {
+type VideoInfoResponse = {
 	views: number,
 	likes: number,
 	dislikes: number,
@@ -67,17 +67,10 @@ export default class YouTubeVideoInfo implements Endpoint {
 				res.send()
 			} else {
 				this.memoizedYouTubeRequest(req.query.videoId as string)
-					.then((ytResponse: AxiosResponse) => {
-						const info: YouTubeAPIResponseItem = ytResponse.data.items[0]
-
+					.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
+						console.log(ytResponse.data)
 						res.status(status)
-						res.json({
-							views: +info.statistics.viewCount,
-							likes: +info.statistics.likeCount,
-							dislikes: +info.statistics.dislikeCount,
-							favorites: +info.statistics.favoriteCount,
-							numComments: +info.statistics.commentCount
-						} as VideoInfo)
+						res.json(this.getVideoInfoResponse(ytResponse.data))
 						res.send()
 					})
 					.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
@@ -92,11 +85,11 @@ export default class YouTubeVideoInfo implements Endpoint {
 
 
 	private memoizedYouTubeRequest = moize((videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> => {
-		return this.youtubeRequest(videoId)
+		return this.getYoutubeRequest(videoId)
 	}, { maxAge: 1000 * 60 * 3, updateExpire: false })
 
 
-	private youtubeRequest = (videoId: string) => {
+	private getYoutubeRequest = (videoId: string) => {
 		return YouTubeAxiosConfig
 			.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
 			.get('/videos', {
@@ -106,4 +99,20 @@ export default class YouTubeVideoInfo implements Endpoint {
 			})
 	}
 
+
+	private getVideoInfoResponse = (youTubeAPIResponse: YouTubeAPIResponse): VideoInfoResponse => {
+		const info: YouTubeAPIResponseItem = youTubeAPIResponse.items[0]
+
+		return {
+			views: +info.statistics.viewCount,
+			likes: +info.statistics.likeCount,
+			dislikes: +info.statistics.dislikeCount,
+			favorites: +info.statistics.favoriteCount,
+			numComments: +info.statistics.commentCount
+		}
+	}
+
 }
+
+
+export {YouTubeAPIResponse, VideoInfoResponse}
