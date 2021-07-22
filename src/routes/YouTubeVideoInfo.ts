@@ -33,11 +33,14 @@ type YouTubeAPIResponseItem =
 
 
 type VideoInfoResponse = {
-	views: number,
-	likes: number,
-	dislikes: number,
-	favorites: number,
-	numComments: number
+	validVideo: boolean
+	videoStats: {
+		views: number,
+		likes: number,
+		dislikes: number,
+		favorites: number,
+		numComments: number
+	}
 }
 
 
@@ -101,14 +104,21 @@ export default class YouTubeVideoInfo implements Endpoint {
 
 
 	private getVideoInfoResponse = (youTubeAPIResponse: YouTubeAPIResponse): VideoInfoResponse => {
+		if (youTubeAPIResponse.items.length === 0)
+			return {validVideo: false} as VideoInfoResponse
+
+
 		const info: YouTubeAPIResponseItem = youTubeAPIResponse.items[0]
 
 		return {
-			views: +info.statistics.viewCount,
-			likes: +info.statistics.likeCount,
-			dislikes: +info.statistics.dislikeCount,
-			favorites: +info.statistics.favoriteCount,
-			numComments: +info.statistics.commentCount
+			validVideo: true,
+			videoStats: {
+				views: +info.statistics.viewCount,
+				likes: +info.statistics.likeCount,
+				dislikes: +info.statistics.dislikeCount,
+				favorites: +info.statistics.favoriteCount,
+				numComments: +info.statistics.commentCount
+			}
 		}
 	}
 

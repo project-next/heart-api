@@ -42,16 +42,40 @@ describe('YouTubeVideoInfo tests', () => {
 
 		expect(videoInfoResponse).to.not.be.null
 
-		expect(videoInfoResponse.views).to.not.be.null
-		expect(videoInfoResponse.likes).to.not.be.null
-		expect(videoInfoResponse.dislikes).to.not.be.null
-		expect(videoInfoResponse.favorites).to.not.be.null
-		expect(videoInfoResponse.numComments).to.not.be.null
+		expect(videoInfoResponse.videoStats.views).to.not.be.null
+		expect(videoInfoResponse.videoStats.likes).to.not.be.null
+		expect(videoInfoResponse.videoStats.dislikes).to.not.be.null
+		expect(videoInfoResponse.videoStats.favorites).to.not.be.null
+		expect(videoInfoResponse.videoStats.numComments).to.not.be.null
 
-		expect(videoInfoResponse.views).to.equal(52)
-		expect(videoInfoResponse.likes).to.equal(5)
-		expect(videoInfoResponse.dislikes).to.equal(0)
-		expect(videoInfoResponse.favorites).to.equal(0)
-		expect(videoInfoResponse.numComments).to.equal(6)
+		expect(videoInfoResponse.validVideo).to.be.true
+
+		expect(videoInfoResponse.videoStats.views).to.equal(52)
+		expect(videoInfoResponse.videoStats.likes).to.equal(5)
+		expect(videoInfoResponse.videoStats.dislikes).to.equal(0)
+		expect(videoInfoResponse.videoStats.favorites).to.equal(0)
+		expect(videoInfoResponse.videoStats.numComments).to.equal(6)
+	})
+
+
+	it('Checking creation of Heart API response - no video found for given ID', () => {
+		const ytResponse: YouTubeAPIResponse = {
+			"kind": "youtube#videoListResponse",
+			"etag": "YIUPVpqNjppyCWOZfL-19bLb7uk",
+			"items": [],
+			"pageInfo": {
+				"totalResults": 0,
+				"resultsPerPage": 0
+			}
+		}
+
+		const videoInfoResponse: VideoInfoResponse = YouTubeVideoInfoInstance.getVideoInfoResponse(ytResponse)
+
+		expect(videoInfoResponse).to.not.be.null
+
+		expect(videoInfoResponse.validVideo).not.null
+		expect(videoInfoResponse.videoStats).to.be.undefined
+
+		expect(videoInfoResponse.validVideo).to.be.false
 	})
 })
