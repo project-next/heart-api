@@ -4,7 +4,7 @@ import Constants from '../downstream-services/Constants';
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import moize from 'moize'
 import Endpoint from './Endpoint';
-import HeartAPIError from './HeartAPIError'
+import HeartAPIError from '../errors/HeartAPIError'
 import YouTubeUploadsResponse, { FormattedUploadResponse } from './YouTubeUploadsResponse';
 
 

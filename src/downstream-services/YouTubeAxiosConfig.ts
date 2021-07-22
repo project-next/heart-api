@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { Response } from 'express'
-import HeartAPIError from '../routes/HeartAPIError'
+import HeartAPIError from '../errors/HeartAPIError'
 import Constants from './Constants'
 
 export default class YouTubeAxiosConfig {

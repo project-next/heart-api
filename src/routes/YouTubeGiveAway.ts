@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express'
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import Constants from '../downstream-services/Constants';
 import Endpoint from "./Endpoint";
-import HeartAPIError from './HeartAPIError';
+import HeartAPIError from '../errors/HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
 import sample from 'lodash.sample'
 

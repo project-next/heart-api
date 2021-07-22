@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express'
 import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
 import Constants from '../downstream-services/Constants';
 import Endpoint from "./Endpoint";
-import HeartAPIError from './HeartAPIError';
+import HeartAPIError from '../errors/HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
 import moize from 'moize';
 
@@ -71,7 +71,6 @@ export default class YouTubeVideoInfo implements Endpoint {
 			} else {
 				this.memoizedYouTubeRequest(req.query.videoId as string)
 					.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-						console.log(ytResponse.data)
 						res.status(status)
 						res.json(this.getVideoInfoResponse(ytResponse.data))
 						res.send()
