@@ -3,35 +3,9 @@ import { expect } from 'chai'
 import { AxiosResponse } from 'axios'
 import { YouTubeAPIResponse, VideoInfoResponse } from '../../src/routes/YouTubeVideoInfo'
 
-import chai from 'chai'
-import chaiHttp from 'chai-http'
-import app from '../../src/App'
-
 describe('YouTubeVideoInfo tests', () => {
 	const _YouTubeVideoInfo = rewire('../../src/routes/YouTubeVideoInfo').__get__('YouTubeVideoInfo')
 	const _YouTubeVideoInfoInstance = new _YouTubeVideoInfo()
-
-	chai.use(chaiHttp)
-
-
-
-	it('Calling endpoint', (done) => {
-		chai
-			.request(app)
-			.get('/v1/yt/video/info')
-			.end((err, res) => {
-				expect(res.status).to.equal(400)
-				done()
-			})
-	})
-
-
-	it('Calling endpoint', (done) => {
-		chai.request(app).get('/v1/yt/video/info?videoId=okINSj2Okxw&key=XXXXXXX').end((err, res) => {
-			expect(res.status).to.equal(401)
-			done()
-		})
-	})
 
 	it('Checking creation of YouTube API request', () => {
 		const promise: Promise<AxiosResponse<YouTubeAPIResponse>> = _YouTubeVideoInfoInstance.getYoutubeRequest("123")

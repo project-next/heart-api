@@ -4,7 +4,7 @@
   "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
   "main": "./src/app.ts",
   "scripts": {
-    "unit-test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc mocha --exit -r ts-node/register 'unit-test/**/*.ts'",
+    "unit-test": "env-cmd -e test env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc mocha --exit -r ts-node/register 'unit-test/**/*.ts'",
     "dev": "env-cmd -e default nodemon ./src/app.ts",
     "build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist",
     "upload-production": "npm run build && bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
