@@ -6,23 +6,34 @@ import HttpConfig from './http/HttpConfig'
 import Routes from './routes/Routes'
 import RequestErrorHandling from './http/RequestErrorHandling'
 
-const app = express()
 
-/*
-	handles pre-flight
-	server will return the allowed CORS functionality and stop processing the rest of the request, ie prevents error due to redirects in pre-flight
-	Should be one of the first middleware added.
-*/
-app.options('*', cors())
-app.use(cors())	// opens up all CORS settings to clients
+class App {
+	public express: express.Express;
 
-HttpConfig.setupHttpConnection(app)
+	constructor() {
+		this.express = express()
+		this.applyMiddleware()
 
-app.use(morgan('dev'))
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+		Routes.setupRoutes(this.express)
+		RequestErrorHandling.setupErrorHandling(this.express)
+	}
 
-Routes.setupRoutes(app)
-RequestErrorHandling.setupErrorHandling(app)
+	private applyMiddleware(): void {
+		/*
+			handles pre-flight
+			server will return the allowed CORS functionality and stop processing the rest of the request, ie prevents error due to redirects in pre-flight
+			Should be one of the first middleware added.
+		*/
+		this.express.options('*', cors())
+		this.express.use(cors())	// opens up all CORS settings to clients
 
-export default app
+		HttpConfig.setupHttpConnection(this.express)
+
+		this.express.use(morgan('dev'))
+		this.express.use(express.urlencoded({ extended: true }))
+		this.express.use(express.json())
+	}
+}
+
+export default new App().express
+
