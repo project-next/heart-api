@@ -54,35 +54,38 @@ export default class YouTubeVideoInfo implements Endpoint {
 
 
 	get(): void {
-		this.router.get('/yt/video/info', (req: Request, res: Response) => {
-			let status = 200
-			if (req.query == null || req.query.key == null || req.query.videoId == null) {
-				status = 400
-
-				res.status(status)
-				res.json(new HeartAPIError("Missing required query params.", status))
-				res.send()
-			} else if (req.query.key !== Constants.HEART_API_KEY) {
-				let status = 401
-
-				res.status(status)
-				res.json(new HeartAPIError("API key is incorrect.", status))
-				res.send()
-			} else {
-				this.memoizedYouTubeRequest(req.query.videoId as string)
-					.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-						res.status(status)
-						res.json(this.getVideoInfoResponse(ytResponse.data))
-						res.send()
-					})
-					.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
-			}
-		})
+		this.router.get('/yt/video/info', this.getVideoInfoCallBack)
 	}
 
 
 	post(): void {
 		throw new Error("Method not implemented.");
+	}
+
+
+	private getVideoInfoCallBack = (req: Request, res: Response) => {
+		let status = 200
+		if (req.query == null || req.query.key == null || req.query.videoId == null) {
+			status = 400
+
+			res.status(status)
+			res.json(new HeartAPIError("Missing required query params.", status))
+			res.send()
+		} else if (req.query.key !== Constants.HEART_API_KEY) {
+			let status = 401
+
+			res.status(status)
+			res.json(new HeartAPIError("API key is incorrect.", status))
+			res.send()
+		} else {
+			this.memoizedYouTubeRequest(req.query.videoId as string)
+				.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
+					res.status(status)
+					res.json(this.getVideoInfoResponse(ytResponse.data))
+					res.send()
+				})
+				.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
+		}
 	}
 
 

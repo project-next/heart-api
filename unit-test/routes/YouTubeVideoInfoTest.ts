@@ -3,13 +3,38 @@ import { expect } from 'chai'
 import { AxiosResponse } from 'axios'
 import { YouTubeAPIResponse, VideoInfoResponse } from '../../src/routes/YouTubeVideoInfo'
 
-describe('YouTubeVideoInfo tests', () => {
-	const YouTubeVideoInfo = rewire('../../src/routes/YouTubeVideoInfo').__get__('YouTubeVideoInfo')
-	const YouTubeVideoInfoInstance = new YouTubeVideoInfo()
+import chai from 'chai'
+import chaiHttp from 'chai-http'
+import app from '../../src/App'
 
+describe('YouTubeVideoInfo tests', () => {
+	const _YouTubeVideoInfo = rewire('../../src/routes/YouTubeVideoInfo').__get__('YouTubeVideoInfo')
+	const _YouTubeVideoInfoInstance = new _YouTubeVideoInfo()
+
+	chai.use(chaiHttp)
+
+
+
+	it('Calling endpoint', (done) => {
+		chai
+			.request(app)
+			.get('/v1/yt/video/info')
+			.end((err, res) => {
+				expect(res.status).to.equal(400)
+				done()
+			})
+	})
+
+
+	it('Calling endpoint', (done) => {
+		chai.request(app).get('/v1/yt/video/info?videoId=okINSj2Okxw&key=XXXXXXX').end((err, res) => {
+			expect(res.status).to.equal(401)
+			done()
+		})
+	})
 
 	it('Checking creation of YouTube API request', () => {
-		const promise: Promise<AxiosResponse<YouTubeAPIResponse>> = YouTubeVideoInfoInstance.getYoutubeRequest("123")
+		const promise: Promise<AxiosResponse<YouTubeAPIResponse>> = _YouTubeVideoInfoInstance.getYoutubeRequest("123")
 		expect(promise).to.not.be.null
 	})
 
@@ -38,7 +63,7 @@ describe('YouTubeVideoInfo tests', () => {
 			}
 		}
 
-		const videoInfoResponse: VideoInfoResponse = YouTubeVideoInfoInstance.getVideoInfoResponse(ytResponse)
+		const videoInfoResponse: VideoInfoResponse = _YouTubeVideoInfoInstance.getVideoInfoResponse(ytResponse)
 
 		expect(videoInfoResponse).to.not.be.null
 
@@ -69,7 +94,7 @@ describe('YouTubeVideoInfo tests', () => {
 			}
 		}
 
-		const videoInfoResponse: VideoInfoResponse = YouTubeVideoInfoInstance.getVideoInfoResponse(ytResponse)
+		const videoInfoResponse: VideoInfoResponse = _YouTubeVideoInfoInstance.getVideoInfoResponse(ytResponse)
 
 		expect(videoInfoResponse).to.not.be.null
 
@@ -78,4 +103,6 @@ describe('YouTubeVideoInfo tests', () => {
 
 		expect(videoInfoResponse.validVideo).to.be.false
 	})
+
+
 })
