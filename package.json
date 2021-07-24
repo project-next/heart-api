@@ -5,6 +5,7 @@
   "main": "./src/app.ts",
   "scripts": {
     "unit-test": "env-cmd -e test env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc mocha --exit -r ts-node/register 'unit-test/**/*.ts'",
+    "integration-test": "cucumber-js",
     "dev": "env-cmd -e default nodemon ./src/app.ts",
     "build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist",
     "upload-production": "npm run build && bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
@@ -54,9 +55,11 @@
     "morgan": "1.10.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "7.3.1",
     "@types/chai": "4.2.21",
     "@types/chai-http": "4.2.0",
     "@types/cors": "2.8.12",
+    "@types/cucumber": "7.0.0",
     "@types/express": "4.17.13",
     "@types/lodash.sample": "4.2.6",
     "@types/mocha": "9.0.0",
