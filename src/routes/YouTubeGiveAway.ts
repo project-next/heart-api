@@ -133,7 +133,7 @@ export default class YouTubeGiveAway implements Endpoint {
 	}
 
 
-	private getGiveAwayWinner = (info: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken: string, res: Response): void => {
+	private getGiveAwayWinner = (potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken: string, res: Response): void => {
 		const params = (pageToken == null)? {
 			searchTerms: code
 			, videoId: videoId
@@ -150,29 +150,50 @@ export default class YouTubeGiveAway implements Endpoint {
 			})
 			.then((ytResponse: AxiosResponse) => {
 				const response: YouTubeAPIResponse = ytResponse.data
+				let giveAwayInfo: GiveAwayInfo
 
-				info.push(...response.items)
+
+				potentialWinners.push(...response.items)
 				pageToken = response.nextPageToken
 
 				if (pageToken != null) {
-					this.getGiveAwayWinner(info, code, videoId, pageToken, res)
+					this.getGiveAwayWinner(potentialWinners, code, videoId, pageToken, res)
 				} else {
-					const winner = sample(info)
+					// filtering out my channels as I cannot win giveaways
+					potentialWinners = potentialWinners.filter(
+						potentialWinner => !(Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value))
+					)
 
-					const giveAwayInfo: GiveAwayInfo = {
-						totalEntries: info.length
-						, code: code
-						, winner: {
-							name: winner.snippet.topLevelComment.snippet.authorDisplayName
-							, channel: winner.snippet.topLevelComment.snippet.authorChannelUrl
-							, winningComment: winner.snippet.topLevelComment.snippet.textDisplay
+					if (potentialWinners.length === 0){
+						giveAwayInfo = {
+							totalEntries: 0
+							, code: code
+							, winner: undefined
 						}
-					}
 
-					res.status(200)
-					res.json({'giveAwayInfo': giveAwayInfo})
-					res.send()
+						res.status(200)
+						res.json({'giveAwayInfo': giveAwayInfo})
+						res.send()
+					} else {
+						const winner = sample(potentialWinners)	// random winner
+						console.log(winner.snippet.topLevelComment.snippet)
+
+						giveAwayInfo = {
+							totalEntries: potentialWinners.length
+							, code: code
+							, winner: {
+								name: winner.snippet.topLevelComment.snippet.authorDisplayName
+								, channel: winner.snippet.topLevelComment.snippet.authorChannelUrl
+								, winningComment: winner.snippet.topLevelComment.snippet.textDisplay
+							}
+						}
+
+						res.status(200)
+						res.json({'giveAwayInfo': giveAwayInfo})
+						res.send()
+					}
 				}
+
 			})
 			.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
 	}
