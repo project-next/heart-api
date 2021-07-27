@@ -16,7 +16,7 @@ export default function YouTubeVideoInfoController() {
 			status = 400
 			json = new HeartAPIError("Missing required query params.", status)
 		} else if (req.query.key !== Constants.HEART_API_KEY) {
-			let status = 401
+			status = 401
 			json = new HeartAPIError("API key is incorrect.", status)
 		} else {
 			await memoizedYouTubeRequest(req.query.videoId as string)
