@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../../src/App'
-import YouTubeAxiosConfig from '../../src/downstream-services/YouTubeAxiosConfig'
+import YouTubeAxiosConfig from '../../src/service/YouTubeAxiosConfig'
 import sinon, {SinonMock, SinonStub} from 'sinon'
 import { AxiosResponse } from 'axios';
 
@@ -16,7 +16,7 @@ describe('YouTubeVideoInfo tests', () => {
 		API_KEY = process.env.HEART_API_KEY
 		// youTubeAxiosConfigMock = sinon.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
 		// youTubeAxiosConfigMock.resolves()
-		new AxiosResponse()
+		// new AxiosResponse()
 	})
 
 	it('Calling endpoint with 400 error', (done) => {

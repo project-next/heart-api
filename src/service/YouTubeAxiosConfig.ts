@@ -34,7 +34,7 @@ export default class YouTubeAxiosConfig {
 	})
 
 
-	static YOUTUBE_API_ERROR_CALLBACK = (error: AxiosError, res: Response) => {
+	static youtubeAPIErrorCallback(error: AxiosError, res: Response): void {
 		console.error(`YouTube Data API (v3) returned with error: ${error.code} ${error.response.status}`)
 
 		let description = 'YouTube API call encountered error.'

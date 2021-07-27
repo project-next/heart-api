@@ -28,5 +28,4 @@ export default class Status implements Endpoint {
 	post(): void {
 		throw new Error('Method not implemented.')
 	}
-
 }

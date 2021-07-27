@@ -194,6 +194,6 @@ export default class YouTubeGiveAway implements Endpoint {
 				}
 
 			})
-			.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
+			.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
 	}
 }

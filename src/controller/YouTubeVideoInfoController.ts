@@ -53,7 +53,7 @@ export default function YouTubeVideoInfoController(memoizedYouTubeRequest: (vide
 					res.json(getVideoInfoResponse(ytResponse.data))
 					res.send()
 				})
-				.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
+				.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
 		}
 	}
 }

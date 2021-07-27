@@ -8,12 +8,10 @@ import RequestErrorHandling from './config/RequestErrorHandlingConfig'
 
 
 class App {
-	public express: express.Express;
+	public express = express()
 
 	constructor() {
-		this.express = express()
 		this.applyMiddleware()
-
 		Routes.setupRoutes(this.express)
 		RequestErrorHandling.setupErrorHandling(this.express)
 	}

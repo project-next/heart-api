@@ -5,7 +5,7 @@ import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
 import moize from 'moize'
 import Endpoint from './Endpoint';
 import HeartAPIError from '../error/HeartAPIError'
-import YouTubeUploadsResponse, { FormattedUploadResponse } from './YouTubeUploadsResponse';
+import YouTubeUploadsResponse, { FormattedUploadResponse } from '../model/YouTubeUploadsResponse';
 
 
 type YouTubeAPIResponse = {
@@ -120,7 +120,7 @@ export default class YouTubeChannelActivity implements Endpoint {
 					res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
 					res.end()
 				})
-				.catch((error: AxiosError) => YouTubeAxiosConfig.YOUTUBE_API_ERROR_CALLBACK(error, res))
+				.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
 		})
 	}
 
