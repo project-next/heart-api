@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig'
-import Constants from '../service/Constants'
+import Constants from '../constants/Constants'
 import Endpoint from "./Endpoint"
 import HeartAPIError from '../error/HeartAPIError'
 import { AxiosError, AxiosResponse } from 'axios'

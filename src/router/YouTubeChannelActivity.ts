@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { AxiosError, AxiosResponse } from 'axios'
-import Constants from '../service/Constants';
+import Constants from '../constants/Constants';
 import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
 import moize from 'moize'
 import Endpoint from './Endpoint';
