@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express'
-import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
-import Constants from '../downstream-services/Constants';
+import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
+import Constants from '../service/Constants';
 import Endpoint from "./Endpoint";
-import HeartAPIError from '../errors/HeartAPIError';
+import HeartAPIError from '../error/HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
 import sample from 'lodash.sample'
 
@@ -176,7 +176,6 @@ export default class YouTubeGiveAway implements Endpoint {
 						res.send()
 					} else {
 						const winner = sample(potentialWinners)	// random winner
-						console.log(winner.snippet.topLevelComment.snippet)
 
 						giveAwayInfo = {
 							totalEntries: potentialWinners.length

@@ -2,9 +2,9 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 
-import HttpConfig from './http/HttpConfig'
-import Routes from './routes/Routes'
-import RequestErrorHandling from './http/RequestErrorHandling'
+import HttpConfig from './config/HttpConfig'
+import Routes from './router/Routes'
+import RequestErrorHandling from './config/RequestErrorHandlingConfig'
 
 
 class App {

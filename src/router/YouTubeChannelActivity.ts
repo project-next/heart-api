@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express'
 import { AxiosError, AxiosResponse } from 'axios'
-import Constants from '../downstream-services/Constants';
-import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
+import Constants from '../service/Constants';
+import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
 import moize from 'moize'
 import Endpoint from './Endpoint';
-import HeartAPIError from '../errors/HeartAPIError'
+import HeartAPIError from '../error/HeartAPIError'
 import YouTubeUploadsResponse, { FormattedUploadResponse } from './YouTubeUploadsResponse';
 
 

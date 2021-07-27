@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
-import Constants from '../downstream-services/Constants';
-import HeartAPIError from '../errors/HeartAPIError';
+import Constants from '../service/Constants';
+import HeartAPIError from '../error/HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
-import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig';
-import {VideoInfoResponse} from '../routes/YouTubeVideoInfo'
+import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
+import {VideoInfoResponse} from '../router/YouTubeVideoInfo'
 
 
 type YouTubeAPIResponse = {

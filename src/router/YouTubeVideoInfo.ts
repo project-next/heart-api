@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import YouTubeAxiosConfig from '../downstream-services/YouTubeAxiosConfig'
+import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig'
 import Endpoint from "./Endpoint"
 import { AxiosResponse } from 'axios'
 import moize from 'moize'
