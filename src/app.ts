@@ -27,7 +27,7 @@ class App {
 
 		HttpConfig.setupHttpConnection(this.express)
 
-		this.express.use(morgan('dev'))
+		this.express.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
 		this.express.use(express.urlencoded({ extended: true }))
 		this.express.use(express.json())
 	}

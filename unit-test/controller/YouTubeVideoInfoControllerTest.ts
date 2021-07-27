@@ -19,7 +19,8 @@ describe('YouTubeVideoInfo tests', () => {
 		// new AxiosResponse()
 	})
 
-	it('Calling endpoint with 400 error', (done) => {
+
+	it('Calling Video Info endpoint with no query params', (done) => {
 		chai
 			.request(app)
 			.get('/v1/yt/video/info')
@@ -30,7 +31,29 @@ describe('YouTubeVideoInfo tests', () => {
 	})
 
 
-	it('Calling endpoint with 401 error', (done) => {
+	it('Calling Video Info endpoint - missing key param', (done) => {
+		chai
+			.request(app)
+			.get('/v1/yt/video/info?videoId=okINSj2Okxw')
+			.end((err, res) => {
+				expect(res.status).to.equal(400)
+				done()
+			})
+	})
+
+
+	it('Calling Video Info endpoint - missing videoId param', (done) => {
+		chai
+			.request(app)
+			.get('/v1/yt/video/info?key=XXXXXXX')
+			.end((err, res) => {
+				expect(res.status).to.equal(400)
+				done()
+			})
+	})
+
+
+	it('Calling Video Info endpoint - using incorrect key value', (done) => {
 		chai.request(app).get('/v1/yt/video/info?videoId=okINSj2Okxw&key=XXXXXXX').end((err, res) => {
 			expect(res.status).to.equal(401)
 			done()
@@ -38,7 +61,7 @@ describe('YouTubeVideoInfo tests', () => {
 	})
 
 
-	it('Calling endpoint with success', (done) => {
+	it('Calling Video Info endpoint - success', (done) => {
 		chai.request(app).get(`/v1/yt/video/info?videoId=okINSj2Okxw&key=${API_KEY}`).end((err, res) => {
 			expect(res.status).to.equal(200)
 			expect(res.body).to.not.be.empty
