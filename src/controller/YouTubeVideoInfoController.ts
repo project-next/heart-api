@@ -8,29 +8,28 @@ import moize from 'moize'
 
 
 export default function YouTubeVideoInfoController() {
-	return (req: Request, res: Response) => {
-		let status = 200
+	return async (req: Request, res: Response) => {
+		let status: number
+		let json: VideoInfoResponse | HeartAPIError
+
 		if (req.query == null || req.query.key == null || req.query.videoId == null) {
 			status = 400
-
-			res.status(status)
-			res.json(new HeartAPIError("Missing required query params.", status))
-			res.send()
+			json = new HeartAPIError("Missing required query params.", status)
 		} else if (req.query.key !== Constants.HEART_API_KEY) {
 			let status = 401
-
-			res.status(status)
-			res.json(new HeartAPIError("API key is incorrect.", status))
-			res.send()
+			json = new HeartAPIError("API key is incorrect.", status)
 		} else {
-			memoizedYouTubeRequest(req.query.videoId as string)
+			await memoizedYouTubeRequest(req.query.videoId as string)
 				.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-					res.status(status)
-					res.json(getVideoInfoResponse(ytResponse.data))
-					res.send()
+					status = 200
+					json = getVideoInfoResponse(ytResponse.data)
 				})
-				.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
+				.catch((error: AxiosError) => [status, json] = YouTubeAxiosConfig.youtubeAPIErrorCallback2(error))
 		}
+
+		res.status(status)
+		res.json(json)
+		res.send()
 	}
 }
 
