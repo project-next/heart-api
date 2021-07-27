@@ -4,18 +4,7 @@ import Endpoint from "./Endpoint"
 import { AxiosResponse } from 'axios'
 import moize from 'moize'
 import YouTubeVideoInfoController, { YouTubeAPIResponse, YouTubeAPIResponseItem } from '../controller/YouTubeVideoInfoController'
-
-
-type VideoInfoResponse = {
-	validVideo: boolean
-	videoStats: {
-		views: number,
-		likes: number,
-		dislikes: number,
-		favorites: number,
-		numComments: number
-	}
-}
+import { VideoInfoResponse } from '../model/VideoInfoEndpointTypes'
 
 
 export default class YouTubeVideoInfo implements Endpoint {
@@ -75,4 +64,4 @@ export default class YouTubeVideoInfo implements Endpoint {
 }
 
 
-export {YouTubeAPIResponse, VideoInfoResponse}
+export {YouTubeAPIResponse}

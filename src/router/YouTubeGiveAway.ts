@@ -1,99 +1,11 @@
 import { Router, Request, Response } from 'express'
-import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
-import Constants from '../service/Constants';
-import Endpoint from "./Endpoint";
-import HeartAPIError from '../error/HeartAPIError';
-import { AxiosError, AxiosResponse } from 'axios';
+import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig'
+import Constants from '../service/Constants'
+import Endpoint from "./Endpoint"
+import HeartAPIError from '../error/HeartAPIError'
+import { AxiosError, AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
-
-
-type YouTubeAPIResponse = {
-   kind: string,
-   etag: string,
-   nextPageToken: string,
-   pageInfo: {
-      totalResults: number,
-      resultsPerPage: number
-   },
-   items: [
-      {
-         kind: string,
-         etag: string,
-         id: string,
-         snippet: {
-            videoId: string,
-            topLevelComment: {
-               kind: string,
-               etag: string,
-               id: string,
-               snippet: {
-                  videoId: string,
-                  textDisplay: string,
-                  textOriginal: string,
-                  authorDisplayName: string,
-                  authorProfileImageUrl: string,
-                  authorChannelUrl: string,
-                  authorChannelId: {
-                     value: string
-                  },
-                  canRate: boolean,
-                  viewerRating: string,
-                  likeCount: number,
-                  publishedAt: string,
-                  updatedAt: string
-               }
-            },
-            canReply: boolean,
-            totalReplyCount: number,
-            isPublic: boolean
-         }
-      }
-   ]
-}
-
-type YouTubeAPIResponseItem = {
-	kind: string,
-	etag: string,
-	id: string,
-	snippet: {
-		videoId: string,
-		topLevelComment: {
-			kind: string,
-			etag: string,
-			id: string,
-			snippet: {
-				videoId: string,
-				textDisplay: string,
-				textOriginal: string,
-				authorDisplayName: string,
-				authorProfileImageUrl: string,
-				authorChannelUrl: string,
-				authorChannelId: {
-					value: string
-				},
-				canRate: boolean,
-				viewerRating: string,
-				likeCount: number,
-				publishedAt: string,
-				updatedAt: string
-			}
-		},
-		canReply: boolean,
-		totalReplyCount: number,
-		isPublic: boolean
-	}
-}
-
-
-type GiveAwayInfo = {
-	totalEntries: number
-	, code: string
-	, winner: {
-		name: string
-		, channel: string
-		, winningComment: string
-	}
-}
+import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo } from '../model/GiveAwayEndpointTypes'
 
 
 export default class YouTubeGiveAway implements Endpoint {
@@ -129,7 +41,7 @@ export default class YouTubeGiveAway implements Endpoint {
 
 
 	post(): void {
-		throw new Error("Method not implemented.");
+		throw new Error("Method not implemented.")
 	}
 
 
