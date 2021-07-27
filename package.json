@@ -4,7 +4,7 @@
   "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
   "main": "./src/app.ts",
   "scripts": {
-    "unit-test": "env-cmd -e test env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc mocha --exit -r ts-node/register 'unit-test/**/*.ts'",
+    "unit-test": "env-cmd -e test env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' nyc mocha --require mocha-suppress-logs --exit -r ts-node/register 'unit-test/**/*.ts'",
     "integration-test": "env-cmd -e test cucumber-js",
     "dev": "env-cmd -e default nodemon ./src/app.ts",
     "build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist",
@@ -13,28 +13,6 @@
     "deploy-production": "npm run upload-production && npm run restage-production",
     "local-start": "npm run build && cd ./dist && env-cmd -e default node ./app.js",
     "docker-start": "env-cmd -e default node ./app.js"
-  },
-  "nyc": {
-    "all": true,
-    "extension": [
-      ".js",
-      ".jsx",
-      ".ts",
-      ".tsx"
-    ],
-    "include": [
-      "src/**"
-    ],
-    "exclude": [
-      "src/App.ts",
-      "src/downstream-services/**",
-      "src/errors/**"
-    ],
-    "reporter": [
-      "text",
-      "text-summary",
-      "html"
-    ]
   },
   "keywords": [
     "heart",
@@ -70,6 +48,7 @@
     "chai": "4.3.4",
     "chai-http": "4.3.0",
     "mocha": "9.0.3",
+    "mocha-suppress-logs": "^0.3.1",
     "nodemon": "2.0.12",
     "nyc": "15.1.0",
     "pactum": "3.0.17",
