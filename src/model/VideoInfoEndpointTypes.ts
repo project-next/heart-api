@@ -9,4 +9,27 @@ type VideoInfoResponse = {
 	}
 }
 
-export {VideoInfoResponse}
+type YouTubeAPIResponse = {
+	kind: string,
+	etag: string,
+	items: YouTubeAPIResponseItem[],
+	pageInfo: {
+		totalResults: number,
+		resultsPerPage: number
+	}
+}
+
+type YouTubeAPIResponseItem = {
+	kind: string,
+	etag: string,
+	id: string,
+	statistics: {
+		viewCount: string,
+		likeCount: string,
+		dislikeCount: string,
+		favoriteCount: string,
+		commentCount: string
+	}
+}
+
+export { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem }

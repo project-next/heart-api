@@ -1,15 +1,14 @@
 import rewire from 'rewire'
 import { expect } from 'chai'
 import { AxiosResponse } from 'axios'
-import { YouTubeAPIResponse } from '../../src/router/YouTubeVideoInfo'
-import {VideoInfoResponse} from '../../src/model/VideoInfoEndpointTypes'
+import {VideoInfoResponse, YouTubeAPIResponse} from '../../src/model/VideoInfoEndpointTypes'
 
 describe('YouTubeVideoInfo tests', () => {
-	const _YouTubeVideoInfo = rewire('../../src/router/YouTubeVideoInfo').__get__('YouTubeVideoInfo')
-	const _YouTubeVideoInfoInstance = new _YouTubeVideoInfo()
+	const _YouTubeVideoInfoResponse = rewire('../../src/controller/YouTubeVideoInfoController').__get__('getVideoInfoResponse')
+	const _YouTubeVideoRequest = rewire('../../src/controller/YouTubeVideoInfoController').__get__('getYoutubeRequest')
 
 	it('Checking creation of YouTube API request', () => {
-		const promise: Promise<AxiosResponse<YouTubeAPIResponse>> = _YouTubeVideoInfoInstance.getYoutubeRequest("123")
+		const promise: Promise<AxiosResponse<YouTubeAPIResponse>> = _YouTubeVideoRequest("123")
 		expect(promise).to.not.be.null
 	})
 
@@ -38,7 +37,7 @@ describe('YouTubeVideoInfo tests', () => {
 			}
 		}
 
-		const videoInfoResponse: VideoInfoResponse = _YouTubeVideoInfoInstance.getVideoInfoResponse(ytResponse)
+		const videoInfoResponse: VideoInfoResponse = _YouTubeVideoInfoResponse(ytResponse)
 
 		expect(videoInfoResponse).to.not.be.null
 
@@ -69,7 +68,7 @@ describe('YouTubeVideoInfo tests', () => {
 			}
 		}
 
-		const videoInfoResponse: VideoInfoResponse = _YouTubeVideoInfoInstance.getVideoInfoResponse(ytResponse)
+		const videoInfoResponse: VideoInfoResponse = _YouTubeVideoInfoResponse(ytResponse)
 
 		expect(videoInfoResponse).to.not.be.null
 

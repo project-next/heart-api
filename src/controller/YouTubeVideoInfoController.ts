@@ -3,35 +3,11 @@ import Constants from '../constants/Constants';
 import HeartAPIError from '../error/HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
 import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
-import {VideoInfoResponse} from '../model/VideoInfoEndpointTypes'
+import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../model/VideoInfoEndpointTypes'
+import moize from 'moize'
 
 
-type YouTubeAPIResponse = {
-	kind: string,
-	etag: string,
-	items: YouTubeAPIResponseItem[],
-	pageInfo: {
-		totalResults: number,
-		resultsPerPage: number
-	}
-}
-
-type YouTubeAPIResponseItem = {
-	kind: string,
-	etag: string,
-	id: string,
-	statistics: {
-		viewCount: string,
-		likeCount: string,
-		dislikeCount: string,
-		favoriteCount: string,
-		commentCount: string
-	}
-}
-
-
-export default function YouTubeVideoInfoController(memoizedYouTubeRequest: (videoId: string) => Promise<AxiosResponse<YouTubeAPIResponse>>
-		, getVideoInfoResponse: (youTubeAPIResponse: YouTubeAPIResponse) => VideoInfoResponse) {
+export default function YouTubeVideoInfoController() {
 	return (req: Request, res: Response) => {
 		let status = 200
 		if (req.query == null || req.query.key == null || req.query.videoId == null) {
@@ -58,4 +34,38 @@ export default function YouTubeVideoInfoController(memoizedYouTubeRequest: (vide
 	}
 }
 
-export { YouTubeAPIResponse, YouTubeAPIResponseItem }
+
+const memoizedYouTubeRequest = moize((videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> => {
+	return getYoutubeRequest(videoId)
+}, { maxAge: 1000 * 60 * 3, updateExpire: false })
+
+
+function getYoutubeRequest(videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> {
+	return YouTubeAxiosConfig
+		.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
+		.get('/videos', {
+			params: {
+				id: videoId
+			}
+		})
+}
+
+
+function getVideoInfoResponse(youTubeAPIResponse: YouTubeAPIResponse): VideoInfoResponse {
+	if (youTubeAPIResponse.items.length === 0)
+		return { validVideo: false } as VideoInfoResponse
+
+
+	const info: YouTubeAPIResponseItem = youTubeAPIResponse.items[0]
+
+	return {
+		validVideo: true,
+		videoStats: {
+			views: +info.statistics.viewCount,
+			likes: +info.statistics.likeCount,
+			dislikes: +info.statistics.dislikeCount,
+			favorites: +info.statistics.favoriteCount,
+			numComments: +info.statistics.commentCount
+		}
+	}
+}
