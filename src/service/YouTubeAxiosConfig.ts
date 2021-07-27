@@ -4,7 +4,7 @@ import HeartAPIError from '../error/HeartAPIError'
 import Constants from '../constants/Constants'
 
 export default class YouTubeAxiosConfig {
-	static YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG = axios.create({
+	static readonly YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG = axios.create({
 		baseURL: `${Constants.YOUTUBE_API_URL}`
 		, params: {
 			key: Constants.YOUTUBE_API_KEY
@@ -14,7 +14,7 @@ export default class YouTubeAxiosConfig {
 	})
 
 
-	static YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG = axios.create({
+	static readonly YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG = axios.create({
 		baseURL: `${Constants.YOUTUBE_API_URL}`
 		, params: {
 			key: Constants.YOUTUBE_API_KEY
@@ -23,7 +23,7 @@ export default class YouTubeAxiosConfig {
 	})
 
 
-	static YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG = axios.create({
+	static readonly YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG = axios.create({
 		baseURL: `${Constants.YOUTUBE_API_URL}`
 		, params: {
 			key: Constants.YOUTUBE_API_KEY

@@ -60,7 +60,6 @@ export default class YouTubeVideoInfo implements Endpoint {
 			}
 		}
 	}
-
 }
 
 
