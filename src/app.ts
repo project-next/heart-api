@@ -3,7 +3,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 
 import HttpConfig from './config/HttpConfig'
-import Routes from './router/Routes'
+import Routes from './config/RouterConfig'
 import RequestErrorHandling from './config/RequestErrorHandlingConfig'
 
 
