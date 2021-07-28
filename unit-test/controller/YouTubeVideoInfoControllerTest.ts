@@ -10,14 +10,18 @@ import { YouTubeAPIResponse } from '../../src/model/VideoInfoEndpointTypes'
 describe('YouTubeVideoInfo tests', () => {
 	chai.use(chaiHttp)
 	let API_KEY: string
-	let sandbox: SinonSandbox
+	let stub: SinonStub
 
 	before(() => {
 		API_KEY = process.env.HEART_API_KEY
-		sandbox = createSandbox()
 	})
+
+
 	afterEach(() => {
-		sandbox.restore()
+		if (stub != null) {
+			stub.restore()
+			stub = null
+		}
 	})
 
 
@@ -79,9 +83,9 @@ describe('YouTubeVideoInfo tests', () => {
 
 
 	it('Calling Video Info endpoint - YouTube API returns with non-error but body is empty', done => {
-		let youTubeAxiosConfigMock = sandbox
-			.stub(new YouTubeAxiosConfig().YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
-		youTubeAxiosConfigMock.returns(Promise.resolve({status: 200, data: undefined}))
+		stub = sinon
+			.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
+			stub.resolves(Promise.resolve({status: 200, data: undefined}))
 
 		chai.request(app)
 			.get(`/v1/yt/video/info?videoId=okINSj2Okxw&key=${API_KEY}`)
@@ -91,6 +95,7 @@ describe('YouTubeVideoInfo tests', () => {
 				expect(res.body).to.not.be.empty
 				expect(res.body.code).to.equal(500)
 
+				expect(stub.calledOnce).to.be.true	// since requests are memoized a call must have happened using stub or else test will use wrong response data
 				done()
 			})
 	})
@@ -108,58 +113,65 @@ describe('YouTubeVideoInfo tests', () => {
 		} as YouTubeAPIResponse
 
 
-		let youTubeAxiosConfigMock = sandbox
-			.stub(new YouTubeAxiosConfig().YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
-		youTubeAxiosConfigMock.returns(Promise.resolve({status: 200, data: returnData}))
+		stub = sinon
+			.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
+		stub.resolves({status: 200, data: returnData})
 
-		chai.request(app).get(`/v1/yt/video/info?videoId=okINSj2Okxw&key=${API_KEY}`).end((err, res) => {
+		chai.request(app).get(`/v1/yt/video/info?videoId=RANDOM&key=${API_KEY}`).end((err, res) => {
 			expect(res.status).to.equal(200)
 
 			expect(res.body).to.not.be.empty
 			expect(res.body.validVideo).to.be.false
 
+			expect(stub.calledOnce).to.be.true	// since requests are memoized a call must have happened using stub or else test will use wrong response data
 			done()
 		})
 	})
 
 
-	// it('Calling Video Info endpoint - success', done => {
-	// 	const returnData = {
-	// 		kind: undefined,
-	// 		etag: undefined,
-	// 		items: [
-	// 			{
-	// 			kind: undefined,
-	// 			etag: undefined,
-	// 			id: undefined,
-	// 			statistics: {
-	// 				viewCount: "1000",
-	// 				likeCount: "500",
-	// 				dislikeCount: "1",
-	// 				favoriteCount: "33",
-	// 				commentCount: "440"
-	// 			}
-	// 			}
-	// 		],
-	// 		pageInfo: {
-	// 			totalResults: undefined,
-	// 			resultsPerPage: undefined
-	// 		}
-	// 	} as YouTubeAPIResponse
+	it('Calling Video Info endpoint - success', done => {
+		const returnData = {
+			kind: undefined,
+			etag: undefined,
+			items: [
+				{
+				kind: undefined,
+				etag: undefined,
+				id: undefined,
+				statistics: {
+					viewCount: "1000",
+					likeCount: "500",
+					dislikeCount: "1",
+					favoriteCount: "33",
+					commentCount: "440"
+				}
+				}
+			],
+			pageInfo: {
+				totalResults: undefined,
+				resultsPerPage: undefined
+			}
+		} as YouTubeAPIResponse
 
-	// 	const youTubeAxiosConfigMock: SinonStub = sinon
-	// 		.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
-	// 	youTubeAxiosConfigMock.resolves({status: 200, data: returnData})
+		stub = sinon
+			.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
+		stub.resolves({status: 200, data: returnData})
 
-	// 	chai.request(app).get(`/v1/yt/video/info?videoId=okINSj2Okxw&key=${API_KEY}`).end((err, res) => {
-	// 		expect(res.status).to.equal(200)
-	// 		expect(res.body).to.not.be.empty
-	// 		expect(res.body.validVideo).to.be.true
+		chai.request(app).get(`/v1/yt/video/info?videoId=RANDOM-2&key=${API_KEY}`).end((err, res) => {
+			expect(res.status).to.equal(200)
 
-	// 		sinon.restore()
-	// 		done()
-	// 	})
-	// })
+			expect(res.body).to.not.be.empty
+			expect(res.body.validVideo).to.be.true
+			expect(res.body.videoStats.views).to.equal(1000)
+			expect(res.body.videoStats.likes).to.equal(500)
+			expect(res.body.videoStats.dislikes).to.equal(1)
+			expect(res.body.videoStats.favorites).to.equal(33)
+			expect(res.body.videoStats.numComments).to.equal(440)
+
+			expect(stub.calledOnce).to.be.true	// since requests are memoized a call must have happened using stub or else test will use wrong response data
+			done()
+		})
+	})
 
 
 	// it('Calling Video Info endpoint - YouTube server error', done => {

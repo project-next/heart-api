@@ -14,7 +14,7 @@ export default class YouTubeAxiosConfig {
 	})
 
 
-	public YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG: AxiosInstance = axios.create({
+	static readonly YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG: AxiosInstance = axios.create({
 		baseURL: `${Constants.YOUTUBE_API_URL}`
 		, params: {
 			key: Constants.YOUTUBE_API_KEY

@@ -46,7 +46,7 @@ const memoizedYouTubeRequest = moize((videoId: string): Promise<AxiosResponse<Yo
 
 
 function getYoutubeRequest(videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> {
-	return new YouTubeAxiosConfig()
+	return YouTubeAxiosConfig
 		.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
 		.get('/videos', {
 			params: {
