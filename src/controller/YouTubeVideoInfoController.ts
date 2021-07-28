@@ -21,7 +21,6 @@ export default function YouTubeVideoInfoController() {
 		} else {
 			await memoizedYouTubeRequest(req.query.videoId as string)
 				.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-					console.log(ytResponse)
 					if (ytResponse.data == null) {
 						status = 500
 						json = new HeartAPIError("YouTube API returned empty object", status)
