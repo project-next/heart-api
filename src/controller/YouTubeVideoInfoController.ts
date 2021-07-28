@@ -21,8 +21,14 @@ export default function YouTubeVideoInfoController() {
 		} else {
 			await memoizedYouTubeRequest(req.query.videoId as string)
 				.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-					status = 200
-					json = getVideoInfoResponse(ytResponse.data)
+					console.log(ytResponse)
+					if (ytResponse.data == null) {
+						status = 500
+						json = new HeartAPIError("YouTube API returned empty object", status)
+					} else {
+						status = 200
+						json = getVideoInfoResponse(ytResponse.data)
+					}
 				})
 				.catch((error: AxiosError) => [status, json] = YouTubeAxiosConfig.youtubeAPIErrorCallback2(error))
 		}
@@ -40,7 +46,7 @@ const memoizedYouTubeRequest = moize((videoId: string): Promise<AxiosResponse<Yo
 
 
 function getYoutubeRequest(videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> {
-	return YouTubeAxiosConfig
+	return new YouTubeAxiosConfig()
 		.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
 		.get('/videos', {
 			params: {
@@ -51,7 +57,7 @@ function getYoutubeRequest(videoId: string): Promise<AxiosResponse<YouTubeAPIRes
 
 
 function getVideoInfoResponse(youTubeAPIResponse: YouTubeAPIResponse): VideoInfoResponse {
-	if (youTubeAPIResponse.items.length === 0)
+	if (youTubeAPIResponse.items == null || youTubeAPIResponse.items.length === 0)
 		return { validVideo: false } as VideoInfoResponse
 
 

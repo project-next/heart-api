@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosInstance } from 'axios'
 import { Response } from 'express'
 import HeartAPIError from '../error/HeartAPIError'
 import Constants from '../constants/Constants'
@@ -14,7 +14,7 @@ export default class YouTubeAxiosConfig {
 	})
 
 
-	static readonly YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG = axios.create({
+	public YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG: AxiosInstance = axios.create({
 		baseURL: `${Constants.YOUTUBE_API_URL}`
 		, params: {
 			key: Constants.YOUTUBE_API_KEY
