@@ -176,19 +176,22 @@ describe('YouTubeVideoInfo tests', () => {
 	})
 
 
-	// it('Calling Video Info endpoint - YouTube server error', done => {
-	// 	const youTubeAxiosConfigMock: SinonStub = sinon
-	// 		.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
-	// 	youTubeAxiosConfigMock.throws({code: 403, response: {error: {code: 403}}})
+	it('Calling Video Info endpoint - YouTube server error', done => {
+		stub
+			.rejects({code: 403, response: {error: {status: 403}}})
 
-	// 	chai.request(app)
-	// 		.get(`/v1/yt/video/info?videoId=okINSj2Okxw&key=${API_KEY}`)
-	// 		.end((err, res) => {
-	// 			expect(res.status).to.equal(200)
-	// 			expect(res.body).to.not.be.empty
-	// 			expect(youTubeAxiosConfigMock.calledOnce).to.equal(true)
-	// 			done()
-	// 	})
-	// })
+		chai.request(app)
+			.get(`/v1/yt/video/info?videoId=YOUTUBE-ERROR&key=${API_KEY}`)
+			.end((err, res) => {
+				expect(res.status).to.equal(500)
+
+				expect(res.body).to.not.be.empty
+				expect(res.body.code).to.equal(500)
+				expect(res.body.description).to.not.be.empty
+
+				expect(stub.calledOnce).to.be.true	// since requests are memoized a call must have happened using stub or else test will use wrong response data
+				done()
+		})
+	})
 
 })
