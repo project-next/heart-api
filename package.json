@@ -6,7 +6,7 @@
   "scripts": {
 	 "mocha-r": "nyc mocha --require mocha-suppress-logs --exit -r ts-node/register 'unit-test/**/*.ts'",
 	 "mocha-d": "nyc mocha --timeout 3000 --exit --require ts-node/register 'unit-test/**/*.ts'",
-    "unit-test": "env-cmd -e test env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\", \"alwaysStrict\": true }' npm run mocha-d",
+    "unit-test": "env-cmd -e test env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\", \"alwaysStrict\": true }' npm run mocha-r",
     "integration-test": "env-cmd -e test cucumber-js",
     "dev": "env-cmd -e default nodemon ./src/app.ts",
     "build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist",

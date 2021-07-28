@@ -4,7 +4,7 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../../src/App'
 import YouTubeAxiosConfig from '../../src/service/YouTubeAxiosConfig'
-import sinon, { SinonStub, SinonSandbox, createSandbox } from 'sinon'
+import sinon, { SinonStub } from 'sinon'
 import { YouTubeAPIResponse } from '../../src/model/VideoInfoEndpointTypes'
 
 describe('YouTubeVideoInfo tests', () => {
@@ -17,11 +17,14 @@ describe('YouTubeVideoInfo tests', () => {
 	})
 
 
+	beforeEach(() => {
+		stub = sinon
+			.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
+	})
+
+
 	afterEach(() => {
-		if (stub != null) {
-			stub.restore()
-			stub = null
-		}
+		stub.restore()
 	})
 
 
@@ -35,6 +38,8 @@ describe('YouTubeVideoInfo tests', () => {
 				expect(res.body).to.not.be.empty
 				expect(res.body.code).to.equal(400)
 				expect(res.body.description).to.equal('Missing required query params.')
+
+				expect(stub.notCalled).to.be.true
 				done()
 			})
 	})
@@ -50,6 +55,8 @@ describe('YouTubeVideoInfo tests', () => {
 				expect(res.body).to.not.be.empty
 				expect(res.body.code).to.equal(400)
 				expect(res.body.description).to.equal('Missing required query params.')
+
+				expect(stub.notCalled).to.be.true
 				done()
 			})
 	})
@@ -65,6 +72,8 @@ describe('YouTubeVideoInfo tests', () => {
 				expect(res.body).to.not.be.empty
 				expect(res.body.code).to.equal(400)
 				expect(res.body.description).to.equal('Missing required query params.')
+
+				expect(stub.notCalled).to.be.true
 				done()
 			})
 	})
@@ -77,15 +86,15 @@ describe('YouTubeVideoInfo tests', () => {
 			expect(res.body).to.not.be.empty
 			expect(res.body.code).to.equal(401)
 			expect(res.body.description).to.equal('API key is incorrect.')
+
+			expect(stub.notCalled).to.be.true
 			done()
 		})
 	})
 
 
 	it('Calling Video Info endpoint - YouTube API returns with non-error but body is empty', done => {
-		stub = sinon
-			.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
-			stub.resolves(Promise.resolve({status: 200, data: undefined}))
+		stub.resolves(Promise.resolve({status: 200, data: undefined}))
 
 		chai.request(app)
 			.get(`/v1/yt/video/info?videoId=okINSj2Okxw&key=${API_KEY}`)
@@ -111,10 +120,6 @@ describe('YouTubeVideoInfo tests', () => {
 				resultsPerPage: undefined
 			}
 		} as YouTubeAPIResponse
-
-
-		stub = sinon
-			.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
 		stub.resolves({status: 200, data: returnData})
 
 		chai.request(app).get(`/v1/yt/video/info?videoId=RANDOM&key=${API_KEY}`).end((err, res) => {
@@ -152,9 +157,6 @@ describe('YouTubeVideoInfo tests', () => {
 				resultsPerPage: undefined
 			}
 		} as YouTubeAPIResponse
-
-		stub = sinon
-			.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
 		stub.resolves({status: 200, data: returnData})
 
 		chai.request(app).get(`/v1/yt/video/info?videoId=RANDOM-2&key=${API_KEY}`).end((err, res) => {
