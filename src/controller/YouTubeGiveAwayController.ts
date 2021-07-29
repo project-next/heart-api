@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig'
 import Constants from '../constants/Constants'
 import HeartAPIError from '../error/HeartAPIError'
-import { AxiosError, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
 import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo } from '../model/GiveAwayEndpointTypes'
 
@@ -56,23 +56,19 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 			if (pageToken != null) {
 				winner = await getGiveAwayWinner(potentialWinners, code, videoId, pageToken)
 			} else {
-				// filtering out my channels as I cannot win giveaways
-				potentialWinners = potentialWinners
-					.filter(
-						potentialWinner => !(Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value))
-					)
+				const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
 
-				if (potentialWinners.length === 0){
+				if (filteredPotentialWinners.length === 0){
 					winner = {
 						totalEntries: 0
 						, code: code
 						, winner: null
 					}
 				} else {
-					const randomWinner = sample(potentialWinners)!	// random winner
+					const randomWinner = sample(filteredPotentialWinners)!	// random winner
 
 					winner = {
-						totalEntries: potentialWinners.length
+						totalEntries: filteredPotentialWinners.length
 						, code: code
 						, winner: {
 							name: randomWinner.snippet.topLevelComment.snippet.authorDisplayName
@@ -87,4 +83,16 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 		// .catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
 
 		return winner!
+}
+
+
+function filterPotentialWinners(potentialWinners: YouTubeAPIResponseItem[]): YouTubeAPIResponseItem[] {
+	potentialWinners = potentialWinners
+		.filter(
+			potentialWinner => !(Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value))
+		)
+
+	const unique: Map<string, YouTubeAPIResponseItem> = new Map(potentialWinners.map((potentialWinner: YouTubeAPIResponseItem) => [potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value, potentialWinner]))
+
+	return Array.from(unique.values())
 }
