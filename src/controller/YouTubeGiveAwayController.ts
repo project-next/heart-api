@@ -23,14 +23,14 @@ export default function YouTubeGiveAwayController() {
 			status = 200
 		}
 
-		res.status(status)
-		res.json(json)
+		res.status(status!)
+		res.json(json!)
 		res.send()
 	}
 }
 
 
-async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken: string): Promise<GiveAwayInfo> {
+async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken: string | null): Promise<GiveAwayInfo> {
 	const params = (pageToken == null)? {
 		searchTerms: code
 		, videoId: videoId
@@ -66,18 +66,18 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 					winner = {
 						totalEntries: 0
 						, code: code
-						, winner: undefined
-					} as GiveAwayInfo
+						, winner: null
+					}
 				} else {
-					const winner = sample(potentialWinners)	// random winner
+					const randomWinner = sample(potentialWinners)!	// random winner
 
 					winner = {
 						totalEntries: potentialWinners.length
 						, code: code
 						, winner: {
-							name: winner.snippet.topLevelComment.snippet.authorDisplayName
-							, channel: winner.snippet.topLevelComment.snippet.authorChannelUrl
-							, winningComment: winner.snippet.topLevelComment.snippet.textDisplay
+							name: randomWinner.snippet.topLevelComment.snippet.authorDisplayName
+							, channel: randomWinner.snippet.topLevelComment.snippet.authorChannelUrl
+							, winningComment: randomWinner.snippet.topLevelComment.snippet.textDisplay
 						}
 					} as GiveAwayInfo
 				}
@@ -86,5 +86,5 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 		})
 		// .catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
 
-		return winner
+		return winner!
 }

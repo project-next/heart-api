@@ -50,7 +50,7 @@ type GiveAwayInfo = {
 		name: string
 		, channel: string
 		, winningComment: string
-	}
+	} | null
 }
 
 export {YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo}

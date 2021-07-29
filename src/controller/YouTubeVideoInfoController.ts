@@ -32,8 +32,8 @@ export default function YouTubeVideoInfoController() {
 				.catch((error: AxiosError) => [status, json] = YouTubeAxiosConfig.youtubeAPIErrorCallback2(error))
 		}
 
-		res.status(status)
-		res.json(json)
+		res.status(status!)
+		res.json(json!)
 		res.send()
 	}
 }
