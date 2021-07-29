@@ -3,10 +3,13 @@
 		"allowJs": false,
 		"checkJs": false,
 
-		"alwaysStrict": true,
-		"noImplicitThis": true,
 		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"strictBindCallApply": true,
 		"strictNullChecks": true,
+		// "strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
 
 		"module": "commonjs",
 		"esModuleInterop": true,
@@ -18,7 +21,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"*": [
-				"node_modules/*"
+				"node_modules/*",
 			]
 		}
 	},
