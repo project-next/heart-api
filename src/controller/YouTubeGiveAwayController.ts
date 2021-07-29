@@ -30,7 +30,7 @@ export default function YouTubeGiveAwayController() {
 }
 
 
-async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken?: string): Promise<GiveAwayInfo> {
+async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken?: string): Promise<GiveAwayInfo | HeartAPIError> {
 	const params = (pageToken == null)? {
 		searchTerms: code
 		, videoId: videoId
@@ -40,7 +40,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 		, pageToken: pageToken
 	}
 
-	let winner: GiveAwayInfo
+	let winner: GiveAwayInfo | HeartAPIError
 
 	await YouTubeAxiosConfig
 		.YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG
@@ -57,28 +57,8 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 				winner = await getGiveAwayWinner(potentialWinners, code, videoId, pageToken)
 			} else {
 				const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
-
-				if (filteredPotentialWinners.length === 0){
-					winner = {
-						totalEntries: 0
-						, code: code
-						, winner: null
-					}
-				} else {
-					const randomWinner = sample(filteredPotentialWinners)!	// random winner
-
-					winner = {
-						totalEntries: filteredPotentialWinners.length
-						, code: code
-						, winner: {
-							name: randomWinner.snippet.topLevelComment.snippet.authorDisplayName
-							, channel: randomWinner.snippet.topLevelComment.snippet.authorChannelUrl
-							, winningComment: randomWinner.snippet.topLevelComment.snippet.textDisplay
-						}
-					}
-				}
+				winner = getRandomWinner(filteredPotentialWinners, code)
 			}
-
 		})
 		// .catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
 
@@ -95,4 +75,27 @@ function filterPotentialWinners(potentialWinners: YouTubeAPIResponseItem[]): You
 	const unique: Map<string, YouTubeAPIResponseItem> = new Map(potentialWinners.map((potentialWinner: YouTubeAPIResponseItem) => [potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value, potentialWinner]))
 
 	return Array.from(unique.values())
+}
+
+
+function getRandomWinner(filteredPotentialWinners: YouTubeAPIResponseItem[], code: string) {
+	if (filteredPotentialWinners.length === 0) {
+		return {
+			totalEntries: 0
+			, code: code
+			, winner: null
+		}
+	} else {
+		const randomWinner = sample(filteredPotentialWinners)!	// random winner
+
+		return {
+			totalEntries: filteredPotentialWinners.length
+			, code: code
+			, winner: {
+				name: randomWinner.snippet.topLevelComment.snippet.authorDisplayName
+				, channel: randomWinner.snippet.topLevelComment.snippet.authorChannelUrl
+				, winningComment: randomWinner.snippet.topLevelComment.snippet.textDisplay
+			}
+		}
+	}
 }
