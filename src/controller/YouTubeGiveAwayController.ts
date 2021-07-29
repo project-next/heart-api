@@ -19,7 +19,7 @@ export default function YouTubeGiveAwayController() {
 			let status = 401
 			new HeartAPIError("API key is incorrect.", status)
 		} else {
-			json = await getGiveAwayWinner([] as YouTubeAPIResponseItem[], req.query.giveAwayCode.toString(), req.query.videoId.toString(), null)
+			json = await getGiveAwayWinner([] as YouTubeAPIResponseItem[], req.query.giveAwayCode.toString(), req.query.videoId.toString())
 			status = 200
 		}
 
@@ -30,7 +30,7 @@ export default function YouTubeGiveAwayController() {
 }
 
 
-async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken: string | null): Promise<GiveAwayInfo> {
+async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken?: string): Promise<GiveAwayInfo> {
 	const params = (pageToken == null)? {
 		searchTerms: code
 		, videoId: videoId
@@ -54,13 +54,13 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 			pageToken = response.nextPageToken
 
 			if (pageToken != null) {
-				console.log('xxxx')
 				winner = await getGiveAwayWinner(potentialWinners, code, videoId, pageToken)
 			} else {
 				// filtering out my channels as I cannot win giveaways
-				potentialWinners = potentialWinners.filter(
-					potentialWinner => !(Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value))
-				)
+				potentialWinners = potentialWinners
+					.filter(
+						potentialWinner => !(Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value))
+					)
 
 				if (potentialWinners.length === 0){
 					winner = {
@@ -79,7 +79,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 							, channel: randomWinner.snippet.topLevelComment.snippet.authorChannelUrl
 							, winningComment: randomWinner.snippet.topLevelComment.snippet.textDisplay
 						}
-					} as GiveAwayInfo
+					}
 				}
 			}
 
