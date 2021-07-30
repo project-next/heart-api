@@ -1,11 +1,10 @@
 import { Router, Request, Response } from 'express'
 import { AxiosError, AxiosResponse } from 'axios'
-import Constants from '../constants/Constants';
-import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
+import Constants from '../constants/Constants'
+import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig'
 import moize from 'moize'
-import Endpoint from './Endpoint';
 import HeartAPIError from '../error/HeartAPIError'
-import YouTubeUploadsResponse, { FormattedUploadResponse } from '../model/YouTubeUploadsResponse';
+import YouTubeUploadsResponse, { FormattedUploadResponse } from '../model/YouTubeUploadsResponse'
 
 
 type YouTubeAPIResponse = {
@@ -54,7 +53,7 @@ type YouTubeAPIResponse = {
 	}
 }
 
-export default class YouTubeChannelActivity implements Endpoint {
+export default class YouTubeChannelActivity {
 
 	public readonly router = Router()
 
@@ -122,11 +121,6 @@ export default class YouTubeChannelActivity implements Endpoint {
 				})
 				.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
 		})
-	}
-
-
-	post(): void {
-		throw new Error('Method not implemented.');
 	}
 
 
