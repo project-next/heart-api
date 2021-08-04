@@ -1,22 +1,37 @@
 {
 	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES2020",
+		"lib": [
+			"ES2020"
+		],
+		"sourceMap": true,
 		"allowJs": false,
 		"checkJs": false,
-
-		"noImplicitAny": true,
-		"noImplicitThis": true,
-		"alwaysStrict": true,
-		"strictBindCallApply": true,
-		"strictNullChecks": true,
-		// "strictFunctionTypes": true,
-		"strictPropertyInitialization": true,
-
-		"module": "commonjs",
-		"esModuleInterop": true,
-		"target": "ES2020",
 		"moduleResolution": "node",
-		"sourceMap": true,
+		"rootDir": "src",
+		"noImplicitReturns": false,
+		"skipLibCheck": false,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+
+		"strict": true,
+		//  turn on below configs individually to override strict true
+		//  "noImplicitAny": true,
+		//  "noImplicitThis": true,
+		//  "alwaysStrict": true,
+		//  "strictBindCallApply": true,
+		//  "strictNullChecks": true,
+		"strictFunctionTypes": false,
+		//  "strictPropertyInitialization": true,
+
+		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
+		// "isolatedModules": true,
+		"noEmit": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true,
+
 		"outDir": "dist",
 		"baseUrl": ".",
 		"paths": {
