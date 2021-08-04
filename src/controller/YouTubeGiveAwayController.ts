@@ -78,12 +78,11 @@ function filterPotentialWinners(potentialWinners: YouTubeAPIResponseItem[]): You
 }
 
 
-function getRandomWinner(filteredPotentialWinners: YouTubeAPIResponseItem[], code: string) {
+function getRandomWinner(filteredPotentialWinners: readonly YouTubeAPIResponseItem[], code: string) {
 	if (filteredPotentialWinners.length === 0) {
 		return {
 			totalEntries: 0
 			, code: code
-			, winner: null
 		}
 	} else {
 		const randomWinner = sample(filteredPotentialWinners)!	// random winner

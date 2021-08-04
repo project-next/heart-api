@@ -46,11 +46,11 @@ type YouTubeAPIResponseItem = {
 type GiveAwayInfo = {
 	totalEntries: number
 	, code: string
-	, winner: {
+	, winner?: {
 		name: string
 		, channel: string
 		, winningComment: string
-	} | null
+	}
 }
 
 export {YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo}
