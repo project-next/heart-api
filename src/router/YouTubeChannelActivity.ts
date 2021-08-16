@@ -98,7 +98,7 @@ export default class YouTubeChannelActivity {
 				.then((ytResponse: AxiosResponse) => {
 					const videoIds: string[] = []
 
-					const formattedYtResponse: [FormattedUploadResponse] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse) => {
+					const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse): FormattedUploadResponse | void => {
 						if (youTubeVidInfo.snippet.type === 'upload') {
 							const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
 							videoIds.push(videoId)
