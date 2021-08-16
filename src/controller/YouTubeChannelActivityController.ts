@@ -61,56 +61,51 @@ type YouTubeAPIResponse = {
  * @param router object that will be used to expose functionality.
 */
 export default function YouTubeChannelActivityController() {
-	return (req: Request, res: Response) => {
-		if (req.query.channelId === undefined || req.query.channelId === null) {
-			const status = 422
+	return async (req: Request, res: Response) => {
+		let status: number
+		let json: YouTubeUploadsResponse | HeartAPIError
 
-			res.status(status)
-			res.json(new HeartAPIError('Empty or null channelId.', status))
-
-			res.end()
-			return
+		if (req.query == null || req.query.key == null || req.query.channelId == null) {
+			status = 400
+			json = new HeartAPIError('Missing required query params.', status)
+		} else if (req.query.key !== Constants.HEART_API_KEY) {
+			status = 401
+			json = new HeartAPIError('API key is incorrect.', status)
+		} else if((!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.query.channelId.toString()))) {	// prevent malicious use of API
+			status = 401
+			json = new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status)
 		}
+		else {
+			await memoizedYouTubeRequest(req.query.channelId.toString())
+				.then((ytResponse: AxiosResponse) => {
+					const videoIds: string[] = []
 
-		let channelId = req.query.channelId.toString()
-		if (!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(channelId))	// prevent malicious use of API
-		{
-			const status = 400
+					const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse): FormattedUploadResponse | void => {
+						if (youTubeVidInfo.snippet.type === 'upload') {
+							const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
+							videoIds.push(videoId)
 
-			res.status(status)
-			res.json(new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status))
-
-			res.end()
-			return
-		}
-
-
-		memoizedYouTubeRequest(channelId)
-			.then((ytResponse: AxiosResponse) => {
-				const videoIds: string[] = []
-
-				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse): FormattedUploadResponse | void => {
-					if (youTubeVidInfo.snippet.type === 'upload') {
-						const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
-						videoIds.push(videoId)
-
-						return {
-							id: videoId
-							, title: youTubeVidInfo.snippet.title
-							, description: youTubeVidInfo.snippet.description
-							, publishedAt: youTubeVidInfo.snippet.publishedAt
-							, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
-							, url: `https://www.youtube.com/watch?v=${videoId}`
+							return {
+								id: videoId
+								, title: youTubeVidInfo.snippet.title
+								, description: youTubeVidInfo.snippet.description
+								, publishedAt: youTubeVidInfo.snippet.publishedAt
+								, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
+								, url: `https://www.youtube.com/watch?v=${videoId}`
+							}
 						}
-					}
+					})
+
+					status = 200
+					json = new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length)
+
 				})
+				.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback2(error))
+		}
 
-
-				res.status(200)
-				res.json(new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length))
-				res.end()
-			})
-			.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
+		res.status(status!)
+		res.json(json!)
+		res.end()
 	}
 }
 
