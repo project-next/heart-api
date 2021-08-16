@@ -1,12 +1,7 @@
 import { Router } from 'express'
-import YouTubeGiveAwayController from '../controller/YouTubeGiveAwayController'
+import YouTubeGiveAwayController from '../controller/YouTubeGiveawayController'
 
+const ytGiveawayRouter = Router()
+ytGiveawayRouter.get('/yt/video/give-away', YouTubeGiveAwayController())
 
-export default class YouTubeGiveAway {
-	readonly router = Router()
-
-
-	constructor() {
-		this.router.get('/yt/video/give-away', YouTubeGiveAwayController())
-	}
-}
+export default ytGiveawayRouter
