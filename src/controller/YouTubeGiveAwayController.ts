@@ -4,7 +4,7 @@ import Constants from '../constants/Constants'
 import HeartAPIError from '../error/HeartAPIError'
 import { AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
-import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo } from '../model/GiveAwayEndpointTypes'
+import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo } from '../model/YouTubeGiveAwayTypes'
 
 
 export default function YouTubeGiveAwayController() {

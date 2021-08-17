@@ -3,7 +3,7 @@ import Constants from '../constants/Constants';
 import HeartAPIError from '../error/HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
 import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig';
-import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../model/VideoInfoEndpointTypes'
+import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../model/YouTubeVideoInfoTypes'
 import moize from 'moize'
 
 
