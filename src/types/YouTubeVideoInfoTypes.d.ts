@@ -1,4 +1,4 @@
-type VideoInfoResponse = {
+export type VideoInfoResponse = {
 	validVideo: boolean
 	videoStats: {
 		views: number,
@@ -9,7 +9,7 @@ type VideoInfoResponse = {
 	}
 }
 
-type YouTubeAPIResponse = {
+export type YouTubeAPIResponse = {
 	kind: string,
 	etag: string,
 	items: YouTubeAPIResponseItem[],
@@ -19,7 +19,7 @@ type YouTubeAPIResponse = {
 	}
 }
 
-type YouTubeAPIResponseItem = {
+export type YouTubeAPIResponseItem = {
 	kind: string,
 	etag: string,
 	id: string,
@@ -31,5 +31,3 @@ type YouTubeAPIResponseItem = {
 		commentCount: string
 	}
 }
-
-export { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem }

@@ -1,10 +1,5 @@
 import { Router, Request, Response } from 'express'
-
-type status = {
-	status: string
-	, version: string
-}
-
+import { status } from '../types/StatusTypes'
 
 export default class Status {
 	private static statusMessage = { status: 'API up and running', version: process.env.npm_package_version } as status

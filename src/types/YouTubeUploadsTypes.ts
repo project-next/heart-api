@@ -1,4 +1,4 @@
-type FormattedUploadResponse = {
+export type FormattedUploadResponse = {
 	id: string
 	title: string;
 	description: string;
@@ -16,5 +16,3 @@ export default class YouTubeUploadsResponse {
 		this.total = total
 	}
 }
-
-export { FormattedUploadResponse }

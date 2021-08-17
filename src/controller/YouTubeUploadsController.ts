@@ -5,7 +5,7 @@ import Constants from '../helper/Constants'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
 import moize from 'moize'
 import HeartAPIError from '../error/HeartAPIError'
-import YouTubeUploadsResponse, { FormattedUploadResponse } from '../model/YouTubeUploadsTypes'
+import YouTubeUploadsResponse, { FormattedUploadResponse } from '../types/YouTubeUploadsTypes'
 
 type YouTubeAPIResponse = {
 	kind: string

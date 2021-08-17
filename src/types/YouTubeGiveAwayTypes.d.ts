@@ -1,4 +1,4 @@
-type YouTubeAPIResponse = {
+export type YouTubeAPIResponse = {
    kind: string,
    etag: string,
    nextPageToken: string,
@@ -9,7 +9,7 @@ type YouTubeAPIResponse = {
    items: YouTubeAPIResponseItem[]
 }
 
-type YouTubeAPIResponseItem = {
+export type YouTubeAPIResponseItem = {
 	kind: string,
 	etag: string,
 	id: string,
@@ -43,7 +43,7 @@ type YouTubeAPIResponseItem = {
 }
 
 
-type GiveAwayInfo = {
+export type GiveAwayInfo = {
 	totalEntries: number
 	, code: string
 	, winner?: {
@@ -52,5 +52,3 @@ type GiveAwayInfo = {
 		, winningComment: string
 	}
 }
-
-export {YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo}
