@@ -1,8 +1,8 @@
-import Status from '../router/Status'
+import Status from '../router/StatusRouter'
 import { Express } from 'express'
-import ytVideoInfoRouter from '../router/YouTubeVideoInfo'
-import ytGiveawayRouter from '../router/YouTubeGiveaway'
-import ytChannelActivityRouter from '../router/YouTubeChannelActivity'
+import ytVideoInfoRouter from '../router/YouTubeVideoInfoRouter'
+import ytGiveawayRouter from '../router/YouTubeGiveawayRouter'
+import ytChannelActivityRouter from '../router/YouTubeUploadsRouter'
 
 export default class Routes {
 	static BASE_URI = '/v1'
