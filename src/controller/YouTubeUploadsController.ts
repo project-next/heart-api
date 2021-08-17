@@ -6,6 +6,7 @@ import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
 import moize from 'moize'
 import HeartAPIError from '../error/HeartAPIError'
 import YouTubeUploadsResponse, { FormattedUploadResponse } from '../types/YouTubeUploadsTypes'
+import YouTubeAPIError from '../error/YouTubeAPIError'
 
 type YouTubeAPIResponse = {
 	kind: string
@@ -100,7 +101,7 @@ export default function YouTubeChannelActivityController() {
 					json = new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length)
 
 				})
-				.catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback2(error))
+				.catch((error: AxiosError) => [status, json] = new YouTubeAPIError(error).getYouTubeAPIErrorCallback())
 		}
 
 		res.status(status!)

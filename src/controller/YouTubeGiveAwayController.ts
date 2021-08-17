@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
 import Constants from '../helper/Constants'
 import HeartAPIError from '../error/HeartAPIError'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
 import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo } from '../types/YouTubeGiveAwayTypes'
+import YouTubeAPIError from '../error/YouTubeAPIError'
 
 
 export default function YouTubeGiveAwayController() {
@@ -19,8 +20,7 @@ export default function YouTubeGiveAwayController() {
 			let status = 401
 			new HeartAPIError("API key is incorrect.", status)
 		} else {
-			json = await getGiveAwayWinner([] as YouTubeAPIResponseItem[], req.query.giveAwayCode.toString(), req.query.videoId.toString())
-			status = 200
+			[status, json] = await getGiveAwayWinner([] as YouTubeAPIResponseItem[], req.query.giveAwayCode.toString(), req.query.videoId.toString())
 		}
 
 		res.status(status!)
@@ -30,7 +30,7 @@ export default function YouTubeGiveAwayController() {
 }
 
 
-async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken?: string): Promise<GiveAwayInfo | HeartAPIError> {
+async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken?: string): Promise<[number, GiveAwayInfo | HeartAPIError]> {
 	const params = (pageToken == null)? {
 		searchTerms: code
 		, videoId: videoId
@@ -40,6 +40,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 		, pageToken: pageToken
 	}
 
+	let status: number
 	let winner: GiveAwayInfo | HeartAPIError
 
 	await YouTubeAxiosConfig
@@ -54,15 +55,17 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 			pageToken = response.nextPageToken
 
 			if (pageToken != null) {
-				winner = await getGiveAwayWinner(potentialWinners, code, videoId, pageToken)
-			} else {
+				[status, winner] = await getGiveAwayWinner(potentialWinners, code, videoId, pageToken)
+			} else {	// no more potential winners/pages of comments
 				const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
+
+				status = 200
 				winner = getRandomWinner(filteredPotentialWinners, code)
 			}
 		})
-		// .catch((error: AxiosError) => YouTubeAxiosConfig.youtubeAPIErrorCallback(error, res))
+		.catch((error: AxiosError) => [status, winner] = new YouTubeAPIError(error).getYouTubeAPIErrorCallback())
 
-		return winner!
+		return [status!, winner!]
 }
 
 

@@ -1,5 +1,4 @@
-import axios, { AxiosError, AxiosInstance } from 'axios'
-import HeartAPIError from '../error/HeartAPIError'
+import axios, { AxiosInstance } from 'axios'
 import Constants from '../helper/Constants'
 
 export default class YouTubeAxiosConfig {
@@ -31,16 +30,4 @@ export default class YouTubeAxiosConfig {
 			, textFormat: 'plainText'
 		}
 	})
-
-
-	static youtubeAPIErrorCallback2(error: AxiosError): [number, HeartAPIError] {
-		if (error.response != null) {
-			console.error(`YouTube Data API (v3) returned with error: ${error.code} ${error.response.status}`)
-
-			let description = (error.response.status === 403)? 'Request has incorrect API key or no API key.' : 'YouTube API call encountered error'
-
-			return [500, new HeartAPIError(description, 500)]
-		}
-		return [500, new HeartAPIError("YouTube API call encountered error", 500)]
-	}
 }

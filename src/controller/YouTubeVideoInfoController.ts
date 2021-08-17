@@ -5,6 +5,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig';
 import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../types/YouTubeVideoInfoTypes'
 import moize from 'moize'
+import YouTubeAPIError from '../error/YouTubeAPIError';
 
 
 export default function YouTubeVideoInfoController() {
@@ -29,7 +30,7 @@ export default function YouTubeVideoInfoController() {
 						json = getVideoInfoResponse(ytResponse.data)
 					}
 				})
-				.catch((error: AxiosError) => [status, json] = YouTubeAxiosConfig.youtubeAPIErrorCallback2(error))
+				.catch((error: AxiosError) => [status, json] = new YouTubeAPIError(error).getYouTubeAPIErrorCallback())
 		}
 
 		res.status(status!)
