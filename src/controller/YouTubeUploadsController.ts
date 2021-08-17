@@ -2,7 +2,7 @@
 import { Request, Response } from 'express'
 import { AxiosError, AxiosResponse } from 'axios'
 import Constants from '../constants/Constants'
-import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig'
+import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
 import moize from 'moize'
 import HeartAPIError from '../error/HeartAPIError'
 import YouTubeUploadsResponse, { FormattedUploadResponse } from '../model/YouTubeUploadsTypes'

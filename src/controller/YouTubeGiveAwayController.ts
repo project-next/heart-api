@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import YouTubeAxiosConfig from '../service/YouTubeAxiosConfig'
+import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
 import Constants from '../constants/Constants'
 import HeartAPIError from '../error/HeartAPIError'
 import { AxiosResponse } from 'axios'
