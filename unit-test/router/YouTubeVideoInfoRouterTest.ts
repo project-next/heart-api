@@ -1,7 +1,7 @@
 import rewire from 'rewire'
 import { expect } from 'chai'
 import { AxiosResponse } from 'axios'
-import {VideoInfoResponse, YouTubeAPIResponse} from '../../src/model/VideoInfoEndpointTypes'
+import {VideoInfoResponse, YouTubeAPIResponse} from '../../src/types/YouTubeVideoInfoTypes.d'
 
 describe('YouTubeVideoInfo tests', () => {
 	const _YouTubeVideoInfoResponse = rewire('../../src/controller/YouTubeVideoInfoController').__get__('getVideoInfoResponse')
@@ -15,25 +15,25 @@ describe('YouTubeVideoInfo tests', () => {
 
 	it('Checking creation of Heart API response', () => {
 		const ytResponse: YouTubeAPIResponse = {
-			"kind": "youtube#videoListResponse",
-			"etag": "lImRuGZWGeI7f_73aeI5aAXb0HY",
-			"items": [
+			kind: "youtube#videoListResponse",
+			etag: "lImRuGZWGeI7f_73aeI5aAXb0HY",
+			items: [
 				{
-					"kind": "youtube#video",
-					"etag": "zNpQ9SSTQoXZUYV7s6WYYxW54eQ",
-					"id": "okINSj2Okxw",
-					"statistics": {
-						"viewCount": "52",
-						"likeCount": "5",
-						"dislikeCount": "0",
-						"favoriteCount": "0",
-						"commentCount": "6"
+					kind: "youtube#video",
+					etag: "zNpQ9SSTQoXZUYV7s6WYYxW54eQ",
+					id: "okINSj2Okxw",
+					statistics: {
+						viewCount: "52",
+						likeCount: "5",
+						dislikeCount: "0",
+						favoriteCount: "0",
+						commentCount: "6"
 					}
 				}
 			],
-			"pageInfo": {
-				"totalResults": 1,
-				"resultsPerPage": 1
+			pageInfo: {
+				totalResults: 1,
+				resultsPerPage: 1
 			}
 		}
 
@@ -59,12 +59,12 @@ describe('YouTubeVideoInfo tests', () => {
 
 	it('Checking creation of Heart API response - no video found for given ID', () => {
 		const ytResponse: YouTubeAPIResponse = {
-			"kind": "youtube#videoListResponse",
-			"etag": "YIUPVpqNjppyCWOZfL-19bLb7uk",
-			"items": [],
-			"pageInfo": {
-				"totalResults": 0,
-				"resultsPerPage": 0
+			kind: "youtube#videoListResponse",
+			etag: "YIUPVpqNjppyCWOZfL-19bLb7uk",
+			items: [],
+			pageInfo: {
+				totalResults: 0,
+				resultsPerPage: 0
 			}
 		}
 

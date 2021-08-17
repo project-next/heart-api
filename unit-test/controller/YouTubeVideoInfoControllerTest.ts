@@ -3,13 +3,13 @@ import { expect } from 'chai'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../../src/App'
-import YouTubeAxiosConfig from '../../src/service/YouTubeAxiosConfig'
+import YouTubeAxiosConfig from '../../src/config/YouTubeAxiosConfig'
 import sinon, { SinonStub } from 'sinon'
-import { YouTubeAPIResponse } from '../../src/model/VideoInfoEndpointTypes'
+import { YouTubeAPIResponse } from '../../src/types/YouTubeVideoInfoTypes'
 
 describe('YouTubeVideoInfo tests', () => {
 	chai.use(chaiHttp)
-	let API_KEY: string
+	let API_KEY: string | undefined
 	let stub: SinonStub
 
 	before(() => {
@@ -112,12 +112,12 @@ describe('YouTubeVideoInfo tests', () => {
 
 	it('Calling Video Info endpoint - success (invalid video)', done => {
 		const returnData = {
-			kind: undefined,
-			etag: undefined,
+			kind: "youtube#videoListResponse",
+			etag: "NaZTcIozauhocCaldlq6PDK3f4s",
 			items: [],
 			pageInfo: {
-				totalResults: undefined,
-				resultsPerPage: undefined
+				totalResults: 0,
+				resultsPerPage: 0
 			}
 		} as YouTubeAPIResponse
 		stub.resolves({status: 200, data: returnData})
@@ -136,25 +136,25 @@ describe('YouTubeVideoInfo tests', () => {
 
 	it('Calling Video Info endpoint - success', done => {
 		const returnData = {
-			kind: undefined,
-			etag: undefined,
+			kind: "youtube#videoListResponse",
+			etag: "NaZTcIozauhocCaldlq6PDK3f4s",
 			items: [
 				{
-				kind: undefined,
-				etag: undefined,
-				id: undefined,
-				statistics: {
-					viewCount: "1000",
-					likeCount: "500",
-					dislikeCount: "1",
-					favoriteCount: "33",
-					commentCount: "440"
-				}
+					kind: "youtube#video",
+					etag: "zp0pYo1F5uEaNpwHdMwF5SQM_ww",
+					id: "okINSj2Okxw",
+					statistics: {
+						viewCount: "66",
+						likeCount: "6",
+						dislikeCount: "0",
+						favoriteCount: "0",
+						commentCount: "6"
+					}
 				}
 			],
 			pageInfo: {
-				totalResults: undefined,
-				resultsPerPage: undefined
+				totalResults: 1,
+				resultsPerPage: 1
 			}
 		} as YouTubeAPIResponse
 		stub.resolves({status: 200, data: returnData})
@@ -164,11 +164,11 @@ describe('YouTubeVideoInfo tests', () => {
 
 			expect(res.body).to.not.be.empty
 			expect(res.body.validVideo).to.be.true
-			expect(res.body.videoStats.views).to.equal(1000)
-			expect(res.body.videoStats.likes).to.equal(500)
-			expect(res.body.videoStats.dislikes).to.equal(1)
-			expect(res.body.videoStats.favorites).to.equal(33)
-			expect(res.body.videoStats.numComments).to.equal(440)
+			expect(res.body.videoStats.views).to.equal(66)
+			expect(res.body.videoStats.likes).to.equal(6)
+			expect(res.body.videoStats.dislikes).to.equal(0)
+			expect(res.body.videoStats.favorites).to.equal(0)
+			expect(res.body.videoStats.numComments).to.equal(6)
 
 			expect(stub.calledOnce).to.be.true	// since requests are memoized a call must have happened using stub or else test will use wrong response data
 			done()
