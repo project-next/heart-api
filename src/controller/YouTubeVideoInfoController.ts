@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import Constants from '../constants/Constants';
+import Constants from '../helper/Constants';
 import HeartAPIError from '../error/HeartAPIError';
 import { AxiosError, AxiosResponse } from 'axios';
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig';
