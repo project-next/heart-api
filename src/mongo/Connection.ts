@@ -6,11 +6,11 @@ export default function mongoDBConn() {
 	const pem = fs.readFileSync('./certs/mongoDB-heart-api-X509.pem')
 
 	connection.on('error', () => {
-		console.log('There was an error connecting to heart-api mongoDB')
+		console.log('There was an error connecting to heart-api:news mongoDB')
 	})
 
 	connection.once('open', () => {
-		console.log('Connection successfully established with heart-api mongoDB')
+		console.log('Connection successfully established with heart-api:news mongoDB')
 	})
 
 	connect('mongodb+srv://heart-api-cluster.g0vnw.mongodb.net/news', {

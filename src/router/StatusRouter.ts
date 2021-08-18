@@ -8,7 +8,7 @@ export default class Status {
 
 
 	constructor() {
-		this.router.get('/status', async (req: Request, res: Response) => {
+		this.router.get('/status', (req: Request, res: Response) => {
 			res.json(Status.statusMessage)
 		})
 	}
