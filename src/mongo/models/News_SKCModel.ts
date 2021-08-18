@@ -7,12 +7,12 @@ export type skc = Document & {
 }
 
 
-const NewsSchema: Schema = new Schema({
+const News_SKCSchema: Schema = new Schema({
 	title: { type: String, required: false, unique: false },
 	body: { type: String, required: false, unique: false },
 	tags: [{ type: String, required: false, unique: false }]
 })
 
 
-const NewsModel = model<skc>('skc', NewsSchema, 'skc')
-export default NewsModel
+const News_SKCModel = model<skc>('skc', News_SKCSchema, 'skc')
+export default News_SKCModel
