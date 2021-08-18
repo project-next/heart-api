@@ -5,7 +5,7 @@ import cors from 'cors'
 import HttpConfig from './config/HttpConfig'
 import Routes from './config/RouterConfig'
 import RequestErrorHandling from './config/RequestErrorHandlingConfig'
-import mongoDBConn from './mongo/conn'
+import mongoDBConn from './mongo/Connection'
 
 
 class App {

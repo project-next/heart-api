@@ -15,10 +15,13 @@ export default function mongoDBConn() {
 
 	connect('mongodb+srv://heart-api-cluster.g0vnw.mongodb.net/news', {
 		useNewUrlParser: true,
+		useFindAndModify: false,
+		useCreateIndex: true,
 		useUnifiedTopology: true,
+
 		authMechanism: 'MONGODB-X509',
 		authSource: '$external',
 		sslKey: pem,
-		sslCert: pem,
+		sslCert: pem
 	})
 }
