@@ -1,15 +1,8 @@
-import { Router, Request, Response } from 'express'
-import { status } from '../types/StatusTypes'
-
-export default class Status {
-	private static statusMessage = { status: 'API up and running', version: process.env.npm_package_version } as status
-
-	public readonly router = Router()
+import { Router } from 'express'
+import StatusRouter from '../controller/StatusController'
 
 
-	constructor() {
-		this.router.get('/status', (req: Request, res: Response) => {
-			res.json(Status.statusMessage)
-		})
-	}
-}
+const statusRouter = Router()
+statusRouter.get('/status', StatusRouter())
+
+export default statusRouter
