@@ -16,9 +16,6 @@ export default function YouTubeGiveAwayController() {
 		if (req.query == null || req.query.key == null || req.query.videoId == null || req.query.giveAwayCode == null) {
 			status = 400
 			json = new HeartAPIError("Missing required query params.", status)
-		} else if (req.query.key !== Constants.HEART_API_KEY) {
-			let status = 401
-			new HeartAPIError("API key is incorrect.", status)
 		} else {
 			[status, json] = await getGiveAwayWinner([] as YouTubeAPIResponseItem[], req.query.giveAwayCode.toString(), req.query.videoId.toString())
 		}

@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
-import Constants from '../helper/Constants';
-import HeartAPIError from '../error/HeartAPIError';
-import { AxiosError, AxiosResponse } from 'axios';
-import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig';
+import HeartAPIError from '../error/HeartAPIError'
+import { AxiosError, AxiosResponse } from 'axios'
+import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
 import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../types/YouTubeVideoInfoTypes'
 import moize from 'moize'
-import YouTubeAPIError from '../error/YouTubeAPIError';
+import YouTubeAPIError from '../error/YouTubeAPIError'
 
 
 export default function YouTubeVideoInfoController() {
@@ -16,9 +15,6 @@ export default function YouTubeVideoInfoController() {
 		if (req.query == null || req.query.key == null || req.query.videoId == null) {
 			status = 400
 			json = new HeartAPIError("Missing required query params.", status)
-		} else if (req.query.key !== Constants.HEART_API_KEY) {
-			status = 401
-			json = new HeartAPIError("API key is incorrect.", status)
 		} else {
 			await memoizedYouTubeRequest(req.query.videoId as string)
 				.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {

@@ -69,9 +69,6 @@ export default function YouTubeChannelActivityController() {
 		if (req.query == null || req.query.key == null || req.query.channelId == null) {
 			status = 400
 			json = new HeartAPIError('Missing required query params.', status)
-		} else if (req.query.key !== Constants.HEART_API_KEY) {
-			status = 401
-			json = new HeartAPIError('API key is incorrect.', status)
 		} else if((!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.query.channelId.toString()))) {	// prevent malicious use of API
 			status = 401
 			json = new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status)
