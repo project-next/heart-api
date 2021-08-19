@@ -2,7 +2,7 @@
   "name": "heart-api",
   "version": "1.1.0",
   "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
-  "main": "./src/app.ts",
+  "main": "./src/App.ts",
   "scripts": {
 	 "mocha-r": "nyc mocha --require mocha-suppress-logs --exit -r ts-node/register 'unit-test/**/*.ts'",
 	 "mocha-d": "nyc mocha --timeout 3000 --exit --require ts-node/register 'unit-test/**/*.ts'",

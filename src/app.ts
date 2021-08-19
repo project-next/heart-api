@@ -5,12 +5,14 @@ import cors from 'cors'
 import HttpConfig from './config/HttpConfig'
 import Routes from './config/RouterConfig'
 import RequestErrorHandling from './config/RequestErrorHandlingConfig'
+import validateKey from './middleware/ValidateKey'
 
 
 class App {
 	public express = express()
 
 	constructor() {
+		HttpConfig.setupHttpConnection(this.express)
 		this.applyMiddleware()
 		Routes.setupRoutes(this.express)
 		RequestErrorHandling.setupErrorHandling(this.express)
@@ -25,11 +27,11 @@ class App {
 		this.express.options('*', cors())
 		this.express.use(cors())	// opens up all CORS settings to clients
 
-		HttpConfig.setupHttpConnection(this.express)
-
 		this.express.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
 		this.express.use(express.urlencoded({ extended: true }))
 		this.express.use(express.json())
+
+		this.express.use(validateKey())
 	}
 }
 
