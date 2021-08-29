@@ -31,7 +31,7 @@
     "https": "1.0.0",
     "lodash.sample": "4.2.1",
     "logger": "0.0.1",
-    "moize": "6.0.3",
+    "moize": "6.1.0",
     "morgan": "1.10.0"
   },
   "devDependencies": {
