@@ -114,8 +114,7 @@ export default function YouTubeChannelActivityController() {
 */
 const memoizedYouTubeRequest = moize((channelId: string) => {
 	return YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG
-		.get('/activities'	// documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
-			, {
+		.get('', {
 				params: {
 					channelId: channelId
 				}

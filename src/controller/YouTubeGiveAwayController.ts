@@ -8,12 +8,16 @@ import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveAwayInfo } from '../typ
 import YouTubeAPIError from '../error/YouTubeAPIError'
 
 
+/**
+ * Logic for YouTube giveaway endpoint.
+ * @returns Express compliant call back for end point.
+ */
 export default function YouTubeGiveAwayController() {
 	return async (req: Request, res: Response) => {
 		let status: number
 		let json: GiveAwayInfo | HeartAPIError
 
-		if (req.query == null || req.query.key == null || req.query.videoId == null || req.query.giveAwayCode == null) {
+		if (req.query == null || req.query.videoId == null || req.query.giveAwayCode == null) {
 			status = 400
 			json = new HeartAPIError("Missing required query params.", status)
 		} else {
@@ -27,7 +31,8 @@ export default function YouTubeGiveAwayController() {
 }
 
 
-async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string, videoId: string, pageToken?: string): Promise<[number, GiveAwayInfo | HeartAPIError]> {
+async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], code: string
+	, videoId: string, pageToken?: string): Promise<[number, GiveAwayInfo | HeartAPIError]> {
 	const params = (pageToken == null)? {
 		searchTerms: code
 		, videoId: videoId
@@ -42,7 +47,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], cod
 
 	await YouTubeAxiosConfig
 		.YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG
-		.get('/commentThreads', {
+		.get('', {
 			params: params
 		})
 		.then(async (ytResponse: AxiosResponse) => {

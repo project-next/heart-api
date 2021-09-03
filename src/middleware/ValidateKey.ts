@@ -6,13 +6,15 @@ import HeartAPIError from '../error/HeartAPIError'
 export default function validateKey() {
 	return (req: Request, res: Response, next: NextFunction) => {
 		if (req.query.key == null) {
+			console.log(`Client did not send an API key`)
 			const status = 401
 
 			res.status(status)
 			res.json(new HeartAPIError("API key is missing.", status))
 			res.send()
 		} else if (req.query.key !== Constants.HEART_API_KEY) {
-			const status = 401
+			console.log(`Client is using incorrect API key, key: ${req.query.key}`)
+			const status = 403
 
 			res.status(status)
 			res.json(new HeartAPIError("API key is incorrect.", status))
