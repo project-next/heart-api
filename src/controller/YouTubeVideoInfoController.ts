@@ -11,7 +11,7 @@ export default async function youTubeVideoInfoControllerCB(req: Request, res: Re
 	let status: number
 	let json: VideoInfoResponse | HeartAPIError
 
-	if (req.query == null || req.query.key == null || req.query.videoId == null) {
+	if (req.query == null || req.query.videoId == null) {
 		status = 400
 		json = new HeartAPIError("Missing required query params.", status)
 	} else {

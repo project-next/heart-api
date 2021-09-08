@@ -28,33 +28,16 @@ describe('YouTubeVideoInfo tests', () => {
 	})
 
 
-	it('Calling Video Info endpoint with no query params', done => {
-		chai
-			.request(app)
-			.get('/v1/yt/video/info')
-			.end((err, res) => {
-				expect(res.status).to.equal(400)
-
-				expect(res.body).to.not.be.empty
-				expect(res.body.code).to.equal(400)
-				expect(res.body.description).to.equal('Missing required query params.')
-
-				expect(stub.notCalled).to.be.true
-				done()
-			})
-	})
-
-
 	it('Calling Video Info endpoint - missing key param', done => {
 		chai
 			.request(app)
 			.get('/v1/yt/video/info?videoId=okINSj2Okxw')
 			.end((err, res) => {
-				expect(res.status).to.equal(400)
+				expect(res.status).to.equal(401)
 
 				expect(res.body).to.not.be.empty
-				expect(res.body.code).to.equal(400)
-				expect(res.body.description).to.equal('Missing required query params.')
+				expect(res.body.code).to.equal(401)
+				expect(res.body.description).to.equal('API key is missing')
 
 				expect(stub.notCalled).to.be.true
 				done()
@@ -65,7 +48,7 @@ describe('YouTubeVideoInfo tests', () => {
 	it('Calling Video Info endpoint - missing videoId param', done => {
 		chai
 			.request(app)
-			.get('/v1/yt/video/info?key=XXXXXXX')
+			.get(`/v1/yt/video/info?key=${API_KEY}`)
 			.end((err, res) => {
 				expect(res.status).to.equal(400)
 
@@ -81,11 +64,11 @@ describe('YouTubeVideoInfo tests', () => {
 
 	it('Calling Video Info endpoint - using incorrect key value', done => {
 		chai.request(app).get('/v1/yt/video/info?videoId=okINSj2Okxw&key=XXXXXXX').end((err, res) => {
-			expect(res.status).to.equal(401)
+			expect(res.status).to.equal(403)
 
 			expect(res.body).to.not.be.empty
-			expect(res.body.code).to.equal(401)
-			expect(res.body.description).to.equal('API key is incorrect.')
+			expect(res.body.code).to.equal(403)
+			expect(res.body.description).to.equal('API key is incorrect')
 
 			expect(stub.notCalled).to.be.true
 			done()
