@@ -21,7 +21,20 @@ export default function YouTubeGiveAwayController() {
 			status = 400
 			json = new HeartAPIError("Missing required query params.", status)
 		} else {
-			json = await getGiveAwayWinner([] as YouTubeAPIResponseItem[], req.query.giveAwayCode.toString(), req.query.videoId.toString())
+			try {
+				let potentialWinners: YouTubeAPIResponseItem[] = []
+				let hasMoreEntries: boolean
+
+				do {
+					hasMoreEntries = await getGiveAwayWinner(potentialWinners, req.query.giveAwayCode.toString(), req.query.videoId.toString())
+				} while(hasMoreEntries)
+
+				const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
+				json = getRandomWinner(filteredPotentialWinners, req.query.giveAwayCode.toString())
+			} catch(err) {
+				json = err
+			}
+
 			status = (json instanceof HeartAPIError)? json.code : 200
 		}
 
@@ -34,7 +47,6 @@ export default function YouTubeGiveAwayController() {
 
 /**
  * Returns a Promise with either Giveaway info if no exception occurred or Error info if YouTube API returned with an Error or other Error occurred.
- * This method is called recursively.
  * @param potentialWinners YouTube API output
  * @param giveAwayPhrase
  * @param videoId
@@ -42,7 +54,7 @@ export default function YouTubeGiveAwayController() {
  * @returns
  */
 async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], giveAwayPhrase: string
-	, videoId: string, pageToken?: string): Promise<GiveawayInfo | HeartAPIError> {
+	, videoId: string, pageToken?: string): Promise<boolean> {
 	const params = (pageToken == null)? {
 		searchTerms: giveAwayPhrase
 		, videoId: videoId
@@ -52,7 +64,8 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], giv
 		, pageToken: pageToken
 	}
 
-	let winner: GiveawayInfo | HeartAPIError
+	let hasMoreEntries: boolean = false
+	let heartAPIError: HeartAPIError | undefined = undefined
 
 	await YouTubeAxiosConfig
 		.YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG
@@ -63,19 +76,18 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], giv
 			const response: YouTubeAPIResponse = ytResponse.data
 
 			potentialWinners.push(...response.items)
-			pageToken = response.nextPageToken
 
-			if (pageToken != null) {
-				winner = await getGiveAwayWinner(potentialWinners, giveAwayPhrase, videoId, pageToken)
-			} else {	// no more potential winners/pages of comments
-				const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
-
-				winner = getRandomWinner(filteredPotentialWinners, giveAwayPhrase)
+			if (response.nextPageToken != null) {
+				hasMoreEntries = true
 			}
 		})
-		.catch((error: AxiosError) => winner = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
+		.catch((ytAPIError: AxiosError) => {
+			heartAPIError = new YouTubeAPIError(ytAPIError).convertYTErrorToHeartAPIError()
+		})
 
-		return winner!
+		if (heartAPIError != null)
+			throw heartAPIError
+		return hasMoreEntries!
 }
 
 
