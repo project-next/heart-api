@@ -7,32 +7,30 @@ import moize from 'moize'
 import YouTubeAPIError from '../error/YouTubeAPIError'
 
 
-export default function YouTubeVideoInfoController() {
-	return async (req: Request, res: Response) => {
-		let status: number
-		let json: VideoInfoResponse | HeartAPIError
+export default async function youTubeVideoInfoControllerCB(req: Request, res: Response) {
+	let status: number
+	let json: VideoInfoResponse | HeartAPIError
 
-		if (req.query == null || req.query.key == null || req.query.videoId == null) {
-			status = 400
-			json = new HeartAPIError("Missing required query params.", status)
-		} else {
-			await memoizedYouTubeRequest(req.query.videoId as string)
-				.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-					if (ytResponse.data == null) {
-						json = new HeartAPIError("YouTube API returned empty object", 500)
-					} else {
-						json = getVideoInfoResponse(ytResponse.data)
-					}
-				})
-				.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
+	if (req.query == null || req.query.key == null || req.query.videoId == null) {
+		status = 400
+		json = new HeartAPIError("Missing required query params.", status)
+	} else {
+		await memoizedYouTubeRequest(req.query.videoId as string)
+			.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
+				if (ytResponse.data == null) {
+					json = new HeartAPIError("YouTube API returned empty object", 500)
+				} else {
+					json = getVideoInfoResponse(ytResponse.data)
+				}
+			})
+			.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
 
-			status = (json! instanceof HeartAPIError)? json.code : 200
-		}
-
-		res.status(status!)
-		res.json(json!)
-		res.end()
+		status = (json! instanceof HeartAPIError)? json.code : 200
 	}
+
+	res.status(status!)
+	res.json(json!)
+	res.end()
 }
 
 
@@ -55,7 +53,6 @@ function getYoutubeRequest(videoId: string): Promise<AxiosResponse<YouTubeAPIRes
 function getVideoInfoResponse(youTubeAPIResponse: YouTubeAPIResponse): VideoInfoResponse {
 	if (youTubeAPIResponse.items == null || youTubeAPIResponse.items.length === 0)
 		return { validVideo: false } as VideoInfoResponse
-
 
 	const info: YouTubeAPIResponseItem = youTubeAPIResponse.items[0]
 

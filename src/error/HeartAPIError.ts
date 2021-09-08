@@ -1,11 +1,13 @@
 export default class HeartAPIError extends Error {
-	readonly description: string
-	readonly code: number
-
-
-	constructor(description: string, code: number) {
+	constructor(private readonly desc: string, private readonly errCode: number) {
 		super()
-		this.description = description
-		this.code = code
+	}
+
+	get description(): string {
+		return this.desc
+	}
+
+	get code(): number {
+		return this.errCode
 	}
 }

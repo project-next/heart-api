@@ -12,36 +12,34 @@ import YouTubeAPIError from '../error/YouTubeAPIError'
  * Logic for YouTube giveaway endpoint.
  * @returns Express compliant call back containing endpoint specific functionality.
  */
-export default function YouTubeGiveAwayController() {
-	return async (req: Request, res: Response) => {
-		let status: number
-		let json: GiveawayInfo | HeartAPIError
+export default async function youTubeGiveAwayControllerCB(req: Request, res: Response) {
+	let status: number
+	let json: GiveawayInfo | HeartAPIError
 
-		if (req.query == null || req.query.videoId == null || req.query.giveAwayCode == null) {
-			status = 400
-			json = new HeartAPIError("Missing required query params.", status)
-		} else {
-			try {
-				let potentialWinners: YouTubeAPIResponseItem[] = []
-				let hasMoreEntries: boolean
+	if (req.query == null || req.query.videoId == null || req.query.giveAwayCode == null) {
+		status = 400
+		json = new HeartAPIError("Missing required query params.", status)
+	} else {
+		try {
+			let potentialWinners: YouTubeAPIResponseItem[] = []
+			let hasMoreEntries: boolean
 
-				do {
-					hasMoreEntries = await getGiveAwayWinner(potentialWinners, req.query.giveAwayCode.toString(), req.query.videoId.toString())
-				} while(hasMoreEntries)
+			do {
+				hasMoreEntries = await getGiveAwayWinner(potentialWinners, req.query.giveAwayCode.toString(), req.query.videoId.toString())
+			} while(hasMoreEntries)
 
-				const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
-				json = getRandomWinner(filteredPotentialWinners, req.query.giveAwayCode.toString())
-			} catch(err) {
-				json = err
-			}
-
-			status = (json instanceof HeartAPIError)? json.code : 200
+			const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
+			json = getRandomWinner(filteredPotentialWinners, req.query.giveAwayCode.toString())
+		} catch(err) {
+			json = err
 		}
 
-		res.status(status!)
-		res.json(json!)
-		res.end()
+		status = (json instanceof HeartAPIError)? json.code : 200
 	}
+
+	res.status(status!)
+	res.json(json!)
+	res.end()
 }
 
 

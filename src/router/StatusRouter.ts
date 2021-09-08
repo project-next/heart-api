@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import StatusRouter from '../controller/StatusController'
+import statusControllerCB from '../controller/StatusController'
 
 
 const statusRouter = Router()
-statusRouter.get('/status', StatusRouter())
+statusRouter.get('/status', statusControllerCB)
 
 export default statusRouter

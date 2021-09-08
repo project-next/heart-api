@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import YouTubeChannelActivityController from '../controller/YouTubeUploadsController'
+import youTubeChannelActivityControllerCB from '../controller/YouTubeUploadsController'
 
 const ytChannelActivityRouter = Router()
-ytChannelActivityRouter.get('/yt/channel/uploads', YouTubeChannelActivityController())
+ytChannelActivityRouter.get('/yt/channel/uploads', youTubeChannelActivityControllerCB)
 
 export default ytChannelActivityRouter
