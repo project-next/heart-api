@@ -43,9 +43,9 @@ export type YouTubeAPIResponseItem = {
 }
 
 
-export type GiveAwayInfo = {
+export type GiveawayInfo = {
 	totalEntries: number
-	, code: string
+	, giveawayPhrase: string
 	, winner?: {
 		name: string
 		, channel: string

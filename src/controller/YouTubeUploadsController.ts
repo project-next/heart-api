@@ -93,12 +93,12 @@ export default function YouTubeChannelActivityController() {
 							}
 						}
 					})
-
-					status = 200
 					json = new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length)
 
 				})
-				.catch((error: AxiosError) => [status, json] = new YouTubeAPIError(error).getYouTubeAPIErrorCallback())
+				.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
+
+			status = (json! instanceof HeartAPIError)? json.code : 200
 		}
 
 		res.status(status!)

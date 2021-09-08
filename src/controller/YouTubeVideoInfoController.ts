@@ -19,19 +19,19 @@ export default function YouTubeVideoInfoController() {
 			await memoizedYouTubeRequest(req.query.videoId as string)
 				.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
 					if (ytResponse.data == null) {
-						status = 500
-						json = new HeartAPIError("YouTube API returned empty object", status)
+						json = new HeartAPIError("YouTube API returned empty object", 500)
 					} else {
-						status = 200
 						json = getVideoInfoResponse(ytResponse.data)
 					}
 				})
-				.catch((error: AxiosError) => [status, json] = new YouTubeAPIError(error).getYouTubeAPIErrorCallback())
+				.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
+
+			status = (json! instanceof HeartAPIError)? json.code : 200
 		}
 
 		res.status(status!)
 		res.json(json!)
-		res.send()
+		res.end()
 	}
 }
 
