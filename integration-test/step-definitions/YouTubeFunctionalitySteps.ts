@@ -8,7 +8,7 @@ let giveAwayEndpointSpec: Spec
 
 Given('user pings API for give away winner for video', () => {
 	const HEART_API_HOST = 'https://heart-api.com'
-	const ENDPOINT = '/v1/yt/video/give-away'
+	const ENDPOINT = '/v1/yt/video/giveaway'
 
 	url = `${HEART_API_HOST}${ENDPOINT}`
 })
