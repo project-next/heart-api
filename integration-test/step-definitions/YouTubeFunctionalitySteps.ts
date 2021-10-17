@@ -28,6 +28,6 @@ Then('API should return with success and the body of response should contain win
 	await giveAwayEndpointSpec
 		.expectStatus(200)
 		.expectBodyContains('totalEntries')
-		.expectBodyContains('code')
+		.expectBodyContains('giveawayPhrase')
 		.expectBodyContains('winner')
 })
