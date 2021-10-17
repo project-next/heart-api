@@ -6,7 +6,7 @@ if [ $# -eq 0 ]
 		echo "Need server name"
 fi
 
-ssh -i ~/.ssh/skc-server-creds.pem "${user}@${server}" << EOF
+ssh -i ~/.ssh/skc-server.pem "${user}@${server}" << EOF
 	cd heart-api
 	docker-compose kill
 	docker-compose rm -f
