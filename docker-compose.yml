@@ -3,16 +3,13 @@ version: "3.8"
 services:
   heart-api:
     image: "node:alpine"
-    working_dir: /home/node/app
+    working_dir: /home/node/app/dist
     ports:
       - "443:443"
     restart: always
     volumes:
-      - "./package.json:/home/node/app/package.json"
-      - "./.env-cmdrc.json:/home/node/app/.env-cmdrc.json"
       - "./dist:/home/node/app/dist"
-      - "./certs:/home/node/app/certs"
-    command: sh -c "npm install express && npm install --global env-cmd && npm install && npm run docker-start-dev"
+    command: sh -c "npm install express && npm install --global env-cmd && npm install && npm run docker-start"
     deploy:
       resources:
         limits:
