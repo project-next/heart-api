@@ -12,5 +12,5 @@
 	"spec": [ "unit-test/**/*.ts" ]
  },
  "checkers": ["typescript"],
- "tsconfigFile": "tsconfig.unit-test.json"
+ "tsconfigFile": "tsconfig.json"
 }
