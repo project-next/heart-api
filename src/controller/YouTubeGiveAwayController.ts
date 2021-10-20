@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
-import Constants from '../helper/Constants'
-import HeartAPIError from '../error/HeartAPIError'
+import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
+import Constants from '@helper/Constants'
+import HeartAPIError from '@error/HeartAPIError'
 import { AxiosError, AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
 import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveawayInfo } from '../types/YouTubeGiveAwayTypes'
-import YouTubeAPIError from '../error/YouTubeAPIError'
+import YouTubeAPIError from '@error/YouTubeAPIError'
 
 
 /**

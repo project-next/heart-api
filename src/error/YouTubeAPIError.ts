@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { ytGlobalError } from '../types/YouTubeError'
-import HeartAPIError from '../error/HeartAPIError'
+import HeartAPIError from '@error/HeartAPIError'
 
 export default class YouTubeAPIError {
 	private ytError: ytGlobalError

@@ -1,12 +1,12 @@
 
 import { Request, Response } from 'express'
 import { AxiosError, AxiosResponse } from 'axios'
-import Constants from '../helper/Constants'
-import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
+import Constants from '@helper/Constants'
+import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import moize from 'moize'
-import HeartAPIError from '../error/HeartAPIError'
+import HeartAPIError from '@error/HeartAPIError'
 import YouTubeUploadsResponse, { FormattedUploadResponse } from '../types/YouTubeUploadsTypes'
-import YouTubeAPIError from '../error/YouTubeAPIError'
+import YouTubeAPIError from '@error/YouTubeAPIError'
 
 type YouTubeAPIResponse = {
 	kind: string

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import HeartAPIError from '../error/HeartAPIError'
+import HeartAPIError from '@error/HeartAPIError'
 import { AxiosError, AxiosResponse } from 'axios'
-import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
+import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../types/YouTubeVideoInfoTypes'
 import moize from 'moize'
-import YouTubeAPIError from '../error/YouTubeAPIError'
+import YouTubeAPIError from '@error/YouTubeAPIError'
 
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response) {

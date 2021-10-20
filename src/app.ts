@@ -2,10 +2,10 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 
-import HttpConfig from './config/HttpConfig'
-import Routes from './config/RouterConfig'
-import RequestErrorHandling from './config/RequestErrorHandlingConfig'
-import validateKeyCB from './middleware/ValidateKey'
+import HttpConfig from '@config/HttpConfig'
+import Routes from '@config/RouterConfig'
+import RequestErrorHandling from '@config/RequestErrorHandlingConfig'
+import validateKeyCB from '@middleware/ValidateKey'
 
 
 class App {

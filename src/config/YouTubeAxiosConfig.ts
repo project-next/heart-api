@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
-import Constants from '../helper/Constants'
+import Constants from '@helper/Constants'
 
 export default class YouTubeAxiosConfig {
 	/**
