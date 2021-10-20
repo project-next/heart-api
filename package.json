@@ -4,8 +4,9 @@
   "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
   "main": "./src/app.ts",
   "scripts": {
-    "run-mocha-tests": "nyc mocha --require mocha-suppress-logs,ts-node/register,tsconfig-paths/register --timeout 1000 --bail --exit 'unit-test/**/*.ts'",
+    "run-mocha-tests": "nyc --config './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
     "test": "env-cmd -e test npm run run-mocha-tests",
+	 "mutation": "env-cmd -e test stryker run config/stryker.conf.json",
     "integration-test": "env-cmd -e test cucumber-js",
     "start": "env-cmd -e default nodemon --ext ts --exec ts-node -r tsconfig-paths/register ./src/app.ts",
     "build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist",
