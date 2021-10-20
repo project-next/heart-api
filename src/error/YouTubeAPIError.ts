@@ -10,7 +10,7 @@ export default class YouTubeAPIError {
 		if (error.response?.status === 404) {
 			this.is404 = true
 		}
-		this.ytError = error.response!.data
+		this.ytError = error.response!.data as ytGlobalError
 	}
 
 	convertYTErrorToHeartAPIError(): HeartAPIError {

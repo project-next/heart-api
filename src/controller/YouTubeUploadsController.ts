@@ -54,6 +54,13 @@ type YouTubeAPIResponse = {
 	}
 }
 
+type YouTubeAPIResponse2 = {
+	kind: string
+	etag: string,
+	items: YouTubeAPIResponse[]
+}
+
+
 
 /**
  * Exposes an endpoint that clients can use to get information about YouTube Video Uploads.
@@ -74,7 +81,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 	}
 	else {
 		await memoizedYouTubeRequest(req.query.channelId.toString())
-			.then((ytResponse: AxiosResponse) => {
+			.then((ytResponse: AxiosResponse<YouTubeAPIResponse2>) => {
 				const videoIds: string[] = []
 
 				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse): FormattedUploadResponse | void => {
@@ -91,7 +98,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 							, url: `https://www.youtube.com/watch?v=${videoId}`
 						}
 					}
-				})
+				}) as FormattedUploadResponse[]
 				json = new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length)
 
 			})

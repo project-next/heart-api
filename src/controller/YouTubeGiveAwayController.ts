@@ -31,7 +31,7 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 			const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
 			json = getRandomWinner(filteredPotentialWinners, req.query.giveAwayCode.toString())
 		} catch(err) {
-			json = err
+			json = err as HeartAPIError
 		}
 
 		status = (json instanceof HeartAPIError)? json.code : 200
@@ -71,7 +71,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], giv
 			params: params
 		})
 		.then(async (ytResponse: AxiosResponse) => {
-			const response: YouTubeAPIResponse = ytResponse.data
+			const response: YouTubeAPIResponse = ytResponse.data as YouTubeAPIResponse
 
 			potentialWinners.push(...response.items)
 
