@@ -7,10 +7,13 @@
     "progress"
   ],
   "testRunner": "mocha",
-  "coverageAnalysis": "perTest",
+  "coverageAnalysis": "all",
   "mochaOptions": {
-	"spec": [ "unit-test/**/*.ts" ]
+	"spec": [ "unit-test/**/*.ts" ],
+	"config": "./.mocharc.json",
+	"async-only": false
  },
  "checkers": ["typescript"],
- "tsconfigFile": "tsconfig.json"
+ "tsconfigFile": "tsconfig.json",
+ "allowConsoleColors": true
 }
