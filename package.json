@@ -4,7 +4,7 @@
   "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
   "main": "./src/App.ts",
   "scripts": {
-	 "run-mocha-tests": "nyc mocha --require mocha-suppress-logs,ts-node/register --parallel --timeout 1000 --bail --exit 'unit-test/**/*.ts'",
+    "run-mocha-tests": "nyc mocha --require mocha-suppress-logs,ts-node/register --parallel --timeout 1000 --bail --exit 'unit-test/**/*.ts'",
     "unit-test": "env-cmd -e test npm run run-mocha-tests",
     "integration-test": "env-cmd -e test cucumber-js",
     "start": "env-cmd -e default nodemon ./src/app.ts",
@@ -35,6 +35,9 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "7.3.1",
+    "@stryker-mutator/core": "^5.4.1",
+    "@stryker-mutator/mocha-runner": "^5.4.1",
+    "@stryker-mutator/typescript-checker": "^5.4.1",
     "@types/chai": "4.2.22",
     "@types/chai-http": "4.2.0",
     "@types/cors": "2.8.12",
