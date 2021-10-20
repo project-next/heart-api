@@ -4,8 +4,8 @@ import { AxiosResponse } from 'axios'
 import {VideoInfoResponse, YouTubeAPIResponse} from '../../src/types/YouTubeVideoInfoTypes.d'
 
 describe('YouTubeVideoInfo tests', () => {
-	const _YouTubeVideoInfoResponse = rewire('../../src/controller/YouTubeVideoInfoController').__get__('getVideoInfoResponse')
-	const _YouTubeVideoRequest = rewire('../../src/controller/YouTubeVideoInfoController').__get__('getYoutubeRequest')
+	const _YouTubeVideoInfoResponse = rewire('@controller/YouTubeVideoInfoController').__get__('getVideoInfoResponse')
+	const _YouTubeVideoRequest = rewire('@controller/YouTubeVideoInfoController').__get__('getYoutubeRequest')
 
 	it('Checking creation of YouTube API request', () => {
 		const promise: Promise<AxiosResponse<YouTubeAPIResponse>> = _YouTubeVideoRequest("123")

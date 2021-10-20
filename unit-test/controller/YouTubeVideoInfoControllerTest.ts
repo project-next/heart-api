@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import app from '../../src/app'
-import YouTubeAxiosConfig from '../../src/config/YouTubeAxiosConfig'
+import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import sinon, { SinonStub } from 'sinon'
 import { YouTubeAPIResponse } from '../../src/types/YouTubeVideoInfoTypes'
 
