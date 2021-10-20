@@ -1,0 +1,12 @@
+{
+	"require" : [
+		"mocha-suppress-logs",
+		"ts-node/register",
+		"tsconfig-paths/register"
+	],
+	"parallel": true,
+	"timeout": 1000,
+	"bail": true,
+	"exit": true,
+	"package": "./package.json"
+}
