@@ -15,5 +15,11 @@
  },
  "checkers": ["typescript"],
  "tsconfigFile": "tsconfig.json",
- "allowConsoleColors": true
+ "allowConsoleColors": true,
+ "mutate": [
+	 "src/**/*.ts",
+	 "!src/config/HttpConfig.ts",
+	 "!src/types/**",
+	 "!src/app.ts"
+	]
 }
