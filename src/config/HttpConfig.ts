@@ -15,15 +15,17 @@ export default class HttpConfig {
 		const HTTP_PORT = process.env.HTTP_PORT || 80
 		const  HTTPS_PORT = process.env.HTTPS_PORT || 443
 
-		const options = {
-			key: fs.readFileSync('./certs/private.key', 'utf8')
-			, cert: fs.readFileSync('./certs/certificate.crt', 'utf8')
-			, ca: fs.readFileSync('./certs/ca_bundle.crt', 'utf-8')
+		if (process.env.NODE_ENV === 'testss') {
+			const options = {
+				key: fs.readFileSync('./certs/private.key', 'utf8')
+				, cert: fs.readFileSync('./certs/certificate.crt', 'utf8')
+				, ca: fs.readFileSync('./certs/ca_bundle.crt', 'utf-8')
+			}
+
+			console.log(`App starting on port ${HTTP_PORT} for unsecured connections and ${HTTPS_PORT} for secured connections`)
+
+			https.createServer(options, app).listen(HTTPS_PORT)
+			http.createServer(app).listen(HTTP_PORT)
 		}
-
-		console.log(`App starting on port ${HTTP_PORT} for unsecured connections and ${HTTPS_PORT} for secured connections`)
-
-		https.createServer(options, app).listen(HTTPS_PORT)
-		http.createServer(app).listen(HTTP_PORT)
 	}
 }
