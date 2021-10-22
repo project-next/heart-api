@@ -7,59 +7,7 @@ import moize from 'moize'
 import HeartAPIError from '@error/HeartAPIError'
 import YouTubeUploadsResponse, { FormattedUploadResponse } from '../types/YouTubeUploadsTypes'
 import YouTubeAPIError from '@error/YouTubeAPIError'
-
-type YouTubeVideo = {
-	kind: string
-	etag: string
-	id: string
-	snippet: {
-		publishedAt: string;
-		channelId: string,
-		title: string,
-		description: string,
-		thumbnails: {
-			default: {
-				url: string
-				width: string
-				height: string
-			}
-			medium: {
-				url: string
-				width: string
-				height: string
-			}
-			high: {
-				url: string
-				width: string
-				height: string
-			}
-			standard: {
-				url: string
-				width: string
-				height: string
-			}
-			maxres: {
-				url: string
-				width: string
-				height: string
-			}
-		}
-		channelTitle: string
-		type: string
-	}
-	contentDetails: {
-		upload: {
-			videoId: string
-		}
-	}
-}
-
-type YouTubeVideoUploadsResponse = {
-	kind: string
-	etag: string,
-	items: YouTubeVideo[]
-}
-
+import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeVideoUploads'
 
 
 /**
@@ -81,7 +29,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 	}
 	else {
 		await memoizedYouTubeRequest(req.query.channelId.toString())
-			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsResponse>) => {
+			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
 				const videoIds: string[] = []
 
 				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse | void => {
