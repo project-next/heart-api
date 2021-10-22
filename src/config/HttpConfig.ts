@@ -15,7 +15,7 @@ export default class HttpConfig {
 		const HTTP_PORT = process.env.HTTP_PORT || 80
 		const  HTTPS_PORT = process.env.HTTPS_PORT || 443
 
-		if (process.env.NODE_ENV === 'testss') {
+		if (process.env.NODE_ENV !== 'test') {
 			const options = {
 				key: fs.readFileSync('./certs/private.key', 'utf8')
 				, cert: fs.readFileSync('./certs/certificate.crt', 'utf8')

@@ -16,9 +16,9 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 	let status: number
 	let json: GiveawayInfo | HeartAPIError
 
-	if (req.query == null || req.query.videoId == null || req.query.giveAwayCode == null) {
+	if (req.query?.videoId == null || req.query?.giveAwayCode == null) {
 		status = 400
-		json = new HeartAPIError("Missing required query params.", status)
+		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
 	} else {
 		try {
 			let potentialWinners: YouTubeAPIResponseItem[] = []
@@ -38,7 +38,7 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 	}
 
 	res.status(status!)
-	res.json(json!)
+	res.json(json)
 	res.end()
 }
 

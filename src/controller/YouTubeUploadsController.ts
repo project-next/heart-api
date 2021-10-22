@@ -8,7 +8,7 @@ import HeartAPIError from '@error/HeartAPIError'
 import YouTubeUploadsResponse, { FormattedUploadResponse } from '../types/YouTubeUploadsTypes'
 import YouTubeAPIError from '@error/YouTubeAPIError'
 
-type YouTubeAPIResponse = {
+type YouTubeVideo = {
 	kind: string
 	etag: string
 	id: string
@@ -54,10 +54,10 @@ type YouTubeAPIResponse = {
 	}
 }
 
-type YouTubeAPIResponse2 = {
+type YouTubeVideoUploadsResponse = {
 	kind: string
 	etag: string,
-	items: YouTubeAPIResponse[]
+	items: YouTubeVideo[]
 }
 
 
@@ -72,19 +72,19 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 	let status: number
 	let json: YouTubeUploadsResponse | HeartAPIError
 
-	if (req.query == null || req.query.key == null || req.query.channelId == null) {
+	if (req.query?.key == null || req.query?.channelId == null) {
 		status = 400
-		json = new HeartAPIError('Missing required query params.', status)
+		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
 	} else if((!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.query.channelId.toString()))) {	// prevent malicious use of API
 		status = 401
 		json = new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status)
 	}
 	else {
 		await memoizedYouTubeRequest(req.query.channelId.toString())
-			.then((ytResponse: AxiosResponse<YouTubeAPIResponse2>) => {
+			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsResponse>) => {
 				const videoIds: string[] = []
 
-				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeAPIResponse): FormattedUploadResponse | void => {
+				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse | void => {
 					if (youTubeVidInfo.snippet.type === 'upload') {
 						const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
 						videoIds.push(videoId)

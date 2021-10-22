@@ -5,15 +5,16 @@ import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../types/YouTubeVideoInfoTypes'
 import moize from 'moize'
 import YouTubeAPIError from '@error/YouTubeAPIError'
+import Constants from '@helper/Constants'
 
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response) {
 	let status: number
 	let json: VideoInfoResponse | HeartAPIError
 
-	if (req.query == null || req.query.videoId == null) {
+	if (req.query?.videoId == null) {
 		status = 400
-		json = new HeartAPIError("Missing required query params.", status)
+		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
 	} else {
 		await memoizedYouTubeRequest(req.query.videoId as string)
 			.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {

@@ -8,4 +8,6 @@ export default class Constants {
 	static readonly RBF_CHANNEL_ID = 'UCKSWgpqi8BnNgDYh_jwYQNw'
 
 	static readonly VALID_YOUTUBE_CHANNEL_IDS: string[] = [Constants.SKC_CHANNEL_ID, Constants.RBF_CHANNEL_ID]
+
+	static readonly MISSING_REQUIRED_PARAM_MESSAGE = "Missing required query params"
 }
