@@ -1,7 +1,7 @@
 import rewire from 'rewire'
 import { expect } from 'chai'
 import { AxiosResponse } from 'axios'
-import {VideoInfoResponse, YouTubeAPIResponse} from '../../src/types/YouTubeVideoInfoTypes.d'
+import {VideoInfoResponse, YouTubeAPIResponse} from '../../src/types/YouTubeVideoInfoTypes'
 
 describe('YouTubeVideoInfo tests', () => {
 	const _YouTubeVideoInfoResponse = rewire('@controller/YouTubeVideoInfoController').__get__('getVideoInfoResponse')
