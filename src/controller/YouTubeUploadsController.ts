@@ -1,13 +1,12 @@
-
 import { Request, Response } from 'express'
 import { AxiosError, AxiosResponse } from 'axios'
 import Constants from '@helper/Constants'
 import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import moize from 'moize'
 import HeartAPIError from '@error/HeartAPIError'
-import YouTubeUploadsResponse, { FormattedUploadResponse } from '../types/YouTubeUploadsTypes'
+import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes'
+import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/HeartAPIYouTubeTypes'
 import YouTubeAPIError from '@error/YouTubeAPIError'
-import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeVideoUploads'
 
 
 /**
@@ -47,7 +46,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 						}
 					}
 				}) as FormattedUploadResponse[]
-				json = new YouTubeUploadsResponse(formattedYtResponse, formattedYtResponse.length)
+				json = {videos: formattedYtResponse, total: formattedYtResponse.length}
 
 			})
 			.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())

@@ -2,7 +2,8 @@ import { Request, Response } from 'express'
 import HeartAPIError from '@error/HeartAPIError'
 import { AxiosError, AxiosResponse } from 'axios'
 import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
-import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../types/YouTubeVideoInfoTypes'
+import { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes'
+import { VideoInfoResponse } from '../types/HeartAPIYouTubeTypes'
 import moize from 'moize'
 import YouTubeAPIError from '@error/YouTubeAPIError'
 import Constants from '@helper/Constants'
@@ -36,8 +37,8 @@ const memoizedYouTubeRequest = moize(async (videoId: string): Promise<VideoInfoR
 				id: videoId
 			}
 		})
-		.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-			json = (ytResponse.data == null)? new HeartAPIError("YouTube API returned empty object", 500) : getVideoInfoResponse(ytResponse.data)
+		.then((ytResponse: AxiosResponse<YouTubeAPIUploadsResponse>) => {
+			json = (ytResponse.data == null)? new HeartAPIError("YouTube API returned empty object", 500) : parseYouTubeResponse(ytResponse.data)
 		})
 		.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
 
@@ -45,11 +46,11 @@ const memoizedYouTubeRequest = moize(async (videoId: string): Promise<VideoInfoR
 }, { maxAge: 1000 * 60 * 10, updateExpire: false })
 
 
-function getVideoInfoResponse(youTubeAPIResponse: YouTubeAPIResponse): VideoInfoResponse {
-	if (youTubeAPIResponse.items == null || youTubeAPIResponse.items.length === 0)
+function parseYouTubeResponse(YouTubeAPIUploadsResponse: YouTubeAPIUploadsResponse): VideoInfoResponse {
+	if (YouTubeAPIUploadsResponse.items == null || YouTubeAPIUploadsResponse.items.length === 0)
 		return { validVideo: false } as VideoInfoResponse
 
-	const info: YouTubeAPIResponseItem = youTubeAPIResponse.items[0]
+	const info: YouTubeUploadItem = YouTubeAPIUploadsResponse.items[0]
 
 	return {
 		validVideo: true,
