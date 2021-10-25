@@ -27,30 +27,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 		json = new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status)
 	}
 	else {
-		await memoizedYouTubeRequest(req.query.channelId.toString())
-			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
-				const videoIds: string[] = []
-
-				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse | void => {
-					if (youTubeVidInfo.snippet.type === 'upload') {
-						const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
-						videoIds.push(videoId)
-
-						return {
-							id: videoId
-							, title: youTubeVidInfo.snippet.title
-							, description: youTubeVidInfo.snippet.description
-							, publishedAt: youTubeVidInfo.snippet.publishedAt
-							, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
-							, url: `https://www.youtube.com/watch?v=${videoId}`
-						}
-					}
-				}) as FormattedUploadResponse[]
-				json = {videos: formattedYtResponse, total: formattedYtResponse.length}
-
-			})
-			.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
-
+		json = await memoizedYouTubeRequest(req.query.channelId.toString())
 		status = (json! instanceof HeartAPIError)? json.code : 200
 	}
 
@@ -63,12 +40,38 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 /**
  * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
 */
-const memoizedYouTubeRequest = moize((channelId: string) => {
-	return YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG
+const memoizedYouTubeRequest = moize(async (channelId: string): Promise<YouTubeUploadsResponse | HeartAPIError> => {
+	let json: YouTubeUploadsResponse | HeartAPIError
+
+	await YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG
 		.get('', {
 				params: {
 					channelId: channelId
 				}
 			}
 		)
+		.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
+			const videoIds: string[] = []
+
+			const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse | void => {
+				if (youTubeVidInfo.snippet.type === 'upload') {
+					const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
+					videoIds.push(videoId)
+
+					return {
+						id: videoId
+						, title: youTubeVidInfo.snippet.title
+						, description: youTubeVidInfo.snippet.description
+						, publishedAt: youTubeVidInfo.snippet.publishedAt
+						, thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url
+						, url: `https://www.youtube.com/watch?v=${videoId}`
+					}
+				}
+			}) as FormattedUploadResponse[]
+			json = {videos: formattedYtResponse, total: formattedYtResponse.length}
+
+		})
+		.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
+
+		return json!
 }, { maxAge: 1000 * 60 * 15, updateExpire: false })
