@@ -1,5 +1,5 @@
 import { Express, Request, Response, NextFunction } from 'express'
-import HeartAPIError from '../error/HeartAPIError'
+import HeartAPIError from '@error/HeartAPIError'
 
 /**
  * Contains methods to configure common error handling for the Express API.

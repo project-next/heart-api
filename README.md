@@ -35,4 +35,4 @@ Unit tests require certain env variables that are configured during script execu
 
 ### Integration Tests
 
-Cucumber.js is the only library used to create and execute integration tests. The file *cucumber.js* includes configurations to modify the default functionality of the library.
+[Cucumber.js](https://github.com/cucumber/cucumber-js/tree/master) is the only library used to create and execute integration tests. The file *cucumber.js* includes configurations to modify the default functionality of the library.

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import Constants from '../helper/Constants'
-import HeartAPIError from '../error/HeartAPIError'
+import Constants from '@helper/Constants'
+import HeartAPIError from '@error/HeartAPIError'
 
 export default function validateKeyCB(req: Request, res: Response, next: NextFunction) {
 	if (req.query.key == null) {

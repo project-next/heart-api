@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
-import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
-import Constants from '../helper/Constants'
-import HeartAPIError from '../error/HeartAPIError'
+import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
+import Constants from '@helper/Constants'
+import HeartAPIError from '@error/HeartAPIError'
 import { AxiosError, AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
-import { YouTubeAPIResponse, YouTubeAPIResponseItem, GiveawayInfo } from '../types/YouTubeGiveAwayTypes'
-import YouTubeAPIError from '../error/YouTubeAPIError'
+import { YouTubeAPIVideoCommentsResponse, YouTubeComment } from '../types/YouTubeAPIVideoTypes'
+import { GiveawayInfo } from '../types/HeartAPIYouTubeTypes'
+import YouTubeAPIError from '@error/YouTubeAPIError'
 
 
 /**
@@ -16,12 +17,12 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 	let status: number
 	let json: GiveawayInfo | HeartAPIError
 
-	if (req.query == null || req.query.videoId == null || req.query.giveAwayCode == null) {
+	if (req.query?.videoId == null || req.query?.giveAwayCode == null) {
 		status = 400
-		json = new HeartAPIError("Missing required query params.", status)
+		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
 	} else {
 		try {
-			let potentialWinners: YouTubeAPIResponseItem[] = []
+			let potentialWinners: YouTubeComment[] = []
 			let hasMoreEntries: boolean
 
 			do {
@@ -31,14 +32,14 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 			const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
 			json = getRandomWinner(filteredPotentialWinners, req.query.giveAwayCode.toString())
 		} catch(err) {
-			json = err
+			json = err as HeartAPIError
 		}
 
 		status = (json instanceof HeartAPIError)? json.code : 200
 	}
 
 	res.status(status!)
-	res.json(json!)
+	res.json(json)
 	res.end()
 }
 
@@ -51,7 +52,7 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
  * @param pageToken
  * @returns
  */
-async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], giveAwayPhrase: string
+async function getGiveAwayWinner(potentialWinners: YouTubeComment[], giveAwayPhrase: string
 	, videoId: string, pageToken?: string): Promise<boolean> {
 	const params = (pageToken == null)? {
 		searchTerms: giveAwayPhrase
@@ -71,7 +72,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], giv
 			params: params
 		})
 		.then(async (ytResponse: AxiosResponse) => {
-			const response: YouTubeAPIResponse = ytResponse.data
+			const response: YouTubeAPIVideoCommentsResponse = ytResponse.data as YouTubeAPIVideoCommentsResponse
 
 			potentialWinners.push(...response.items)
 
@@ -96,7 +97,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeAPIResponseItem[], giv
  * @param potentialWinners array containing potential winners.
  * @returns modification of the input array containing only the items that pass through filters.
  */
-function filterPotentialWinners(potentialWinners: YouTubeAPIResponseItem[]): YouTubeAPIResponseItem[] {
+function filterPotentialWinners(potentialWinners: YouTubeComment[]): YouTubeComment[] {
 	// remove comments that I might make - preventing me from winning my own giveaway 🥴
 	potentialWinners = potentialWinners
 		.filter(
@@ -107,9 +108,9 @@ function filterPotentialWinners(potentialWinners: YouTubeAPIResponseItem[]): You
 		Uses channel id as a unique identifier so a user can only "enter" once. This will prevent a user from making multiple comments to try to win.
 		Takes advantage of Map objects key uniqueness to save both the original entry information as the value and the channel id as the key.
 	*/
-	const uniqueEntries: Map<string, YouTubeAPIResponseItem> = new Map(
+	const uniqueEntries: Map<string, YouTubeComment> = new Map(
 		potentialWinners
-			.map((potentialWinner: YouTubeAPIResponseItem) => [potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value, potentialWinner])
+			.map((potentialWinner: YouTubeComment) => [potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value, potentialWinner])
 	)
 
 	return Array.from(uniqueEntries.values())
@@ -122,7 +123,7 @@ function filterPotentialWinners(potentialWinners: YouTubeAPIResponseItem[]): You
  * @param giveAwayPhrase the valid phrase users need to type in their comment to be considered as an entry for the giveaway.
  * @returns object the client will receive in the body.
  */
-function getRandomWinner(filteredPotentialWinners: readonly YouTubeAPIResponseItem[], giveAwayPhrase: string): GiveawayInfo {
+function getRandomWinner(filteredPotentialWinners: readonly YouTubeComment[], giveAwayPhrase: string): GiveawayInfo {
 	if (filteredPotentialWinners.length === 0) {
 		return {
 			totalEntries: 0

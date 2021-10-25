@@ -1,4 +1,4 @@
-export type ytGlobalError = {
+export type YouTubeAPIGlobalError = {
 	error: {
 		errors: [
 			{

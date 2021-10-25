@@ -1,30 +1,23 @@
 import { Request, Response } from 'express'
-import HeartAPIError from '../error/HeartAPIError'
+import HeartAPIError from '@error/HeartAPIError'
 import { AxiosError, AxiosResponse } from 'axios'
-import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig'
-import { VideoInfoResponse, YouTubeAPIResponse, YouTubeAPIResponseItem } from '../types/YouTubeVideoInfoTypes'
+import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
+import { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes'
+import { VideoInfoResponse } from '../types/HeartAPIYouTubeTypes'
 import moize from 'moize'
-import YouTubeAPIError from '../error/YouTubeAPIError'
+import YouTubeAPIError from '@error/YouTubeAPIError'
+import Constants from '@helper/Constants'
 
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response) {
 	let status: number
 	let json: VideoInfoResponse | HeartAPIError
 
-	if (req.query == null || req.query.videoId == null) {
+	if (req.query?.videoId == null) {
 		status = 400
-		json = new HeartAPIError("Missing required query params.", status)
+		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
 	} else {
-		await memoizedYouTubeRequest(req.query.videoId as string)
-			.then((ytResponse: AxiosResponse<YouTubeAPIResponse>) => {
-				if (ytResponse.data == null) {
-					json = new HeartAPIError("YouTube API returned empty object", 500)
-				} else {
-					json = getVideoInfoResponse(ytResponse.data)
-				}
-			})
-			.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
-
+		json = await memoizedYouTubeRequest(req.query.videoId as string)
 		status = (json! instanceof HeartAPIError)? json.code : 200
 	}
 
@@ -34,27 +27,30 @@ export default async function youTubeVideoInfoControllerCB(req: Request, res: Re
 }
 
 
-const memoizedYouTubeRequest = moize((videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> => {
-	return getYoutubeRequest(videoId)
-}, { maxAge: 1000 * 60 * 3, updateExpire: false })
+const memoizedYouTubeRequest = moize(async (videoId: string): Promise<VideoInfoResponse | HeartAPIError> => {
+	let json: VideoInfoResponse | HeartAPIError
 
-
-function getYoutubeRequest(videoId: string): Promise<AxiosResponse<YouTubeAPIResponse>> {
-	return YouTubeAxiosConfig
+	await YouTubeAxiosConfig
 		.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG
 		.get('', {
 			params: {
 				id: videoId
 			}
 		})
-}
+		.then((ytResponse: AxiosResponse<YouTubeAPIUploadsResponse>) => {
+			json = (ytResponse.data == null)? new HeartAPIError("YouTube API returned empty object", 500) : parseYouTubeResponse(ytResponse.data)
+		})
+		.catch((error: AxiosError) => json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError())
+
+	return json!
+}, { maxAge: 1000 * 60 * 10, updateExpire: false })
 
 
-function getVideoInfoResponse(youTubeAPIResponse: YouTubeAPIResponse): VideoInfoResponse {
-	if (youTubeAPIResponse.items == null || youTubeAPIResponse.items.length === 0)
+function parseYouTubeResponse(YouTubeAPIUploadsResponse: YouTubeAPIUploadsResponse): VideoInfoResponse {
+	if (YouTubeAPIUploadsResponse.items == null || YouTubeAPIUploadsResponse.items.length === 0)
 		return { validVideo: false } as VideoInfoResponse
 
-	const info: YouTubeAPIResponseItem = youTubeAPIResponse.items[0]
+	const info: YouTubeUploadItem = YouTubeAPIUploadsResponse.items[0]
 
 	return {
 		validVideo: true,

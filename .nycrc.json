@@ -1,17 +1,14 @@
 {
 	"extension": [
-		".ts",
-		".tsx"
+		".ts"
 	],
 	"include": [
 		"src/**"
 	],
 	"exclude": [
-		"src/App.ts",
-		"src/service/**",
+		"src/app.ts",
 		"src/error/**",
-		"src/constants/**",
-		"src/model/**"
+		"src/types/**"
 	],
 	"reporter": [
 		"html",

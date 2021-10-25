@@ -10,7 +10,7 @@
 		"allowJs": false,
 		"checkJs": false,
 		"moduleResolution": "node",
-		"rootDir": "src",
+		"rootDir": ".",
 		"noImplicitReturns": true,
 		"skipLibCheck": false,
 		"esModuleInterop": true,
@@ -33,14 +33,21 @@
 		"noUnusedLocals": true,
 
 		"outDir": "dist",
-		"baseUrl": ".",
+		"baseUrl": "./",
 		"paths": {
 			"*": [
-				"node_modules/*"
-			]
+				"node_modules/*",
+			],
+			"@config/*": ["./src/config/*"],
+			"@controller/*": ["./src/controller/*"],
+			"@error/*": ["./src/error/*"],
+			"@helper/*": ["./src/helper/*"],
+			"@middleware/*": ["./src/middleware/*"],
+			"@router/*": ["./src/router/*"]
 		}
 	},
 	"include": [
-		"src/**/*"
+		"src/**/*",
+		"unit-test/**/*"
 	]
 }

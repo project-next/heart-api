@@ -1,16 +1,16 @@
 import { AxiosError } from 'axios'
-import { ytGlobalError } from '../types/YouTubeError'
-import HeartAPIError from '../error/HeartAPIError'
+import { YouTubeAPIGlobalError } from '../types/YouTubeAPIError'
+import HeartAPIError from '@error/HeartAPIError'
 
 export default class YouTubeAPIError {
-	private ytError: ytGlobalError
+	private ytError: YouTubeAPIGlobalError
 	private is404: boolean = false
 
 	constructor(error: AxiosError) {
 		if (error.response?.status === 404) {
 			this.is404 = true
 		}
-		this.ytError = error.response!.data
+		this.ytError = error.response!.data as YouTubeAPIGlobalError
 	}
 
 	convertYTErrorToHeartAPIError(): HeartAPIError {

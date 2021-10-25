@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
-import { status } from '../types/StatusTypes'
 
 
-const statusMessage = { status: 'API up and running', version: process.env.npm_package_version } as status
+const statusMessage = {
+	status: 'API up and running',
+	version: process.env.npm_package_version
+}
 
 /**
  * Logic for status endpoint.
