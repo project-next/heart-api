@@ -5,7 +5,7 @@ import chaiHttp from 'chai-http'
 import app from '../../src/app'
 import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import sinon, { SinonStub } from 'sinon'
-import { YouTubeAPIResponse } from '../../src/types/YouTubeVideoInfoTypes'
+import { YouTubeAPIUploadsResponse } from '../../src/types/YouTubeAPIVideoTypes'
 
 describe('YouTubeVideoInfo tests', () => {
 	chai.use(chaiHttp)
@@ -102,7 +102,7 @@ describe('YouTubeVideoInfo tests', () => {
 				totalResults: 0,
 				resultsPerPage: 0
 			}
-		} as YouTubeAPIResponse
+		} as YouTubeAPIUploadsResponse
 		stub.resolves({status: 200, data: returnData})
 
 		chai.request(app).get(`/v1/yt/video/info?videoId=RANDOM&key=${API_KEY}`).end((err, res) => {
@@ -139,7 +139,7 @@ describe('YouTubeVideoInfo tests', () => {
 				totalResults: 1,
 				resultsPerPage: 1
 			}
-		} as YouTubeAPIResponse
+		} as YouTubeAPIUploadsResponse
 		stub.resolves({status: 200, data: returnData})
 
 		chai.request(app).get(`/v1/yt/video/info?videoId=RANDOM-2&key=${API_KEY}`).end((err, res) => {

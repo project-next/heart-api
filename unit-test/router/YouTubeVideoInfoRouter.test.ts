@@ -1,20 +1,21 @@
 import rewire from 'rewire'
 import { expect } from 'chai'
 import { AxiosResponse } from 'axios'
-import {VideoInfoResponse, YouTubeAPIResponse} from '../../src/types/YouTubeVideoInfoTypes'
+import { YouTubeAPIUploadsResponse } from '../../src/types/YouTubeAPIVideoTypes'
+import { VideoInfoResponse } from '../../src/types/HeartAPIYouTubeTypes'
 
 describe('YouTubeVideoInfo tests', () => {
 	const _YouTubeVideoInfoResponse = rewire('@controller/YouTubeVideoInfoController').__get__('getVideoInfoResponse')
 	const _YouTubeVideoRequest = rewire('@controller/YouTubeVideoInfoController').__get__('getYoutubeRequest')
 
 	it('Checking creation of YouTube API request', () => {
-		const promise: Promise<AxiosResponse<YouTubeAPIResponse>> = _YouTubeVideoRequest("123")
+		const promise: Promise<AxiosResponse<YouTubeAPIUploadsResponse>> = _YouTubeVideoRequest("123")
 		expect(promise).to.not.be.null
 	})
 
 
 	it('Checking creation of Heart API response', () => {
-		const ytResponse: YouTubeAPIResponse = {
+		const ytResponse: YouTubeAPIUploadsResponse = {
 			kind: "youtube#videoListResponse",
 			etag: "lImRuGZWGeI7f_73aeI5aAXb0HY",
 			items: [
@@ -58,7 +59,7 @@ describe('YouTubeVideoInfo tests', () => {
 
 
 	it('Checking creation of Heart API response - no video found for given ID', () => {
-		const ytResponse: YouTubeAPIResponse = {
+		const ytResponse: YouTubeAPIUploadsResponse = {
 			kind: "youtube#videoListResponse",
 			etag: "YIUPVpqNjppyCWOZfL-19bLb7uk",
 			items: [],
