@@ -50,7 +50,7 @@
     "@types/lodash.sample": "4.2.6",
     "@types/mocha": "9.0.0",
     "@types/morgan": "1.9.3",
-    "@types/node": "15.6.1",
+    "@types/node": "16.11.6",
     "@types/rewire": "2.5.28",
     "@types/sinon": "10.0.5",
     "chai": "4.3.4",
