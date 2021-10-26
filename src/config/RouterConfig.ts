@@ -3,9 +3,10 @@ import { Express } from 'express'
 import ytVideoInfoRouter from '@router/YouTubeVideoInfoRouter'
 import ytGiveawayRouter from '@router/YouTubeGiveawayRouter'
 import ytChannelActivityRouter from '@router/YouTubeUploadsRouter'
+import jwtRouter from '@router/JWTRouter'
 
 export default class Routes {
-	static BASE_URI = '/v1'
+	static BASE_URI = '/api/v1'
 
 	/**
 	 * Configures Express API to open up routes using Router objects.
@@ -17,5 +18,6 @@ export default class Routes {
 		app.use(Routes.BASE_URI, ytChannelActivityRouter)
 		app.use(Routes.BASE_URI, ytVideoInfoRouter)
 		app.use(Routes.BASE_URI, ytGiveawayRouter)
+		app.use(Routes.BASE_URI, jwtRouter)
 	}
 }
