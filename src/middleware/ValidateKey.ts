@@ -1,23 +1,40 @@
 import { Request, Response, NextFunction } from 'express'
-import Constants from '@helper/Constants'
-import HeartAPIError from '@error/HeartAPIError'
+import fs from 'fs'
+import jwt, { JwtPayload, SignOptions, VerifyErrors } from 'jsonwebtoken'
+
+const publicKey = fs.readFileSync('./certs/jwt.pub')
+
+const signature: SignOptions = {
+	issuer: 'heart-api',
+	subject: 'authentication',
+	audience: 'skc',
+	expiresIn: "15m",
+	algorithm: "RS256",
+	jwtid: "id"
+}
+
 
 export default function validateKeyCB(req: Request, res: Response, next: NextFunction) {
-	if (req.query.key == null) {
-		console.log(`Client did not send an API key`)
-		const status = 401
+	const authorizationHeaderTokens: string[] = (req.headers.authorization as string).split(' ')
+	const token = (authorizationHeaderTokens.length === 2)? authorizationHeaderTokens[1] : ''
 
-		res.status(status)
-		res.json(new HeartAPIError("API key is missing", status))
-		res.send()
-	} else if (req.query.key !== Constants.HEART_API_KEY) {
-		console.log(`Client is using incorrect API key, key: ${req.query.key}`)
-		const status = 403
-
-		res.status(status)
-		res.json(new HeartAPIError("API key is incorrect", status))
-		res.send()
-	} else {
-		next()
-	}
+	jwt.verify(token, publicKey, signature, (err: VerifyErrors | null, payload: JwtPayload) => {
+		if (err) {
+			switch(err.name) {
+				case 'TokenExpiredError':
+					res.send('Provided JWT has expired - no access granted')
+					break
+				case 'JsonWebTokenError':
+					console.log(err)
+					res.send('No JWT token was provided in Authorization header')
+					break
+				default:
+					res.json(err)
+			}
+		}
+		else {
+			console.debug('Successfully authenticated with JWT.')
+			next()
+		}
+	})
 }
