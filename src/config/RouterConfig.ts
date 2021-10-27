@@ -1,10 +1,10 @@
 import { Express } from 'express'
-import jwtRouter from '@router/JWTRouter'
 import validateKeyCB from '@middleware/ValidateKey'
 import youTubeGiveAwayControllerCB from '@controller/YouTubeGiveAwayController'
 import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsController'
 import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
 import statusControllerCB from '@controller/StatusController'
+import { createJwtControllerCB } from '@controller/JWTController'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'
@@ -20,6 +20,6 @@ export default class Routes {
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/channel/uploads`, youTubeChannelActivityControllerCB)
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/info`, validateKeyCB, youTubeVideoInfoControllerCB)
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateKeyCB, youTubeGiveAwayControllerCB)
-		app.use(Routes.BASE_URI, jwtRouter)
+		app.use(Routes.BASE_URI, createJwtControllerCB)
 	}
 }

@@ -1,4 +1,3 @@
-import { Router } from 'express'
 import { Request, Response } from 'express'
 import fs from 'fs'
 import jwt, { SignOptions } from 'jsonwebtoken'
@@ -14,9 +13,7 @@ const signature: SignOptions = {
 	jwtid: "id"
 }
 
-
-const jwtRouter = Router()
-jwtRouter.get('/auth/jwt', (req: Request, res: Response) => {
+export const createJwtControllerCB = (req: Request, res: Response) => {
 	const payload = {
 		dev: 'javi'
 	}
@@ -28,6 +25,4 @@ jwtRouter.get('/auth/jwt', (req: Request, res: Response) => {
 		res.json({jwt: token})
 		res.end()
 	})
-})
-
-export default jwtRouter
+}
