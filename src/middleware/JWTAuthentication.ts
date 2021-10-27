@@ -1,3 +1,4 @@
+import HeartAPIError from '@error/HeartAPIError'
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 import jwt, { JwtPayload, SignOptions, VerifyErrors } from 'jsonwebtoken'
@@ -22,11 +23,14 @@ export default function validateKeyCB(req: Request, res: Response, next: NextFun
 		if (err) {
 			switch(err.name) {
 				case 'TokenExpiredError':
-					res.send('Provided JWT has expired - no access granted')
+					console.error('Client provided token that has expired.')
+					res.status(401)
+					res.json(new HeartAPIError('Provided JWT has expired - no access granted', 401))
 					break
 				case 'JsonWebTokenError':
-					console.log(err)
-					res.send('No JWT token was provided in Authorization header')
+					console.error(`Error encountered during JWT verification ${err.message}`)
+					res.status(401)
+					res.json(new HeartAPIError(err.message, 401))
 					break
 				default:
 					res.json(err)
