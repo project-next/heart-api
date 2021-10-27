@@ -1,12 +1,14 @@
-import statusRouter from '@router/StatusRouter'
 import { Express } from 'express'
-import ytVideoInfoRouter from '@router/YouTubeVideoInfoRouter'
-import ytGiveawayRouter from '@router/YouTubeGiveawayRouter'
-import ytChannelActivityRouter from '@router/YouTubeUploadsRouter'
 import jwtRouter from '@router/JWTRouter'
+import validateKeyCB from '@middleware/ValidateKey'
+import youTubeGiveAwayControllerCB from '@controller/YouTubeGiveAwayController'
+import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsController'
+import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
+import statusControllerCB from '@controller/StatusController'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'
+	static YT_FUNCTIONALITY_BASE_URI = `${Routes.BASE_URI}/yt`
 
 	/**
 	 * Configures Express API to open up routes using Router objects.
@@ -14,10 +16,10 @@ export default class Routes {
 	 * @param app reference to Express API object that will be modified.
 	 */
 	static setupRoutes(app: Express): void {
-		app.use(Routes.BASE_URI, statusRouter)
-		app.use(Routes.BASE_URI, ytChannelActivityRouter)
-		app.use(Routes.BASE_URI, ytVideoInfoRouter)
-		app.use(Routes.BASE_URI, ytGiveawayRouter)
+		app.get(`${Routes.BASE_URI}/status`, statusControllerCB)
+		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/channel/uploads`, youTubeChannelActivityControllerCB)
+		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/info`, validateKeyCB, youTubeVideoInfoControllerCB)
+		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateKeyCB, youTubeGiveAwayControllerCB)
 		app.use(Routes.BASE_URI, jwtRouter)
 	}
 }

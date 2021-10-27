@@ -19,7 +19,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 	let status: number
 	let json: YouTubeUploadsResponse | HeartAPIError
 
-	if (req.query?.key == null || req.query?.channelId == null) {
+	if (req.query?.channelId == null) {
 		status = 400
 		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
 	} else if((!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.query.channelId.toString()))) {	// prevent malicious use of API

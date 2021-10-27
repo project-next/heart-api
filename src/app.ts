@@ -5,7 +5,6 @@ import cors from 'cors'
 import HttpConfig from '@config/HttpConfig'
 import Routes from '@config/RouterConfig'
 import RequestErrorHandling from '@config/RequestErrorHandlingConfig'
-import validateKeyCB from '@middleware/ValidateKey'
 
 
 class App {
@@ -30,8 +29,6 @@ class App {
 		this.express.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
 		this.express.use(express.urlencoded({ extended: true }))
 		this.express.use(express.json())
-
-		this.express.use(validateKeyCB)
 	}
 }
 
