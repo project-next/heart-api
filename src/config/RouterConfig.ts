@@ -1,5 +1,5 @@
 import { Express } from 'express'
-import validateKeyCB from '@middleware/ValidateKey'
+import validateKeyCB from '@middleware/JWTAuthentication'
 import youTubeGiveAwayControllerCB from '@controller/YouTubeGiveAwayController'
 import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsController'
 import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
