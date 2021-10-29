@@ -20,6 +20,6 @@ export default class Routes {
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/channel/uploads`, youTubeChannelActivityControllerCB)
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/info`, validateKeyCB, youTubeVideoInfoControllerCB)
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateKeyCB, youTubeGiveAwayControllerCB)
-		app.use(Routes.BASE_URI, createJwtControllerCB)
+		app.get(`${Routes.BASE_URI}/auth/jwt`, createJwtControllerCB)
 	}
 }
