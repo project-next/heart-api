@@ -5,17 +5,17 @@ import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import sinon, { SinonStub } from 'sinon'
 import { YouTubeAPIUploadsResponse } from '../../src/types/YouTubeAPIVideoTypes'
 import Constants from '@helper/Constants'
-// import * as JWTAuthentication from '@middleware/JWTAuthentication'
+import jwt from 'jsonwebtoken'
 
 describe('YouTubeVideoInfo tests', () => {
 	let youtubeAxiosStub: SinonStub
-	// let jwtStub: SinonStub
+	let jwtStub: SinonStub
 
 	before(() => {
-		// jwtStub = sinon
-		// 	.stub(JWTAuthentication, 'default')
-
-		// jwtStub.returns(null)
+		jwtStub = sinon
+			.stub(jwt, 'verify')
+			.callsFake(() => {
+			})
 	})
 
 
@@ -27,7 +27,7 @@ describe('YouTubeVideoInfo tests', () => {
 
 	afterEach(() => {
 		youtubeAxiosStub.restore()
-		// jwtStub.resetHistory()
+		jwtStub.resetHistory()
 	})
 
 
@@ -35,7 +35,6 @@ describe('YouTubeVideoInfo tests', () => {
 		request(app)
 			.get(`/api/v1/yt/video/info`)
 			.end((err, res) => {
-				console.log(res)
 				expect(res.status).to.equal(400)
 
 				expect(res.body).to.not.be.empty
