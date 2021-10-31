@@ -5,7 +5,7 @@ import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsContro
 import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
 import statusControllerCB from '@controller/StatusController'
 import { createJwtControllerCB } from '@controller/JWTController'
-import { addNewsForService, getNewsForService } from '@controller/News'
+import { addNewsForService, getNewsForService } from '@controller/NewsController'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'
