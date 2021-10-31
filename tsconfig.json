@@ -42,6 +42,7 @@
 			"@controller/*": ["./src/controller/*"],
 			"@error/*": ["./src/error/*"],
 			"@helper/*": ["./src/helper/*"],
+			"@mongo/*": ["./src/mongo/*"],
 			"@middleware/*": ["./src/middleware/*"]
 		}
 	},
