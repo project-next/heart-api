@@ -1,8 +1,8 @@
 import { Schema, Document, model } from 'mongoose'
 
-export type news = Document & {
+export type News = Document & {
 	title: string,
-	body: string,
+	content: string,
 	tags: string[]
 }
 
@@ -14,5 +14,5 @@ const NewsSchema: Schema = new Schema({
 })
 
 
-const NewsModel = model<news>('news', NewsSchema, 'news')
+const NewsModel = model<News>('news', NewsSchema, 'news')
 export default NewsModel
