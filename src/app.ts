@@ -9,13 +9,14 @@ import mongoDBConn from './mongo/Connection'
 
 
 class App {
-	public express = express()
+	public app = express()
 
 	constructor() {
 		mongoDBConn()
+		HttpConfig.setupHttpConnection(this.app)
 		this.applyMiddleware()
-		Routes.setupRoutes(this.express)
-		RequestErrorHandling.setupErrorHandling(this.express)
+		Routes.setupRoutes(this.app)
+		RequestErrorHandling.setupErrorHandling(this.app)
 	}
 
 	private applyMiddleware(): void {
@@ -24,17 +25,15 @@ class App {
 			server will return the allowed CORS functionality and stop processing the rest of the request, ie prevents error due to redirects in pre-flight
 			Should be one of the first middleware added.
 		*/
-		this.express.options('*', cors())
-		this.express.use(cors())	// opens up all CORS settings to clients
+		this.app.options('*', cors())
+		this.app.use(cors())	// opens up all CORS settings to clients
 
-		HttpConfig.setupHttpConnection(this.express)
-
-		this.express.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
-		this.express.use(express.urlencoded({ extended: true }))
-		this.express.use(express.json())
+		this.app.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
+		this.app.use(express.urlencoded({ extended: true }))
+		this.app.use(express.json())
 	}
 
 }
 
-export default new App().express
+export default new App().app
 

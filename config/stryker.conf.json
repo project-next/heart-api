@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": [
+    "html",
+    "clear-text",
+    "progress"
+  ],
+  "testRunner": "mocha",
+  "coverageAnalysis": "perTest",
+  "mochaOptions": {
+	"spec": [ "unit-test/**/*.test.ts" ],
+	"config": "./config/mocharc.json",
+	"async-only": false
+ },
+ "checkers": ["typescript"],
+ "tsconfigFile": "tsconfig.json",
+ "allowConsoleColors": true,
+ "mutate": [
+	 "src/**/*.ts",
+	 "!src/config/HttpConfig.ts",
+	 "!src/types/**",
+	 "!src/app.ts"
+	]
+}
