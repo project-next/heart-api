@@ -42,8 +42,7 @@
 			"@controller/*": ["./src/controller/*"],
 			"@error/*": ["./src/error/*"],
 			"@helper/*": ["./src/helper/*"],
-			"@middleware/*": ["./src/middleware/*"],
-			"@router/*": ["./src/router/*"]
+			"@middleware/*": ["./src/middleware/*"]
 		}
 	},
 	"include": [
