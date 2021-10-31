@@ -5,6 +5,7 @@ import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsContro
 import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
 import statusControllerCB from '@controller/StatusController'
 import { createJwtControllerCB } from '@controller/JWTController'
+import { getNewsForService } from '@controller/News'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'
@@ -21,5 +22,6 @@ export default class Routes {
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/info`, validateKeyCB, youTubeVideoInfoControllerCB)
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateKeyCB, youTubeGiveAwayControllerCB)
 		app.get(`${Routes.BASE_URI}/auth/jwt`, createJwtControllerCB)
+		app.get(`${Routes.BASE_URI}/news`, getNewsForService)
 	}
 }
