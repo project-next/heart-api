@@ -4,7 +4,7 @@ import { News } from '@mongo/models/NewsModel'
 import HeartAPIError from '@error/HeartAPIError'
 import capitalize from 'lodash.capitalize'
 
-export const getNewsForService = async (req: Request, res: Response) => {
+export async function getNewsForService(req: Request, res: Response) {
 	const service = req?.query?.service as string
 	let newsItems: News[]
 
@@ -26,7 +26,7 @@ export const getNewsForService = async (req: Request, res: Response) => {
 }
 
 
-export const addNewsForService = async (req: Request, res: Response) => {
+export async function addNewsForService(req: Request, res: Response) {
 	const title: string | undefined = req?.body?.title as string
 	const content: string | undefined = req?.body?.content as string
 	const tags: string[] | undefined = req?.body?.tags as string[]
