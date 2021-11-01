@@ -8,7 +8,7 @@ const signature: SignOptions = {
 	issuer: 'heart-api',
 	subject: 'authentication',
 	audience: 'skc',
-	expiresIn: "15m",
+	expiresIn: "3d",
 	algorithm: "RS256",
 	jwtid: "id"
 }
