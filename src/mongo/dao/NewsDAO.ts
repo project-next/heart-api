@@ -1,4 +1,3 @@
-import { CallbackError } from "mongoose";
 import NewsModel, { News } from "../models/NewsModel";
 
 export async function getNewsWithTag(tags: string[]): Promise<News[]> {
@@ -6,18 +5,27 @@ export async function getNewsWithTag(tags: string[]): Promise<News[]> {
 }
 
 
-export async function addNews(title: string, content: string, tags: string[]) {
-	NewsModel.init()
+export async function addNews(title: string, content: string, tags: string[]): Promise<boolean> {
+	let isSuccess = true
+
+	await NewsModel
+		.init()
 		.then(async () => {
 			const newsRecord = new NewsModel({title: title, content: content, tags})
 
-			newsRecord.save((err: CallbackError, news: News) => {
+			try {
+				await newsRecord.save()
+			} catch (err) {
 				if (err) {
-					console.log(`An error occurred when attempting to add News record. Err: ${err}, object: ${news}`)
+					console.log(`An error occurred when attempting to add News record. Err: ${err}, object: ${newsRecord}`)
+					isSuccess = false
 				}
-			})
+			}
 		})
 		.catch(err => {
 			console.log(`Error occurred initializing NewsModel: ${err}`)
+			isSuccess = false
 		})
+
+	return isSuccess
 }

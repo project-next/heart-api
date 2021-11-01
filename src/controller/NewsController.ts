@@ -36,6 +36,13 @@ export const addNewsForService = async (req: Request, res: Response) => {
 		res.json(new HeartAPIError("Request body needs 'title' and 'content' values", 422))
 	} else {
 		addNews(capitalize(title), content, tags)
-		res.json("working")
+			.then(isSuccess => {
+				if (isSuccess) {
+					res.json({"status": "DB updated successfully"})
+				} else {
+					res.status(500)
+					res.json(new HeartAPIError("Error updating DB", 500))
+				}
+			})
 	}
 }
