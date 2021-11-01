@@ -6,10 +6,10 @@ export async function getNewsWithTag(tags: string[]): Promise<News[]> {
 }
 
 
-export async function addNews() {
+export async function addNews(title: string, content: string, tags: string[]) {
 	NewsModel.init()
 		.then(async () => {
-			const newsRecord = new NewsModel({title: 'Test', content: '123', tags: ['skc']})
+			const newsRecord = new NewsModel({title: title, content: content, tags})
 
 			newsRecord.save((err: CallbackError, news: News) => {
 				if (err) {
