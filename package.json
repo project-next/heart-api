@@ -8,12 +8,13 @@
     "test": "env-cmd -e test npm run run-mocha-tests",
     "mutation": "env-cmd -e test stryker run config/stryker.conf.json",
     "integration-test": "env-cmd -e test cucumber-js --config config/cucumber.js",
-    "start": "env-cmd -e default nodemon --ext ts --exec ts-node -r tsconfig-paths/register ./src/app.ts",
+    "start": "env-cmd -e dev nodemon --ext ts --exec ts-node -r tsconfig-paths/register ./src/app.ts",
+    "start-prod": "env-cmd -e prod nodemon --ext ts --exec ts-node -r tsconfig-paths/register ./src/app.ts",
     "build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist && cp ./tsconfig.json ./dist",
     "upload-production": "npm run build && bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
     "restage-production": "bash docker-restage.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
     "deploy-production": "npm run upload-production && npm run restage-production",
-    "start-built-api": "env-cmd -e default node -r tsconfig-paths/register -r ts-node/register -r tsconfig-paths/register ./src/app.js",
+    "start-built-api": "env-cmd -e prod node -r tsconfig-paths/register -r ts-node/register -r tsconfig-paths/register ./src/app.js",
     "local-start": "npm run build && cd ./dist && npm run start-built-api",
     "docker-start": "npm run start-built-api"
   },
@@ -36,7 +37,7 @@
     "lodash.uniq": "^4.2.0",
     "logger": "0.0.1",
     "moize": "6.1.0",
-    "mongoose": "^5.13.7",
+    "mongoose": "6.0.12",
     "morgan": "1.10.0"
   },
   "devDependencies": {
@@ -54,7 +55,6 @@
     "@types/lodash.sample": "4.2.6",
     "@types/lodash.uniq": "^4.2.6",
     "@types/mocha": "9.0.0",
-    "@types/mongoose": "^5.11.97",
     "@types/morgan": "1.9.3",
     "@types/node": "16.11.6",
     "@types/rewire": "2.5.28",
