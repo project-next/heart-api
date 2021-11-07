@@ -1,16 +1,15 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { addNews, getNewsWithTag } from '@mongo/dao/NewsDAO'
 import { News } from '@mongo/models/NewsModel'
 import HeartAPIError from '@error/HeartAPIError'
 import capitalize from 'lodash.capitalize'
 import { uniq } from 'lodash'
 
-export async function getNewsForService(req: Request, res: Response) {
+export async function getNewsForService(req: Request, res: Response, next: NextFunction) {
 	const service = req?.query?.service as string
 
 	if (!service) {
-		res.status(422)
-		res.json(new HeartAPIError("Query param 'service' cannot be empty", 422))
+		next(new HeartAPIError("Query param 'service' cannot be empty", 422))
 	} else {
 		let newsItems: News[]
 
@@ -34,7 +33,7 @@ export async function getNewsForService(req: Request, res: Response) {
 }
 
 
-export async function addNewsForService(req: Request, res: Response) {
+export async function addNewsForService(req: Request, res: Response, next: NextFunction) {
 	const title: string | undefined = req?.body?.title as string
 	const content: string | undefined = req?.body?.content as string
 	const tags: string[] | undefined = req?.body?.tags as string[]
@@ -42,8 +41,7 @@ export async function addNewsForService(req: Request, res: Response) {
 	const service: string | undefined = req?.query?.service as string
 
 	if (!(title && content && service)) {
-		res.status(422)
-		res.json(new HeartAPIError("Request body needs 'title' and 'content' values. Query param 'service' cannot be empty.", 422))
+		next(new HeartAPIError("Request body needs 'title' and 'content' values. Query param 'service' cannot be empty.", 422))
 	} else {
 		// add a tag specifying service name if not already present
 		if (tags.indexOf(service) === -1) {
@@ -58,8 +56,7 @@ export async function addNewsForService(req: Request, res: Response) {
 				if (isSuccess) {
 					res.json({"status": "DB updated successfully"})
 				} else {
-					res.status(500)
-					res.json(new HeartAPIError("Error updating DB", 500))
+					next(new HeartAPIError("Error updating DB", 500))
 				}
 			})
 	}

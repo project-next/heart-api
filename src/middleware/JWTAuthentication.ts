@@ -27,16 +27,13 @@ export default function validateJWTMiddleware(req: Request, res: Response, next:
 	} catch (err) {
 		if (err instanceof TokenExpiredError) {
 			console.error('Client provided token that has expired.')
-			res.status(401)
-			res.json(new HeartAPIError('Provided JWT has expired - no access granted', 401))
+			next(new HeartAPIError('Provided JWT has expired - no access granted', 401))
 		} else if (err instanceof JsonWebTokenError) {
 			console.error(`Error encountered during JWT verification ${err.message}`)
-			res.status(401)
-			res.json(new HeartAPIError(err.message, 401))
+			next(new HeartAPIError(err.message, 401))
 		} else if (err instanceof NotBeforeError) {
 			console.error(`JWT time is invalid ${err.message}`)
-			res.status(401)
-			res.json(new HeartAPIError(err.message, 401))
+			next(new HeartAPIError(err.message, 401))
 		}
 	}
 }

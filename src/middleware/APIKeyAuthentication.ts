@@ -12,8 +12,6 @@ export default function apiKeyAuthenticationMiddleware(req: Request, res: Respon
 		next()
 	} else {
 		console.error('User provided incorrect API key.')
-		const err = new HeartAPIError("Incorrect API key", 401)
-		res.status(401)
-		res.json(err)
+		next(new HeartAPIError("Incorrect API key", 401))
 	}
 }
