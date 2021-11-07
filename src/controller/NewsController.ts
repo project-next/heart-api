@@ -26,7 +26,7 @@ export async function getNewsForService(req: Request, res: Response, next: NextF
 		res.json(
 			{
 				"service": service,
-				"items": newsItems!
+				"newsItems": newsItems!
 			}
 		)
 	}
