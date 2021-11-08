@@ -16,7 +16,8 @@
     "deploy-production": "npm run upload-production && npm run restage-production",
     "start-built-api": "env-cmd -e prod node -r tsconfig-paths/register -r ts-node/register -r tsconfig-paths/register ./src/app.js",
     "local-start": "npm run build && cd ./dist && npm run start-built-api",
-    "docker-start": "npm run start-built-api"
+    "docker-start": "npm run start-built-api",
+	 "create-certs": "mkdir certs && doppler secrets get --plain SSL_PRIVATE_KEY > certs/private.key; doppler secrets get --plain SSL_CA_BUNDLE_CRT > certs/ca_bundle.crt; doppler secrets get --plain SSL_CERTIFICATE_CRT > certs/certificate.crt; doppler secrets get --plain MONGO_DB_SSL_CERT > certs/mongoDB-heart-api-X509.pem; doppler secrets get --plain JWT_PRIVATE_KEY > certs/jwt.key; doppler secrets get --plain JWT_PUBLIC_KEY > certs/jwt.pub"
   },
   "keywords": [
     "heart",
