@@ -1,6 +1,7 @@
 export default class Constants {
 	static readonly YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3'
 	static readonly YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY
+	static readonly HEART_API_KEY = process.env.HEART_API_KEY
 
 	static readonly SKC_CHANNEL_ID = 'UCBZ_1wWyLQI3SV9IgLbyiNQ'
 	static readonly RBF_CHANNEL_ID = 'UCKSWgpqi8BnNgDYh_jwYQNw'
