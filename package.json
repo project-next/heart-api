@@ -17,7 +17,9 @@
     "start-built-api": "env-cmd -e prod node -r tsconfig-paths/register -r ts-node/register -r tsconfig-paths/register ./src/app.js",
     "local-start": "npm run build && cd ./dist && npm run start-built-api",
     "docker-start": "npm run start-built-api",
-	 "create-certs": "mkdir certs && doppler secrets get --plain SSL_PRIVATE_KEY > certs/private.key; doppler secrets get --plain SSL_CA_BUNDLE_CRT > certs/ca_bundle.crt; doppler secrets get --plain SSL_CERTIFICATE_CRT > certs/certificate.crt; doppler secrets get --plain MONGO_DB_SSL_CERT > certs/mongoDB-heart-api-X509.pem; doppler secrets get --plain JWT_PRIVATE_KEY > certs/jwt.key; doppler secrets get --plain JWT_PUBLIC_KEY > certs/jwt.pub"
+	 "create-certs": "mkdir certs && doppler secrets get --plain SSL_PRIVATE_KEY > certs/private.key; doppler secrets get --plain SSL_CA_BUNDLE_CRT > certs/ca_bundle.crt; doppler secrets get --plain SSL_CERTIFICATE_CRT > certs/certificate.crt; doppler secrets get --plain MONGO_DB_SSL_CERT > certs/mongoDB-heart-api-X509.pem; doppler secrets get --plain JWT_PRIVATE_KEY > certs/jwt.key; doppler secrets get --plain JWT_PUBLIC_KEY > certs/jwt.pub",
+	 "create-env-file": "doppler secrets --config $DOPPLER_CONFIG download --no-file --format json | jq \"{$DOPPLER_CONFIG: {YOUTUBE_API_KEY: .YOUTUBE_API_KEY, HEART_API_KEY: .HEART_API_KEY, HEART_API_DB_BASE_URI: .HEART_API_DB_BASE_URI, MORGAN_LOG_LEVEL: .MORGAN_LOG_LEVEL}}\" > .env.${DOPPLER_CONFIG}.json",
+    "create-env": "export DOPPLER_CONFIG='dev' && npm run create-env-file; export DOPPLER_CONFIG='prod' && npm run create-env-file; export DOPPLER_CONFIG='test' && npm run create-env-file; jq --tab -s '.[0] * .[1] * .[2]' .env.dev.json .env.test.json .env.prod.json > .env-cmdrc.json; rm .env.dev.json .env.test.json .env.prod.json"
   },
   "keywords": [
     "heart",
