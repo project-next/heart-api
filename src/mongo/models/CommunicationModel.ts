@@ -2,7 +2,8 @@ import { Schema, Document, model } from 'mongoose'
 
 export type Communication = Document & {
 	title: string,
-	content?: string,
+	content: string,
+	service: string,
 	tags?: string[]
 }
 
@@ -10,6 +11,7 @@ export type Communication = Document & {
 const CommunicationSchema: Schema = new Schema({
 	title: { type: String, required: true, unique: true },
 	content: { type: String, required: true, unique: false },
+	service: { type: String, required: true, unique: false },
 	tags: [{ type: String, required: true, unique: false }]
 }, {
 	timestamps: true

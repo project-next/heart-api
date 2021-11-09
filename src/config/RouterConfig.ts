@@ -5,7 +5,7 @@ import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsContro
 import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
 import statusControllerCB from '@controller/StatusController'
 import { createJwtControllerCB } from '@controller/JWTController'
-import { addCommunicationForService, getCommunicationForService } from '@controller/NewsController'
+import { addCommunicationController, getCommunicationController } from '@controller/NewsController'
 import apiKeyAuthenticationMiddleware from '@middleware/APIKeyAuthentication'
 
 export default class Routes {
@@ -24,7 +24,7 @@ export default class Routes {
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateJWTMiddleware, youTubeGiveAwayControllerCB)
 		app.get(`${Routes.BASE_URI}/auth/jwt`, apiKeyAuthenticationMiddleware,  createJwtControllerCB)
 
-		app.get(`${Routes.BASE_URI}/news`, getCommunicationForService)
-		app.put(`${Routes.BASE_URI}/news`, validateJWTMiddleware, addCommunicationForService)
+		app.get(`${Routes.BASE_URI}/news`, getCommunicationController)
+		app.put(`${Routes.BASE_URI}/news`, validateJWTMiddleware, addCommunicationController)
 	}
 }
