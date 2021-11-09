@@ -1,7 +1,7 @@
 import { connect, connection } from 'mongoose'
 import Constants from '@helper/Constants'
 
-const DB_NAME = 'communication'
+const DB_NAME = 'utility'
 
 
 export default function mongoDBConn() {

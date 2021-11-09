@@ -1,26 +1,26 @@
 import { NextFunction, Request, Response } from 'express'
-import { addNews, getNewsWithTag } from '@mongo/dao/NewsDAO'
-import { News } from '@mongo/models/NewsModel'
+import { addCommunication, getCommunicationWithTag } from '@mongo/dao/CommunicationDAO'
+import { Communication } from '@mongo/models/CommunicationModel'
 import HeartAPIError from '@error/HeartAPIError'
 import capitalize from 'lodash.capitalize'
 import { uniq } from 'lodash'
 
-export async function getNewsForService(req: Request, res: Response, next: NextFunction) {
+export async function getCommunicationForService(req: Request, res: Response, next: NextFunction) {
 	const service = req?.query?.service as string
 
 	if (!service) {
 		next(new HeartAPIError("Query param 'service' cannot be empty", 422))
 	} else {
-		let newsItems: News[]
+		let newsItems: Communication[]
 
-		await getNewsWithTag([service])
-			.then((news: News[]) => {
-				newsItems = news.map((newsItem): News => {
+		await getCommunicationWithTag([service])
+			.then((news: Communication[]) => {
+				newsItems = news.map((newsItem): Communication => {
 					return {
 						title: newsItem.title,
 						content:  newsItem.content,
 						tags:  newsItem.tags
-					} as News
+					} as Communication
 				})
 			})
 		res.json(
@@ -33,7 +33,7 @@ export async function getNewsForService(req: Request, res: Response, next: NextF
 }
 
 
-export async function addNewsForService(req: Request, res: Response, next: NextFunction) {
+export async function addCommunicationForService(req: Request, res: Response, next: NextFunction) {
 	const title: string | undefined = req?.body?.title as string
 	const content: string | undefined = req?.body?.content as string
 	const tags: string[] | undefined = req?.body?.tags as string[]
@@ -51,8 +51,8 @@ export async function addNewsForService(req: Request, res: Response, next: NextF
 		// only unique tags
 		const uniqTags = uniq(tags)
 
-		addNews(capitalize(title), content, uniqTags)
-			.then(isSuccess => {
+		addCommunication(capitalize(title), content, uniqTags)
+			.then((isSuccess: boolean) => {
 				if (isSuccess) {
 					res.json({"status": "DB updated successfully"})
 				} else {
