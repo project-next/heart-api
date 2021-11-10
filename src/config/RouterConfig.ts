@@ -24,7 +24,7 @@ export default class Routes {
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateJWTMiddleware, youTubeGiveAwayControllerCB)
 		app.get(`${Routes.BASE_URI}/auth/jwt`, apiKeyAuthenticationMiddleware,  createJwtControllerCB)
 
-		app.get(`${Routes.BASE_URI}/news`, getCommunicationController)
-		app.put(`${Routes.BASE_URI}/news`, validateJWTMiddleware, addCommunicationController)
+		app.get(`${Routes.BASE_URI}/communication`, getCommunicationController)
+		app.put(`${Routes.BASE_URI}/communication`, validateJWTMiddleware, addCommunicationController)
 	}
 }

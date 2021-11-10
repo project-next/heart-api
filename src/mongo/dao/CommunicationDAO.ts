@@ -6,8 +6,9 @@ export async function getCommunication(service: string, tags: string[]): Promise
 			{ tags: { $in: tags } },
 			{ service: { $eq: service } }
 		]},
-		['-_id', 'title', 'content', 'tags', 'createdAt', 'updatedAt'],
-		{sort: {
+		['-_id', 'title', 'content', 'tags', 'createdAt', 'updatedAt'],	// -_id removes _id field from result
+		{
+			sort: {
 			createdAt: 1
 		}})
 }
