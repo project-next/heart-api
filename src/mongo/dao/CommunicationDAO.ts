@@ -1,7 +1,6 @@
 import CommunicationModel, { Communication } from "../models/CommunicationModel";
 
 export async function getCommunication(service: string, tags: string[]): Promise<Communication[]> {
-	console.log(tags)
 	return CommunicationModel.find(
 		{ $and: [
 			{ tags: { $in: tags } },

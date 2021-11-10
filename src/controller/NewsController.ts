@@ -18,13 +18,16 @@ export async function getCommunicationController(req: Request, res: Response, ne
 
 		await getCommunication(service, tagList)
 			.then((news: Communication[]) => {
-				newsItems = news.map((newsItem): Communication => {
-					return {
-						title: newsItem.title,
-						content:  newsItem.content,
-						tags:  newsItem.tags
-					} as Communication
-				})
+				newsItems = news
+					.map((newsItem): Communication => {
+						return {
+							title: newsItem.title,
+							content: newsItem.content,
+							tags: newsItem.tags,
+							createdAt: newsItem.createdAt,
+							updatedAt: newsItem.updatedAt
+						} as Communication
+					})
 			})
 		res.json(
 			{
