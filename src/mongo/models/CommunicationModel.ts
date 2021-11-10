@@ -22,5 +22,5 @@ const CommunicationSchema: Schema = new Schema({
 })
 
 
-const CommunicationModel = model<Communication>('communication', CommunicationSchema, 'communication')
+const CommunicationModel = model<Communication>('communication', CommunicationSchema)
 export default CommunicationModel
