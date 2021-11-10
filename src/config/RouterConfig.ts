@@ -5,7 +5,7 @@ import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsContro
 import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
 import statusControllerCB from '@controller/StatusController'
 import { createJwtControllerCB } from '@controller/JWTController'
-import { addCommunicationController, getCommunicationController } from '@controller/NewsController'
+import { addCommunicationController, getCommunicationController } from '@controller/CommunicationController'
 import apiKeyAuthenticationMiddleware from '@middleware/APIKeyAuthentication'
 
 export default class Routes {
