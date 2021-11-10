@@ -5,8 +5,11 @@ export async function getCommunication(service: string, tags: string[]): Promise
 		{ $and: [
 			{ tags: { $in: tags } },
 			{ service: { $eq: service } }
-		]
-	})
+		]},
+		['-_id', 'title', 'content', 'tags', 'createdAt', 'updatedAt'],
+		{sort: {
+			createdAt: 1
+		}})
 }
 
 

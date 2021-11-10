@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express'
 import { addCommunication, getCommunication } from '@mongo/dao/CommunicationDAO'
 import { Communication } from '@mongo/models/CommunicationModel'
 import HeartAPIError from '@error/HeartAPIError'
-import capitalize from 'lodash.capitalize'
 import { uniq } from 'lodash'
 
 export async function getCommunicationController(req: Request, res: Response, next: NextFunction) {
@@ -19,16 +18,8 @@ export async function getCommunicationController(req: Request, res: Response, ne
 		await getCommunication(service, tagList)
 			.then((news: Communication[]) => {
 				newsItems = news
-					.map((newsItem): Communication => {
-						return {
-							title: newsItem.title,
-							content: newsItem.content,
-							tags: newsItem.tags,
-							createdAt: newsItem.createdAt,
-							updatedAt: newsItem.updatedAt
-						} as Communication
-					})
 			})
+
 		res.json(
 			{
 				"service": service,
@@ -52,7 +43,7 @@ export async function addCommunicationController(req: Request, res: Response, ne
 		// only unique tags
 		const uniqTags = uniq(tags)
 
-		addCommunication(capitalize(title), content, service, uniqTags)
+		addCommunication(title, content, service, uniqTags)
 			.then((isSuccess: boolean) => {
 				if (isSuccess) {
 					res.json({"status": "DB updated successfully"})
