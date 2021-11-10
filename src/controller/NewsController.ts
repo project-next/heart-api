@@ -13,19 +13,19 @@ export async function getCommunicationController(req: Request, res: Response, ne
 	if (!service) {
 		next(new HeartAPIError("Query param 'service' cannot be empty", 422))
 	} else {
-		let newsItems: Communication[]
-
-		await getCommunication(service, tagList)
-			.then((news: Communication[]) => {
-				newsItems = news
+		getCommunication(service, tagList)
+			.then((communications: Communication[]) => {
+				res.json(
+					{
+						"service": service,
+						"communications": communications!
+					}
+				)
 			})
-
-		res.json(
-			{
-				"service": service,
-				"newsItems": newsItems!
-			}
-		)
+			.catch(err => {
+				console.error(`Error occurred fetching communications from DB: ${err}`)
+				next(new HeartAPIError("Error updating DB", 500))
+			})
 	}
 }
 
