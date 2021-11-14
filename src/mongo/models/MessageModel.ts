@@ -1,6 +1,6 @@
 import { Schema, Document, model } from 'mongoose'
 
-export type Communication = Document & {
+export type Message = Document & {
 	title: string,
 	content: string,
 	service?: string,
@@ -22,5 +22,5 @@ const CommunicationSchema: Schema = new Schema({
 })
 
 
-const CommunicationModel = model<Communication>('communication', CommunicationSchema)
+const CommunicationModel = model<Message>('message', CommunicationSchema)
 export default CommunicationModel

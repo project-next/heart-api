@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { addCommunication, getCommunication } from '@mongo/dao/CommunicationDAO'
-import { Communication } from '@mongo/models/CommunicationModel'
+import { addCommunication, getCommunication } from '@mongo/dao/MessageDAO'
+import { Message } from '@mongo/models/MessageModel'
 import HeartAPIError from '@error/HeartAPIError'
 import { uniq } from 'lodash'
 
@@ -14,16 +14,16 @@ export async function getCommunicationController(req: Request, res: Response, ne
 		next(new HeartAPIError("Query param 'service' cannot be empty", 422))
 	} else {
 		getCommunication(service, tagList)
-			.then((communications: Communication[]) => {
+			.then((messages: Message[]) => {
 				res.json(
 					{
 						"service": service,
-						"communications": communications!
+						"messages": messages!
 					}
 				)
 			})
 			.catch(err => {
-				console.error(`Error occurred fetching communications from DB: ${err}`)
+				console.error(`Error occurred fetching messages from DB: ${err}`)
 				next(new HeartAPIError("Error updating DB", 500))
 			})
 	}
