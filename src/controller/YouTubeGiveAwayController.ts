@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
 import Constants from '@helper/Constants'
 import HeartAPIError from '@error/HeartAPIError'
@@ -13,13 +13,11 @@ import YouTubeAPIError from '@error/YouTubeAPIError'
  * Logic for YouTube giveaway endpoint.
  * @returns Express compliant call back containing endpoint specific functionality.
  */
-export default async function youTubeGiveAwayControllerCB(req: Request, res: Response) {
-	let status: number
+export default async function youTubeGiveAwayControllerCB(req: Request, res: Response, next: NextFunction) {
 	let json: GiveawayInfo | HeartAPIError
 
 	if (req.query?.videoId == null || req.query?.giveAwayCode == null) {
-		status = 400
-		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
+		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
 	} else {
 		try {
 			let potentialWinners: YouTubeComment[] = []
@@ -35,12 +33,14 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 			json = err as HeartAPIError
 		}
 
-		status = (json instanceof HeartAPIError)? json.code : 200
+		if (json instanceof HeartAPIError) {
+			next(json)
+		} else {
+			res
+				.status(200)
+				.json(json)
+		}
 	}
-
-	res.status(status!)
-	res.json(json)
-	res.end()
 }
 
 

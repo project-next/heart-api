@@ -21,16 +21,10 @@ export default class RequestErrorHandling {
 	 * @param app reference to Express API object that will be modified.
 	 */
 	private static setupGenericErrorHandling(app: Express) {
-		app.use(function (err: any, req: Request, res: Response) {
-			// set locals, only providing error in development
-			res.locals.message = err.message
-			res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-			// render the error page
-			res.status(err.status || 500)
-			console.log(err)
-
-			res.send('err')
+		app.use(function (heartApiErr: HeartAPIError, req: Request, res: Response, _next: NextFunction) {
+			res
+				.status(heartApiErr.code || 500)
+				.send(heartApiErr)
 		})
 	}
 
@@ -40,9 +34,8 @@ export default class RequestErrorHandling {
 	 * @param app reference to Express API object that will be modified.
 	 */
 	private static setup404ErrorHandling(app: Express) {
-		app.use(function (req: Request, res: Response, next: NextFunction) {
-			res.status(404)
-			res.send(new HeartAPIError('Endpoint does not exist or existing endpoint cannot handle HTTP method specified.', 404))
+		app.use(function (req: Request, _res: Response, next: NextFunction) {
+			next(new HeartAPIError('Endpoint does not exist or existing endpoint cannot handle HTTP method specified.', 404))
 		})
 	}
 }

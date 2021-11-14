@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { AxiosError, AxiosResponse } from 'axios'
 import Constants from '@helper/Constants'
 import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
@@ -15,25 +15,25 @@ import YouTubeAPIError from '@error/YouTubeAPIError'
  * YouTube API output is cleaned up and only the most useful info is returned to client.
  * @param router object that will be used to expose functionality.
 */
-export default async function youTubeChannelActivityControllerCB(req: Request, res: Response) {
-	let status: number
+export default async function youTubeChannelActivityControllerCB(req: Request, res: Response, next: NextFunction) {
 	let json: YouTubeUploadsResponse | HeartAPIError
 
 	if (req.query?.channelId == null) {
-		status = 400
-		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
+		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
 	} else if((!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.query.channelId.toString()))) {	// prevent malicious use of API
-		status = 401
-		json = new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', status)
+		next(new HeartAPIError('This API cannot use provided channelId. Only certain Id\'s are permitted.', 401))
 	}
 	else {
 		json = await memoizedYouTubeRequest(req.query.channelId.toString())
-		status = (json! instanceof HeartAPIError)? json.code : 200
-	}
 
-	res.status(status!)
-	res.json(json!)
-	res.end()
+		if (json instanceof HeartAPIError) {
+			next(json)
+		} else {
+			res
+				.status(200)
+				.json(json)
+		}
+	}
 }
 
 

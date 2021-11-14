@@ -2,15 +2,17 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 
-import HttpConfig from '@config/HttpConfig'
-import Routes from '@config/RouterConfig'
-import RequestErrorHandling from '@config/RequestErrorHandlingConfig'
+import HttpConfig from './config/HttpConfig'
+import Routes from './config/RouterConfig'
+import RequestErrorHandling from './config/RequestErrorHandlingConfig'
+import mongoDBConn from './mongo/UtilityDBConnection'
 
 
 class App {
 	public app = express()
 
 	constructor() {
+		mongoDBConn()
 		HttpConfig.setupHttpConnection(this.app)
 		this.applyMiddleware()
 		Routes.setupRoutes(this.app)
@@ -30,6 +32,7 @@ class App {
 		this.app.use(express.urlencoded({ extended: true }))
 		this.app.use(express.json())
 	}
+
 }
 
 export default new App().app

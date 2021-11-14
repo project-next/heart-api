@@ -12,7 +12,7 @@ This API provides various information to other services. Information includes:
 - News for services (not yet implemented)
 - Calendar showing important upcoming dates for services (not yet implemented)
 
-In the end, any and all Websites, channels and podcasts will use this API to get social media info and news.
+In the end, any and all Websites, channels and podcasts will use this API to get social media info and communication.
 
 ## NPM Scripts
 

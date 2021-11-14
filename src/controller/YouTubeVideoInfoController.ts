@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import HeartAPIError from '@error/HeartAPIError'
 import { AxiosError, AxiosResponse } from 'axios'
 import YouTubeAxiosConfig from '@config/YouTubeAxiosConfig'
@@ -9,21 +9,24 @@ import YouTubeAPIError from '@error/YouTubeAPIError'
 import Constants from '@helper/Constants'
 
 
-export default async function youTubeVideoInfoControllerCB(req: Request, res: Response) {
+export default async function youTubeVideoInfoControllerCB(req: Request, res: Response, next: NextFunction) {
 	let status: number
 	let json: VideoInfoResponse | HeartAPIError
 
 	if (req.query?.videoId == null) {
-		status = 400
-		json = new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, status)
+		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
 	} else {
 		json = await memoizedYouTubeRequest(req.query.videoId as string)
 		status = (json! instanceof HeartAPIError)? json.code : 200
-	}
 
-	res.status(status!)
-	res.json(json!)
-	res.end()
+		if (json instanceof HeartAPIError) {
+			next(json)
+		} else {
+			res
+				.status(status)
+				.json(json)
+		}
+	}
 }
 
 
