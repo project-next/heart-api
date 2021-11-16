@@ -1,6 +1,6 @@
 import CommunicationModel, { Message } from "../models/MessageModel";
 
-export async function getCommunication(service: string, tags: string[]): Promise<Message[]> {
+export async function getMessagesFromDB(service: string, tags: string[]): Promise<Message[]> {
 	return CommunicationModel.find(
 		{ $and: [
 			{ tags: { $in: tags } },
@@ -14,7 +14,7 @@ export async function getCommunication(service: string, tags: string[]): Promise
 }
 
 
-export async function addCommunication(title: string, content: string, service: string, tags: string[]): Promise<boolean> {
+export async function addMessageToDB(title: string, content: string, service: string, tags: string[]): Promise<boolean> {
 	let isSuccess = true
 
 	await CommunicationModel
