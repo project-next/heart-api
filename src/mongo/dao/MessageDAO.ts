@@ -1,3 +1,4 @@
+import HeartAPIError from "@error/HeartAPIError";
 import CommunicationModel, { Message } from "../models/MessageModel";
 
 export async function getMessagesFromDB(service: string, tags: string[]): Promise<Message[]> {
@@ -14,27 +15,21 @@ export async function getMessagesFromDB(service: string, tags: string[]): Promis
 }
 
 
-export async function addMessageToDB(title: string, content: string, service: string, tags: string[]): Promise<boolean> {
-	let isSuccess = true
-
-	await CommunicationModel
+export async function addMessageToDB(title: string, content: string, service: string, tags: string[]): Promise<void> {
+	return CommunicationModel
 		.init()
 		.then(async () => {
 			const communicationRecord = new CommunicationModel({title, content, service, tags})
 
-			try {
-				await communicationRecord.save()
-			} catch (err) {
-				if (err) {
-					console.log(`An error occurred when attempting to add Message record. Err: ${err}, object: ${communicationRecord}`)
-					isSuccess = false
-				}
-			}
+			await communicationRecord
+				.save()
+				.catch(err => {
+					console.log(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${communicationRecord}`)
+					throw new HeartAPIError('Error updating DB', 500)
+				})
 		})
 		.catch(err => {
 			console.log(`Error occurred initializing CommunicationModel: ${err}`)
-			isSuccess = false
+			throw new HeartAPIError('Error updating DB', 500)
 		})
-
-	return isSuccess
 }

@@ -44,12 +44,11 @@ export async function addMessageControllerCB(req: Request, res: Response, next: 
 		const uniqTags = uniq(tags)
 
 		addMessageToDB(title, content, service, uniqTags)
-			.then((isSuccess: boolean) => {
-				if (isSuccess) {
-					res.json({'status': 'DB updated successfully'})
-				} else {
-					next(new HeartAPIError('Error updating DB', 500))
-				}
+			.then(() => {
+				res.json({'status': 'DB updated successfully'})
+			})
+			.catch(err => {
+				next(err)
 			})
 	}
 }
