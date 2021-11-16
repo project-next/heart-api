@@ -1,5 +1,6 @@
 import { connect, connection } from 'mongoose'
 import Constants from '@helper/Constants'
+import CommunicationModel from './models/MessageModel'
 
 const DB_NAME = 'utility'
 
@@ -11,6 +12,12 @@ export default function mongoDBConn() {
 
 	connection.once('open', () => {
 		console.log(`Connection successfully established with ${Constants.HEART_API_DB_BASE_URI}:${DB_NAME} mongoDB`)
+
+		CommunicationModel
+			.init()
+			.catch(err => {
+				console.log(`Error occurred initializing CommunicationModel: ${err}`)
+			})
 	})
 
 	connect(`${Constants.HEART_API_DB_BASE_URI}/${DB_NAME}`, {

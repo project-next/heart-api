@@ -15,21 +15,13 @@ export async function getMessagesFromDB(service: string, tags: string[]): Promis
 }
 
 
-export async function addMessageToDB(title: string, content: string, service: string, tags: string[]): Promise<void> {
-	return CommunicationModel
-		.init()
-		.then(async () => {
-			const communicationRecord = new CommunicationModel({title, content, service, tags})
+export async function addMessageToDB(title: string, content: string, service: string, tags: string[]): Promise<any> {
+	const communicationRecord = new CommunicationModel({title, content, service, tags})
 
-			await communicationRecord
-				.save()
-				.catch(err => {
-					console.log(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${communicationRecord}`)
-					throw new HeartAPIError('Error updating DB', 500)
-				})
-		})
+	return communicationRecord
+		.save()
 		.catch(err => {
-			console.log(`Error occurred initializing CommunicationModel: ${err}`)
+			console.log(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${communicationRecord}`)
 			throw new HeartAPIError('Error updating DB', 500)
 		})
 }
