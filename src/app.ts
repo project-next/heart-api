@@ -6,6 +6,7 @@ import HttpConfig from './config/HttpConfig'
 import Routes from './config/RouterConfig'
 import RequestErrorHandling from './config/RequestErrorHandlingConfig'
 import mongoDBConn from './mongo/UtilityDBConnection'
+import commonResHeaders from '@middleware/CommonResHeaders'
 
 
 class App {
@@ -31,6 +32,8 @@ class App {
 		this.app.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
 		this.app.use(express.urlencoded({ extended: true }))
 		this.app.use(express.json())
+
+		this.app.use(commonResHeaders)
 	}
 
 }
