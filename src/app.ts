@@ -26,8 +26,10 @@ class App {
 			server will return the allowed CORS functionality and stop processing the rest of the request, ie prevents error due to redirects in pre-flight
 			Should be one of the first middleware added.
 		*/
-		this.app.options('*', cors())
-		this.app.use(cors())	// opens up all CORS settings to clients
+		this.app.use(cors({
+			origin: ['http://localhost:3000', 'https://dev.thesupremekingscastle.com', 'https://thesupremekingscastle.com'],
+			methods: ['get', 'put', 'options']
+		}))
 
 		this.app.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
 		this.app.use(express.urlencoded({ extended: true }))
