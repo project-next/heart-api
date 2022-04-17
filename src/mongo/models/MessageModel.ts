@@ -9,7 +9,7 @@ export type Message = Document & {
 	updatedAt?: Date
 }
 
-const CommunicationSchema: Schema = new Schema(
+const MessageSchema: Schema = new Schema(
 	{
 		title: { type: String, required: true, unique: true },
 		content: { type: String, required: true, unique: false },
@@ -23,5 +23,5 @@ const CommunicationSchema: Schema = new Schema(
 	}
 )
 
-const CommunicationModel = model<Message>('message', CommunicationSchema)
-export default CommunicationModel
+const MessageModel = model<Message>('message', MessageSchema)
+export default MessageModel
