@@ -4,6 +4,7 @@
   "description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
   "main": "./src/app.ts",
   "scripts": {
+	 "fresh-install": "rm -rf node_modules; npm install --no-optional",
     "run-mocha-tests": "nyc --config './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
     "test": "env-cmd -e test npm run run-mocha-tests",
     "mutation": "env-cmd -e test stryker run config/stryker.conf.json",

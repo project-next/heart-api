@@ -28,14 +28,11 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 
 			const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
 			json = getRandomWinner(filteredPotentialWinners, req.query.giveAwayCode.toString())
+
+			res.status(200).json(json)
 		} catch (err) {
 			json = err as HeartAPIError
-		}
-
-		if (json instanceof HeartAPIError) {
 			next(json)
-		} else {
-			res.status(200).json(json)
 		}
 	}
 }
