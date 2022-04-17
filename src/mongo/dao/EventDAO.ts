@@ -7,7 +7,7 @@ export async function getEventsFromDB(service: string, tags: string[]): Promise<
 		['-_id', 'name', 'notes', 'location', 'eventDate', 'url', 'createdAt', 'updatedAt', 'service', 'tags'], // -_id removes _id field from result
 		{
 			sort: {
-				eventDate: -1,
+				eventDate: 1,
 			},
 		}
 	)
