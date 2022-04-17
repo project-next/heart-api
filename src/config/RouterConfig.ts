@@ -7,7 +7,7 @@ import statusControllerCB from '@controller/StatusController'
 import { createJwtControllerCB } from '@controller/JWTController'
 import { getMessagesControllerCB, addMessageControllerCB } from '@controller/MessageController'
 import apiKeyAuthenticationMiddleware from '@middleware/APIKeyAuthentication'
-import { getEventsControllerCB } from '@controller/EventsController'
+import { createEventControllerCB, getEventsControllerCB } from '@controller/EventsController'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'
@@ -31,5 +31,6 @@ export default class Routes {
 
 		// events endpoints
 		app.get(`${Routes.BASE_URI}/events`, getEventsControllerCB)
+		app.put(`${Routes.BASE_URI}/events`, validateJWTMiddleware, createEventControllerCB)
 	}
 }
