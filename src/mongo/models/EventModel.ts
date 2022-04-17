@@ -14,7 +14,7 @@ export type Event = Document & {
 
 const EventSchema: Schema = new Schema(
 	{
-		name: { type: String, required: true, unique: false },
+		name: { type: String, required: true, unique: true },
 		notes: { type: String, required: false, unique: false },
 		location: { type: String, required: false, unique: false },
 		eventDate: { type: Date, required: true, unique: false },
