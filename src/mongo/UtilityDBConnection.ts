@@ -1,6 +1,7 @@
 import { connect, connection } from 'mongoose'
 import Constants from '@helper/Constants'
 import MessageModel from './models/MessageModel'
+import EventModel from './models/EventModel'
 
 const DB_NAME = 'utility'
 
@@ -15,6 +16,10 @@ export default function UtilityDBConnection() {
 
 		MessageModel.init().catch((err) => {
 			console.log(`Error occurred initializing MessageModel: ${err}`)
+		})
+
+		EventModel.init().catch((err) => {
+			console.log(`Error occurred initializing EventModel: ${err}`)
 		})
 	})
 
