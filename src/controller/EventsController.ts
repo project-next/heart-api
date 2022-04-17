@@ -1,18 +1,13 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express'
 
 export function getEventsControllerCB(req: Request, res: Response, next: NextFunction) {
-	res.json(
-		{
-			yo: 'xxxxx'
-		}
-	)
+	res.json({
+		yo: 'xxxxx',
+	})
 }
 
-
 export function createEventControllerCB(req: Request, res: Response, next: NextFunction) {
-	res.json(
-		{
-			yo: 'yyyyyyy'
-		}
-	)
+	res.json({
+		yo: 'yyyyyyy',
+	})
 }
