@@ -4,7 +4,7 @@ import CommunicationModel from './models/MessageModel'
 
 const DB_NAME = 'utility'
 
-export default function mongoDBConn() {
+export default function UtilityDBConnection() {
 	connection.on('error', () => {
 		console.log(`There was an error connecting to heart-api:${DB_NAME} mongoDB`)
 	})

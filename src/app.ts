@@ -5,14 +5,14 @@ import cors from 'cors'
 import HttpConfig from './config/HttpConfig'
 import Routes from './config/RouterConfig'
 import RequestErrorHandling from './config/RequestErrorHandlingConfig'
-import mongoDBConn from './mongo/UtilityDBConnection'
+import UtilityDBConnection from './mongo/UtilityDBConnection'
 import commonResHeaders from '@middleware/CommonResHeaders'
 
 class App {
 	public app = express()
 
 	constructor() {
-		mongoDBConn()
+		UtilityDBConnection()
 		HttpConfig.setupHttpConnection(this.app)
 		this.applyMiddleware()
 		Routes.setupRoutes(this.app)
