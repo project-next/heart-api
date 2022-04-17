@@ -27,7 +27,7 @@ class App {
 		*/
 		this.app.use(
 			cors({
-				origin: ['http://localhost:3000', 'https://dev.thesupremekingscastle.com', 'https://thesupremekingscastle.com'],
+				origin: ['http://localhost:3000', 'https://dev.thesupremekingscastle.com', 'https://thesupremekingscastle.com', 'https://www.thesupremekingscastle.com'],
 				methods: ['get', 'put', 'options'],
 			})
 		)
