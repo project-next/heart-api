@@ -10,7 +10,8 @@ export default function UtilityDBConnection() {
 	})
 
 	connection.once('open', () => {
-		console.log(`Connection successfully established with ${Constants.HEART_API_DB_BASE_URI}:${DB_NAME} mongoDB`)
+		console.log(`Connection successfully established with ${Constants.HEART_API_DB_BASE_URI}:${DB_NAME} MongoDB`)
+		console.log('Initializing connection to MongoDB collections...')
 
 		MessageModel.init().catch((err) => {
 			console.log(`Error occurred initializing MessageModel: ${err}`)
