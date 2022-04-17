@@ -14,14 +14,14 @@ export function getEventsControllerCB(req: Request, res: Response, next: NextFun
 		next(new HeartAPIError('Query param "service" cannot be empty', 422))
 	} else {
 		getEventsFromDB(service, tagList)
-			.then((messages: Event[]) => {
+			.then((events: Event[]) => {
 				res.json({
 					service: service,
-					messages: messages!,
+					events: events,
 				})
 			})
 			.catch((err) => {
-				console.error(`Error occurred fetching messages from DB: ${err}`)
+				console.error(`Error occurred fetching events from DB: ${err}`)
 				next(new HeartAPIError('Error communicating w/ DB', 500))
 			})
 	}
