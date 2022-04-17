@@ -5,6 +5,7 @@ export type Event = Document & {
 	notes?: string
 	location?: string
 	eventDate: Date
+	url: Date
 	service: string
 	tags: string[]
 	createdAt?: Date
@@ -17,6 +18,7 @@ const EventSchema: Schema = new Schema(
 		notes: { type: String, required: false, unique: false },
 		location: { type: String, required: false, unique: false },
 		eventDate: { type: Date, required: true, unique: false },
+		url: { type: String, required: false, unique: false },
 		service: { type: String, required: true, unique: false },
 		tags: [{ type: String, required: true, unique: false }],
 		createdAt: { type: Date, required: false, unique: false },

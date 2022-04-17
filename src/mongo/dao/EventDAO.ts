@@ -13,8 +13,8 @@ export async function getEventsFromDB(service: string, tags: string[]): Promise<
 	)
 }
 
-export async function addEventToDB(name: string, notes: string, location: string, eventDate: Date, service: string, tags: string[]): Promise<any> {
-	const event = new EventModel({ name, notes, location, eventDate, service, tags })
+export async function addEventToDB(name: string, notes: string, location: string, eventDate: Date, url: string, service: string, tags: string[]): Promise<any> {
+	const event = new EventModel({ name, notes, location, eventDate, url, service, tags })
 
 	return event.save().catch((err) => {
 		console.log(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${event}`)
