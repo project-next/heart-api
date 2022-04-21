@@ -57,7 +57,7 @@
     "@types/jsonwebtoken": "8.5.8",
     "@types/lodash.sample": "4.2.7",
     "@types/lodash.uniq": "4.5.7",
-    "@types/mocha": "9.1.0",
+    "@types/mocha": "9.1.1",
     "@types/morgan": "1.9.3",
     "@types/node": "16.11.27",
     "@types/rewire": "2.5.28",
