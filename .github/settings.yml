@@ -5,7 +5,7 @@ repository:
   homepage:
   topics: node, express, api
   private: false
-  has_issues: false
+  has_issues: true
   has_wiki: false
   delete_branch_on_merge: false
   enable_vulnerability_alerts: true
@@ -14,7 +14,7 @@ repository:
   has_downloads: false
 
   # Updates the default branch for this repository.
-  default_branch: v1.2.0
+  default_branch: v1.3.0
 
   # Either `true` to allow squash-merging pull requests, or `false` to prevent
   # squash-merging.

@@ -5,9 +5,9 @@ import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsContro
 import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
 import statusControllerCB from '@controller/StatusController'
 import { createJwtControllerCB } from '@controller/JWTController'
-import { addCommunicationController, getCommunicationController } from '@controller/MessageController'
+import { getMessagesControllerCB, addMessageControllerCB } from '@controller/MessageController'
 import apiKeyAuthenticationMiddleware from '@middleware/APIKeyAuthentication'
-import { getEventsControllerCB } from '@controller/EventsController'
+import { createEventControllerCB, getEventsControllerCB, updateEventControllerCB } from '@controller/EventsController'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'
@@ -23,13 +23,15 @@ export default class Routes {
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/channel/uploads`, youTubeChannelActivityControllerCB)
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/info`, validateJWTMiddleware, youTubeVideoInfoControllerCB)
 		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateJWTMiddleware, youTubeGiveAwayControllerCB)
-		app.get(`${Routes.BASE_URI}/auth/jwt`, apiKeyAuthenticationMiddleware,  createJwtControllerCB)
+		app.get(`${Routes.BASE_URI}/auth/jwt`, apiKeyAuthenticationMiddleware, createJwtControllerCB)
 
 		// message endpoints
-		app.get(`${Routes.BASE_URI}/message`, getCommunicationController)
-		app.put(`${Routes.BASE_URI}/message`, validateJWTMiddleware, addCommunicationController)
+		app.get(`${Routes.BASE_URI}/message`, getMessagesControllerCB)
+		app.put(`${Routes.BASE_URI}/message`, validateJWTMiddleware, addMessageControllerCB)
 
 		// events endpoints
 		app.get(`${Routes.BASE_URI}/events`, getEventsControllerCB)
+		app.post(`${Routes.BASE_URI}/event`, validateJWTMiddleware, createEventControllerCB)
+		app.patch(`${Routes.BASE_URI}/event/:eventId`, validateJWTMiddleware, updateEventControllerCB)
 	}
 }
