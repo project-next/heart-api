@@ -17,7 +17,7 @@ export async function addMessageToDB(title: string, content: string, service: st
 	const messageRecord = new MessageModel({ title, content, service, tags })
 
 	await messageRecord.save().catch((err) => {
-		console.log(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${messageRecord}`)
+		console.error(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${messageRecord}`)
 		throw new HeartAPIError('Error updating DB', 500)
 	})
 
