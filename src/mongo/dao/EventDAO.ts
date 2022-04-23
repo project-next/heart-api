@@ -29,10 +29,10 @@ export async function updateEvent(eventId: string, updatedEvent: Event): Promise
 	let event: Event | undefined = undefined
 
 	await EventModel.findByIdAndUpdate({ _id: eventId }, updatedEvent, { new: true })
-		.then((updatedEvent: Event) => {
-			if (updatedEvent) {
+		.then((newEvent) => {
+			if (newEvent) {
 				console.debug('Event updated successfully')
-				event = updatedEvent
+				event = newEvent
 			} else {
 				status = 404
 				console.warn(`Event not found w/ given ID: ${eventId}`)
