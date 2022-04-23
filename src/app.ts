@@ -3,7 +3,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 
 import HttpConfig from './config/HttpConfig'
-import Routes from './config/RouterConfig'
+import Routes from './config/Routes'
 import RequestErrorHandling from './config/RequestErrorHandlingConfig'
 import UtilityDBConnection from './mongo/UtilityDBConnection'
 import commonResHeaders from '@middleware/CommonResHeaders'

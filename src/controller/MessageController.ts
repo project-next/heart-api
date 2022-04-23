@@ -17,7 +17,7 @@ export async function getMessagesControllerCB(req: Request, res: Response, next:
 			.then((messages: Message[]) => {
 				res.json({
 					service: service,
-					messages: messages!,
+					messages: messages,
 				})
 			})
 			.catch((err) => {
