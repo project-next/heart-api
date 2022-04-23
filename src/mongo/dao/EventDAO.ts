@@ -3,7 +3,7 @@ import EventModel, { Event } from '../models/EventModel'
 
 export async function getEventsFromDB(service: string, tags: string[]): Promise<Event[]> {
 	return EventModel.find(
-		{ $and: [{ tags: { $in: tags } }, { service: { $eq: service } }] },
+		{ $and: [{ tags: { $in: tags } }, { service: { $eq: service } }, { eventDate: { $gte: new Date() } }] },
 		['-_id', 'name', 'notes', 'location', 'eventDate', 'url', 'createdAt', 'updatedAt', 'service', 'tags'], // -_id removes _id field from result
 		{
 			sort: {
