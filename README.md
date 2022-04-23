@@ -7,10 +7,10 @@ This API provides various information to other services. Information includes:
 - YouTube Data
   - Metadata on particular video
   - Recent upload info
-  - New give away for particular video - API will pick a winner randomly from all people commenting and who give the required code
+  - Give away for particular video - API will pick a winner randomly from all people commenting and who give the required code
 - Social media posts (not yet implemented)
-- News for services (not yet implemented)
-- Calendar showing important upcoming dates for services (not yet implemented)
+- General messages to users of a service
+- Upcoming events - shows time/date of an upcoming event for a particular service
 
 In the end, any and all Websites, channels and podcasts will use this API to get social media info and communication.
 
