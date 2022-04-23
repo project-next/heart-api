@@ -14,7 +14,7 @@ repository:
   has_downloads: false
 
   # Updates the default branch for this repository.
-  default_branch: v1.3.0
+  default_branch: release
 
   # Either `true` to allow squash-merging pull requests, or `false` to prevent
   # squash-merging.
