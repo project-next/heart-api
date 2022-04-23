@@ -8,27 +8,24 @@ export async function getMessagesControllerCB(req: Request, res: Response, next:
 	const service = req?.query?.service as string
 
 	const tags = req?.query?.tags as string
-	const tagList = (!tags)? [] : tags.split(',').map((tag: string) => tag.trim())
+	const tagList = !tags ? [] : tags.split(',').map((tag: string) => tag.trim())
 
 	if (!service) {
 		next(new HeartAPIError('Query param "service" cannot be empty', 422))
 	} else {
 		getMessagesFromDB(service, tagList)
 			.then((messages: Message[]) => {
-				res.json(
-					{
-						'service': service,
-						'messages': messages!
-					}
-				)
+				res.json({
+					service: service,
+					messages: messages!,
+				})
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error(`Error occurred fetching messages from DB: ${err}`)
 				next(new HeartAPIError('Error communicating w/ DB', 500))
 			})
 	}
 }
-
 
 export async function addMessageControllerCB(req: Request, res: Response, next: NextFunction) {
 	const title: string | undefined = req?.body?.title as string
@@ -44,10 +41,11 @@ export async function addMessageControllerCB(req: Request, res: Response, next: 
 		const uniqTags = uniq(tags)
 
 		addMessageToDB(title, content, service, uniqTags)
-			.then(() => {
-				res.json({'status': 'DB updated successfully'})
+			.then((messageId: string) => {
+				res.status(201)
+				res.json({ status: 'Message created', messageId: messageId })
 			})
-			.catch(err => {
+			.catch((err) => {
 				next(err)
 			})
 	}

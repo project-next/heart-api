@@ -13,11 +13,13 @@ export async function getEventsFromDB(service: string, tags: string[]): Promise<
 	)
 }
 
-export async function addEventToDB(name: string, notes: string, location: string, eventDate: Date, url: string, service: string, tags: string[]): Promise<any> {
+export async function addEventToDB(name: string, notes: string, location: string, eventDate: Date, url: string, service: string, tags: string[]): Promise<string> {
 	const event = new EventModel({ name, notes, location, eventDate, url, service, tags })
 
-	return event.save().catch((err) => {
+	await event.save().catch((err) => {
 		console.log(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${event}`)
 		throw new HeartAPIError('Error updating DB', 500)
 	})
+
+	return event._id
 }

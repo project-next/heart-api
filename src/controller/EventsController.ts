@@ -43,11 +43,24 @@ export function createEventControllerCB(req: Request, res: Response, next: NextF
 		const uniqTags = uniq(tags) // only unique tags
 
 		addEventToDB(name, notes, location, eventDate, url, service, uniqTags)
-			.then(() => {
-				res.json({ status: 'DB updated successfully' })
+			.then((eventId: string) => {
+				res.status(201)
+				res.json({ status: 'Event created', eventId: eventId })
 			})
 			.catch((err) => {
 				next(err)
 			})
 	}
+}
+
+export function updateEventControllerCB(req: Request, res: Response, next: NextFunction) {
+	// const name: string | undefined = req?.body?.name as string
+	// const notes: string | undefined = req?.body?.notes as string
+	// const location: string | undefined = req?.body?.location as string
+	// const eventDate: Date | undefined = req?.body?.eventDate as Date
+	// const url: string | undefined = req?.body?.url as string
+	// const tags: string[] | undefined = req?.body?.tags as string[]
+	// const service: string | undefined = req?.query?.service as string
+	// const eventId = req.params.eventId
+	// res.json
 }

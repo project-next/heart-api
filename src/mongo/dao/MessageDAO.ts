@@ -13,11 +13,13 @@ export async function getMessagesFromDB(service: string, tags: string[]): Promis
 	)
 }
 
-export async function addMessageToDB(title: string, content: string, service: string, tags: string[]): Promise<any> {
+export async function addMessageToDB(title: string, content: string, service: string, tags: string[]): Promise<string> {
 	const messageRecord = new MessageModel({ title, content, service, tags })
 
-	return messageRecord.save().catch((err) => {
+	await messageRecord.save().catch((err) => {
 		console.log(`An error occurred when attempting to add Message record. Err: ${err.message}, object: ${messageRecord}`)
 		throw new HeartAPIError('Error updating DB', 500)
 	})
+
+	return messageRecord._id
 }
