@@ -3,7 +3,7 @@ repository:
   name: heart-api
   description: Express API that serves info on various projects.
   homepage:
-  topics: node, express, api
+  topics: heart-api, node, express, api
   private: false
   has_issues: true
   has_wiki: false
