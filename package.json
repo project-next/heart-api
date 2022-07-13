@@ -59,7 +59,7 @@
     "@types/lodash.uniq": "4.5.7",
     "@types/mocha": "9.1.1",
     "@types/morgan": "1.9.3",
-    "@types/node": "16.11.43",
+    "@types/node": "16.11.44",
     "@types/rewire": "2.5.28",
     "@types/sinon": "10.0.12",
     "@types/supertest": "2.0.12",
