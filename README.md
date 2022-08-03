@@ -14,6 +14,12 @@ This API provides various information to other services. Information includes:
 
 In the end, any and all Websites, channels and podcasts will use this API to get social media info and communication.
 
+## Certificate Renewal/Change
+
+You will need to create a new cert from ZeroSSL and validate the domain is yours. Select the owner email provided not admin.
+
+You will need to upload a new cert when the old one expires in AWS. The cert location is us-east-2 (Ohio).
+
 ## NPM Scripts
 
 Like all NPM applications, package.json will contain all scripts needed to run, test and deploy this API. Check the table below for info on each script.
