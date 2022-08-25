@@ -45,7 +45,7 @@
     "lodash.uniq": "^4.2.0",
     "logger": "0.0.1",
     "moize": "6.1.2",
-    "mongoose": "6.5.2",
+    "mongoose": "6.5.3",
     "morgan": "1.10.0"
   },
   "devDependencies": {
