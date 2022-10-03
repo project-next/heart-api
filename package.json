@@ -75,7 +75,7 @@
     "nyc": "15.1.0",
     "pactum": "3.2.2",
     "rewire": "6.0.0",
-    "sinon": "14.0.0",
+    "sinon": "14.0.1",
     "supertest": "6.2.4",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.1.0",
