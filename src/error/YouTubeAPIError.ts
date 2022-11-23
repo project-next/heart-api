@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { YouTubeAPIGlobalError } from '../types/YouTubeAPIError'
-import HeartAPIError from '@error/HeartAPIError'
+import HeartAPIError from '../error/HeartAPIError.js'
 
 export default class YouTubeAPIError {
 	private ytError: YouTubeAPIGlobalError
@@ -14,13 +14,12 @@ export default class YouTubeAPIError {
 	}
 
 	convertYTErrorToHeartAPIError(): HeartAPIError {
-		let description = "YouTube API call encountered error"
+		let description = 'YouTube API call encountered error'
 
 		if (this.is404) {
-			console.error('Trying to hit a URL that doesn\'t exist.')
+			console.error("Trying to hit a URL that doesn't exist.")
 			description = 'Using non existent YouTube API URL/Path'
-		}
-		else if (this.ytError != null) {
+		} else if (this.ytError != null) {
 			console.error(`YouTube Data API (v3) returned with error: ${this.ytError.error.code} - ${this.ytError.error.message}`)
 
 			if (this.ytError.error.code === 403) {

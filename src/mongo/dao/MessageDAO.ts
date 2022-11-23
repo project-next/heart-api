@@ -1,5 +1,5 @@
-import HeartAPIError from '@error/HeartAPIError'
-import MessageModel, { Message } from '../models/MessageModel'
+import HeartAPIError from '../../error/HeartAPIError.js'
+import MessageModel, { Message } from '../models/MessageModel.js'
 
 export async function getMessagesFromDB(service: string, tags: string[]): Promise<Message[]> {
 	return MessageModel.find(

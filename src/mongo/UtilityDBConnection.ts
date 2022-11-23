@@ -1,7 +1,8 @@
-import { connect, connection } from 'mongoose'
-import Constants from '@helper/Constants'
-import MessageModel from './models/MessageModel'
-import EventModel from './models/EventModel'
+import pkg from 'mongoose'
+const { connect, connection } = pkg
+import Constants from '../helper/Constants.js'
+import MessageModel from './models/MessageModel.js'
+import EventModel from './models/EventModel.js'
 
 const DB_NAME = 'utility'
 

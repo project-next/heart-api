@@ -2,11 +2,11 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 
-import HttpConfig from './config/HttpConfig'
-import Routes from './config/Routes'
-import RequestErrorHandling from './config/RequestErrorHandlingConfig'
-import UtilityDBConnection from './mongo/UtilityDBConnection'
-import commonResHeaders from '@middleware/CommonResHeaders'
+import HttpConfig from './config/HttpConfig.js'
+import RequestErrorHandling from './config/RequestErrorHandlingConfig.js'
+import Routes from './config/Routes.js'
+import commonResHeaders from './middleware/CommonResHeaders.js'
+import UtilityDBConnection from './mongo/UtilityDBConnection.js'
 
 class App {
 	public app = express()

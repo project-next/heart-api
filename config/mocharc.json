@@ -1,12 +1,9 @@
 {
-	"require" : [
-		"mocha-suppress-logs",
-		"ts-node/register",
-		"tsconfig-paths/register"
-	],
+	"require": ["mocha-suppress-logs", "ts-node/register"],
 	"parallel": true,
 	"timeout": 1000,
 	"bail": true,
 	"exit": true,
-	"package": "./package.json"
+	"package": "./package.json",
+	"node-option": ["experimental-specifier-resolution=node", "loader=ts-node/esm"]
 }

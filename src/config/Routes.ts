@@ -1,13 +1,13 @@
 import { Express } from 'express'
-import validateJWTMiddleware from '@middleware/JWTAuthentication'
-import youTubeGiveAwayControllerCB from '@controller/YouTubeGiveAwayController'
-import youTubeChannelActivityControllerCB from '@controller/YouTubeUploadsController'
-import youTubeVideoInfoControllerCB from '@controller/YouTubeVideoInfoController'
-import statusControllerCB from '@controller/StatusController'
-import { createJwtControllerCB } from '@controller/JWTController'
-import { getMessagesControllerCB, addMessageControllerCB } from '@controller/MessageController'
-import apiKeyAuthenticationMiddleware from '@middleware/APIKeyAuthentication'
-import { createEventControllerCB, getEventsControllerCB, updateEventControllerCB } from '@controller/EventsController'
+import validateJWTMiddleware from '../middleware/JWTAuthentication.js'
+import youTubeGiveAwayControllerCB from '../controller/YouTubeGiveAwayController.js'
+import youTubeChannelActivityControllerCB from '../controller/YouTubeUploadsController.js'
+import youTubeVideoInfoControllerCB from '../controller/YouTubeVideoInfoController.js'
+import statusControllerCB from '../controller/StatusController.js'
+import { createJwtControllerCB } from '../controller/JWTController.js'
+import { getMessagesControllerCB, addMessageControllerCB } from '../controller/MessageController.js'
+import apiKeyAuthenticationMiddleware from '../middleware/APIKeyAuthentication.js'
+import { createEventControllerCB, getEventsControllerCB, updateEventControllerCB } from '../controller/EventsController.js'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'
@@ -16,7 +16,7 @@ export default class Routes {
 	/**
 	 * Configures Express API to open up routes using Router objects.
 	 * Each Router object should specify endpoints and HTTP methods each endpoint supports.
-	 * @param app reference to Express API object that will be modified.
+	 * ../param app reference to Express API object that will be modified.
 	 */
 	static setupRoutes(app: Express): void {
 		app.get(`${Routes.BASE_URI}/status`, statusControllerCB)

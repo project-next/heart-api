@@ -1,5 +1,5 @@
-import HeartAPIError from '@error/HeartAPIError'
-import EventModel, { Event } from '../models/EventModel'
+import HeartAPIError from '../../error/HeartAPIError.js'
+import EventModel, { Event } from '../models/EventModel.js'
 
 export async function getEventsFromDB(service: string, tags: string[]): Promise<Event[]> {
 	return EventModel.find(

@@ -1,6 +1,6 @@
-import HeartAPIError from '@error/HeartAPIError'
-import { addEventToDB, getEventsFromDB, updateEvent } from '@mongo/dao/EventDAO'
-import { Event } from '@mongo/models/EventModel'
+import HeartAPIError from '../error/HeartAPIError.js'
+import { addEventToDB, getEventsFromDB, updateEvent } from '../mongo/dao/EventDAO.js'
+import { Event } from '../mongo/models/EventModel.js'
 import { NextFunction, Request, Response } from 'express'
 import uniq from 'lodash.uniq'
 
