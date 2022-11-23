@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { addMessageToDB, getMessagesFromDB } from '../mongo/dao/MessageDAO.js'
 import { Message } from '../mongo/models/MessageModel.js'
 import HeartAPIError from '../error/HeartAPIError.js'
-import pkg from 'lodash'
-const { uniq } = pkg
+import uniq from 'lodash.uniq'
 
 export async function getMessagesControllerCB(req: Request, res: Response, next: NextFunction) {
 	const service = req?.query?.service as string

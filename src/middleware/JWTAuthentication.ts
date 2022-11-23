@@ -1,8 +1,8 @@
 import HeartAPIError from '../error/HeartAPIError.js'
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
-import jwt, { SignOptions } from 'jsonwebtoken'
-const { JsonWebTokenError, NotBeforeError, TokenExpiredError } = jwt
+import jwt from 'jsonwebtoken'
+import { SignOptions, JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken-esm'
 
 const publicKey = fs.readFileSync('./certs/jwt.pub')
 
