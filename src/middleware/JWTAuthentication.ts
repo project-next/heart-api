@@ -1,8 +1,7 @@
-import HeartAPIError from '../error/HeartAPIError.js'
+import HeartAPIError from '../error/HeartAPIError'
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
-import jwt from 'jsonwebtoken'
-import { SignOptions, JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken-esm'
+import jwt, { SignOptions } from 'jsonwebtoken'
 
 const publicKey = fs.readFileSync('./certs/jwt.pub')
 
@@ -24,13 +23,13 @@ export default function validateJWTMiddleware(req: Request, res: Response, next:
 		jwt.verify(token, publicKey, signature) // return value is payload, update code if payload is needed
 		next() // no errors
 	} catch (err) {
-		if (err instanceof TokenExpiredError) {
+		if (err instanceof jwt.TokenExpiredError) {
 			console.error('Client provided token that has expired.')
 			next(new HeartAPIError('Provided JWT has expired - no access granted', 401))
-		} else if (err instanceof JsonWebTokenError) {
+		} else if (err instanceof jwt.JsonWebTokenError) {
 			console.error(`Error encountered during JWT verification ${err.message}`)
 			next(new HeartAPIError(err.message, 401))
-		} else if (err instanceof NotBeforeError) {
+		} else if (err instanceof jwt.NotBeforeError) {
 			console.error(`JWT time is invalid ${err.message}`)
 			next(new HeartAPIError(err.message, 401))
 		}
