@@ -33,7 +33,7 @@ Like all NPM applications, package.json will contain all scripts needed to run, 
 
 ### Unit Testing
 
-For unit testing both [mocha](https://mochajs.org) and [istanbul](https://istanbul.js.org) (nyc) are used.
+For unit testing both [mocha](https://mochajs.org) and [c8](https://github.com/bcoe/c8) are used.
 
 Mocha is used to execute and create the unit tests but since mocha doesn't have code coverage built in, istanbul is used to check how well unit tests are being written.
 
