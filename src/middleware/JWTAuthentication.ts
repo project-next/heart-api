@@ -1,4 +1,4 @@
-import HeartAPIError from '../error/HeartAPIError'
+import HeartAPIError from '../error/HeartAPIError.js'
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
 import jwt, { SignOptions } from 'jsonwebtoken'
