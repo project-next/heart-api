@@ -9,7 +9,7 @@
 		"run-mocha-tests": "c8 -c './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
 		"test": "env-cmd -e test npm run run-mocha-tests",
 		"mutation": "NODE_OPTIONS='--loader ts-node/esm' env-cmd -e test stryker run config/stryker.conf.json",
-		"integration-test": "NODE_OPTIONS='--loader ts-node/esm' env-cmd -e test cucumber-js --config config/cucumber.mjs",
+		"integration-test": "source integration-test/jwt.sh; NODE_OPTIONS='--loader ts-node/esm' env-cmd -e test cucumber-js --config config/cucumber.mjs",
 		"start": "env-cmd -e dev nodemon --ext ts --exec ts-node ./src/app.ts",
 		"start-prod": "env-cmd -e prod nodemon --ext ts --exec ts-node ./src/app.ts",
 		"build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist && cp ./tsconfig.json ./dist",
