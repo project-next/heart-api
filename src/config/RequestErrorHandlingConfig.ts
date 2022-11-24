@@ -1,11 +1,10 @@
 import { Express, Request, Response, NextFunction } from 'express'
-import HeartAPIError from '@error/HeartAPIError'
+import HeartAPIError from '../error/HeartAPIError.js'
 
 /**
  * Contains methods to configure common error handling for the Express API.
  */
 export default class RequestErrorHandling {
-
 	/**
 	 * Calls all other error configuration methods.
 	 * @param app reference to Express API object that will be modified.
@@ -15,19 +14,15 @@ export default class RequestErrorHandling {
 		RequestErrorHandling.setupGenericErrorHandling(app)
 	}
 
-
 	/**
 	 * Sets up generic error message (Status: 500).
 	 * @param app reference to Express API object that will be modified.
 	 */
 	private static setupGenericErrorHandling(app: Express) {
 		app.use(function (heartApiErr: HeartAPIError, req: Request, res: Response, _next: NextFunction) {
-			res
-				.status(heartApiErr.code || 500)
-				.send(heartApiErr)
+			res.status(heartApiErr.code || 500).send(heartApiErr)
 		})
 	}
-
 
 	/**
 	 * Handles 404 scenario - server doesn't have a valid route.
