@@ -38,5 +38,11 @@
 	"ts-node": {
 		"esm": true,
 		"experimentalSpecifierResolution": "node"
+		// "compilerOptions": {
+		// 	// should be enabled when this PR is live https://github.com/TypeStrong/ts-node/pull/1585
+		// 	"paths": {
+		// 		"src/*": ["./src/*"]
+		// 	}
+		// }
 	}
 }
