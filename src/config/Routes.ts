@@ -1,13 +1,13 @@
 import { Express } from 'express'
-import validateJWTMiddleware from '../middleware/JWTAuthentication.js'
+import { getEventsControllerCB, createEventControllerCB, updateEventControllerCB } from '../controller/EventsController.js'
+import { createJwtControllerCB } from '../controller/JWTController.js'
+import { getMessagesControllerCB, addMessageControllerCB } from '../controller/MessageController.js'
+import statusControllerCB from '../controller/StatusController.js'
 import youTubeGiveAwayControllerCB from '../controller/YouTubeGiveAwayController.js'
 import youTubeChannelActivityControllerCB from '../controller/YouTubeUploadsController.js'
 import youTubeVideoInfoControllerCB from '../controller/YouTubeVideoInfoController.js'
-import statusControllerCB from '../controller/StatusController.js'
-import { createJwtControllerCB } from '../controller/JWTController.js'
-import { getMessagesControllerCB, addMessageControllerCB } from '../controller/MessageController.js'
 import apiKeyAuthenticationMiddleware from '../middleware/APIKeyAuthentication.js'
-import { createEventControllerCB, getEventsControllerCB, updateEventControllerCB } from '../controller/EventsController.js'
+import validateJWTMiddleware from '../middleware/JWTAuthentication.js'
 
 export default class Routes {
 	static BASE_URI = '/api/v1'

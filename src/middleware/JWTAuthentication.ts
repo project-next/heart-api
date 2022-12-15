@@ -16,7 +16,7 @@ const signature: SignOptions = {
 
 export default function validateJWTMiddleware(req: Request, res: Response, next: NextFunction) {
 	const authorizationHeader = req.headers?.authorization
-	const authorizationHeaderTokens: string[] = authorizationHeader == undefined ? [] : (authorizationHeader as string).split(' ')
+	const authorizationHeaderTokens: string[] = authorizationHeader == undefined ? [] : authorizationHeader.split(' ')
 	const token = authorizationHeaderTokens.length === 2 ? authorizationHeaderTokens[1] : ''
 
 	try {

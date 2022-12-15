@@ -46,12 +46,9 @@ const memoizedYouTubeRequest = moize(
 			},
 		})
 			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
-				const videoIds: string[] = []
-
 				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse | void => {
 					if (youTubeVidInfo.snippet.type === 'upload') {
 						const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
-						videoIds.push(videoId)
 
 						return {
 							id: videoId,
