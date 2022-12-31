@@ -1,8 +1,7 @@
 @youtube
-Feature: Getting give away winner
-	A winner must be chosen on a video using a keyword
+Feature: Getting give away winner - successfully
 
-  Scenario: Give away winner is requested successfully
+  Scenario: Give away winner is returned successfully
     Given user needs info about a giveaway for a certain video
     Given user has correct JWT token
     Given videoId is "<videoId>"
