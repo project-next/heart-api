@@ -10,7 +10,7 @@ import YouTubeAPIError from '../error/YouTubeAPIError.js'
 
 /**
  * Logic for YouTube giveaway endpoint.
- * ../returns Express compliant call back containing endpoint specific functionality.
+ * @returns Express compliant call back containing endpoint specific functionality.
  */
 export default async function youTubeGiveAwayControllerCB(req: Request, res: Response, next: NextFunction) {
 	let json: GiveawayInfo | HeartAPIError
@@ -39,11 +39,11 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 
 /**
  * Returns a Promise with either Giveaway info if no exception occurred or Error info if YouTube API returned with an Error or other Error occurred.
- * ../param potentialWinners YouTube API output
- * ../param giveAwayPhrase
- * ../param videoId
- * ../param pageToken
- * ../returns
+ * @param potentialWinners YouTube API output
+ * @param giveAwayPhrase
+ * @param videoId
+ * @param pageToken
+ * @returns
  */
 async function getGiveAwayWinner(potentialWinners: YouTubeComment[], giveAwayPhrase: string, videoId: string, pageToken?: string): Promise<boolean> {
 	const params =
@@ -85,8 +85,8 @@ async function getGiveAwayWinner(potentialWinners: YouTubeComment[], giveAwayPhr
  * Filter entries by the following:
  * 1) Accounts I own cannot enter giveaway.
  * 2) Only one YouTube account can enter.
- * ../param potentialWinners array containing potential winners.
- * ../returns modification of the input array containing only the items that pass through filters.
+ * @param potentialWinners array containing potential winners.
+ * @returns modification of the input array containing only the items that pass through filters.
  */
 function filterPotentialWinners(potentialWinners: YouTubeComment[]): YouTubeComment[] {
 	// remove comments that I might make - preventing me from winning my own giveaway 🥴
@@ -107,9 +107,9 @@ function filterPotentialWinners(potentialWinners: YouTubeComment[]): YouTubeComm
 
 /**
  * Creates body to return to client with the info of a random giveaway winner or basic info if no winner was found.
- * ../param filteredPotentialWinners array containing potential winners that have been filtered before calling this method.
- * ../param giveAwayPhrase the valid phrase users need to type in their comment to be considered as an entry for the giveaway.
- * ../returns object the client will receive in the body.
+ * @param filteredPotentialWinners array containing potential winners that have been filtered before calling this method.
+ * @param giveAwayPhrase the valid phrase users need to type in their comment to be considered as an entry for the giveaway.
+ * @returns object the client will receive in the body.
  */
 function getRandomWinner(filteredPotentialWinners: readonly YouTubeComment[], giveAwayPhrase: string): GiveawayInfo {
 	if (filteredPotentialWinners.length === 0) {

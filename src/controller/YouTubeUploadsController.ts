@@ -12,7 +12,7 @@ import YouTubeAPIError from '../error/YouTubeAPIError.js'
  * Exposes an endpoint that clients can use to get information about YouTube Video Uploads.
  * There will be checks to prevent unwanted users from using this API to prevent Quota Limit errors.
  * YouTube API output is cleaned up and only the most useful info is returned to client.
- * ../param router object that will be used to expose functionality.
+ * @param router object that will be used to expose functionality.
  */
 export default async function youTubeChannelActivityControllerCB(req: Request, res: Response, next: NextFunction) {
 	let json: YouTubeUploadsResponse | HeartAPIError

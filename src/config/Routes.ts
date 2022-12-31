@@ -16,7 +16,7 @@ export default class Routes {
 	/**
 	 * Configures Express API to open up routes using Router objects.
 	 * Each Router object should specify endpoints and HTTP methods each endpoint supports.
-	 * ../param app reference to Express API object that will be modified.
+	 * @param app reference to Express API object that will be modified.
 	 */
 	static setupRoutes(app: Express): void {
 		app.get(`${Routes.BASE_URI}/status`, statusControllerCB)
