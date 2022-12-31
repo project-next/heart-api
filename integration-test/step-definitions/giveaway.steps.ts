@@ -5,21 +5,47 @@ import Spec from 'pactum/src/models/Spec'
 let url: string
 let giveAwayEndpointSpec: Spec
 
-Given('user pings API for give away winner for video', () => {
+Given('user needs info about a giveaway for a certain video', () => {
 	// const HEART_API_HOST = 'https://heart-api.com'
 	const HEART_API_HOST = 'http://localhost:80'
 	const ENDPOINT = '/api/v1/yt/video/giveaway'
 
 	url = `${HEART_API_HOST}${ENDPOINT}`
+	giveAwayEndpointSpec = pactum.spec().get(url)
 })
 
-When('user has request where videoId is {string}, giveAwayCode is {string}', (videoId: string, giveAwayCode: string) => {
+Given('user has correct JWT token', () => {
 	const JWT = process.env.HEART_API_JWT
-
-	url = `${url}?videoId=${videoId}&giveAwayCode=${giveAwayCode}`
-	giveAwayEndpointSpec = pactum.spec().get(url).withHeaders('Authorization', `Bearer ${JWT}`)
+	giveAwayEndpointSpec.withHeaders('Authorization', `Bearer ${JWT}`)
 })
 
-Then('API should return with success and the body of response should contain winner info', async () => {
-	await giveAwayEndpointSpec.expectStatus(200).expectBodyContains('totalEntries').expectBodyContains('giveawayPhrase').expectBodyContains('winner')
+Given('user has malformed JWT token', () => {
+	giveAwayEndpointSpec.withHeaders('Authorization', 'Bearer 1234')
+})
+
+Given("user doesn't use a JWT key", function () {})
+
+Given('videoId is {string}', (videoId: string) => {
+	giveAwayEndpointSpec.withQueryParams('videoId', videoId)
+})
+
+Given('giveAwayCode is {string}', (giveAwayCode: string) => {
+	giveAwayEndpointSpec.withQueryParams('giveAwayCode', giveAwayCode)
+})
+
+When('user calls API', () => {
+	giveAwayEndpointSpec.end()
+})
+
+Then('API should return with success and the body of response should contain winner info. Response should have {int} total entries', async (entries: number) => {
+	await giveAwayEndpointSpec
+		.expectStatus(200)
+		.expectBodyContains('totalEntries')
+		.expectBodyContains('giveawayPhrase')
+		.expectBodyContains('winner')
+		.expectJson('totalEntries', entries)
+})
+
+Then('API should return with code {int} and description {string}', async (code: number, description: string) => {
+	await giveAwayEndpointSpec.expectStatus(code).expectJson({ description: description, code: code })
 })
