@@ -10,42 +10,54 @@ import YouTubeAPIError from '../error/YouTubeAPIError.js'
 
 /**
  * Logic for YouTube giveaway endpoint.
- * @returns Express compliant call back containing endpoint specific functionality.
+ * @param object containing info on clients request.
+ * @res object containing info used for response that will be sent to clients.
  */
 export default async function youTubeGiveAwayControllerCB(req: Request, res: Response, next: NextFunction) {
 	let json: GiveawayInfo | HeartAPIError
+	let potentialWinners: YouTubeComment[] = []
 
-	if (req.query?.videoId == null || req.query?.giveAwayCode == null) {
+	// get phrase and video id from clients request
+	const GIVEAWAY_CODE = req.query.giveAwayCode?.toString()
+	const VID_ID = req.query.videoId?.toString()
+
+	if (VID_ID == null || GIVEAWAY_CODE == null) {
 		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
 	} else {
+		// retrieve all comments that use the giveaway phrase
 		try {
-			let potentialWinners: YouTubeComment[] = []
-			let hasMoreEntries: boolean
+			let nextPage = ''
 
+			// will keep calling getGiveawayEntries() as long as there are comments to parse
 			do {
-				hasMoreEntries = await getGiveAwayWinner(potentialWinners, req.query.giveAwayCode.toString(), req.query.videoId.toString())
-			} while (hasMoreEntries)
-
-			const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
-			json = getRandomWinner(filteredPotentialWinners, req.query.giveAwayCode.toString())
-
-			res.status(200).json(json)
+				nextPage = await getGiveawayEntries(potentialWinners, GIVEAWAY_CODE, VID_ID, nextPage)
+			} while (nextPage != '')
 		} catch (err) {
-			json = err as HeartAPIError
-			next(json)
+			if (err instanceof HeartAPIError) {
+				console.error('Error getting giveaway entries!')
+				next(err)
+				return
+			}
 		}
+
+		// filter entries and get random winner
+		const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
+		json = getRandomWinner(filteredPotentialWinners, GIVEAWAY_CODE)
+
+		res.status(200).json(json)
 	}
 }
 
 /**
- * Returns a Promise with either Giveaway info if no exception occurred or Error info if YouTube API returned with an Error or other Error occurred.
- * @param potentialWinners YouTube API output
- * @param giveAwayPhrase
- * @param videoId
- * @param pageToken
- * @returns
+ * Returns a Promise with entries/potential winners of a giveaway.
+ * @param potentialWinners list of entries that used correct giveaway phrase.
+ * @param giveAwayPhrase string used to denote which comments should be considered for the giveaway.
+ * @param videoId which video the giveaway is valid for.
+ * @param pageToken this value is non-null if there are more comments to parse. It is used to retrieve the "next page" of comments from the YouTube API.
+ * @throws HeartAPIError if there is an error found when calling the YouTube API.
+ * @returns the next page of comments or empty string if there are no further comments to parse.
  */
-async function getGiveAwayWinner(potentialWinners: YouTubeComment[], giveAwayPhrase: string, videoId: string, pageToken?: string): Promise<boolean> {
+async function getGiveawayEntries(potentialWinners: YouTubeComment[], giveAwayPhrase: string, videoId: string, pageToken?: string): Promise<string> {
 	const params =
 		pageToken == null
 			? {
@@ -58,8 +70,7 @@ async function getGiveAwayWinner(potentialWinners: YouTubeComment[], giveAwayPhr
 					pageToken: pageToken,
 			  }
 
-	let hasMoreEntries: boolean = false
-	let heartAPIError: HeartAPIError | undefined = undefined
+	let nextPage = ''
 
 	await YouTubeAxiosConfig.YOUTUBE_GIVE_AWAY_AXIOS_BASE_CONFIG.get('', {
 		params: params,
@@ -67,37 +78,34 @@ async function getGiveAwayWinner(potentialWinners: YouTubeComment[], giveAwayPhr
 		.then(async (ytResponse: AxiosResponse) => {
 			const response: YouTubeAPIVideoCommentsResponse = ytResponse.data as YouTubeAPIVideoCommentsResponse
 
-			potentialWinners.push(...response.items)
+			potentialWinners.push(...response.items) // add new entries to list
 
 			if (response.nextPageToken != null) {
-				hasMoreEntries = true
+				nextPage = response.nextPageToken
 			}
 		})
 		.catch((ytAPIError: AxiosError) => {
-			heartAPIError = new YouTubeAPIError(ytAPIError).convertYTErrorToHeartAPIError()
+			throw new YouTubeAPIError(ytAPIError).convertYTErrorToHeartAPIError()
 		})
 
-	if (heartAPIError != null) throw heartAPIError
-	return hasMoreEntries
+	return nextPage
 }
 
 /**
  * Filter entries by the following:
  * 1) Accounts I own cannot enter giveaway.
  * 2) Only one YouTube account can enter.
- * @param potentialWinners array containing potential winners.
+ * @param list of entries that used correct giveaway phrase.
  * @returns modification of the input array containing only the items that pass through filters.
  */
-function filterPotentialWinners(potentialWinners: YouTubeComment[]): YouTubeComment[] {
+function filterPotentialWinners(potentialWinners: readonly YouTubeComment[]): YouTubeComment[] {
 	// remove comments that I might make - preventing me from winning my own giveaway 🥴
 	potentialWinners = potentialWinners.filter(
 		(potentialWinner) => !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value)
 	)
 
-	/*
-		Uses channel id as a unique identifier so a user can only "enter" once. This will prevent a user from making multiple comments to try to win.
-		Takes advantage of Map objects key uniqueness to save both the original entry information as the value and the channel id as the key.
-	*/
+	// Uses channel id as a unique identifier so a user can only "enter" once. This will prevent a user from making multiple comments to try to win.
+	// Takes advantage of Map objects key uniqueness to save both the original entry information as the value and the channel id as the key.
 	const uniqueEntries: Map<string, YouTubeComment> = new Map(
 		potentialWinners.map((potentialWinner: YouTubeComment) => [potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value, potentialWinner])
 	)

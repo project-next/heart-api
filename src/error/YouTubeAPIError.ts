@@ -17,8 +17,13 @@ export default class YouTubeAPIError {
 		let description = 'YouTube API call encountered error'
 
 		if (this.is404) {
-			console.error("Trying to hit a URL that doesn't exist.")
-			description = 'Using non existent YouTube API URL/Path'
+			if (this.ytError.error.message.startsWith('The video identified by the')) {
+				console.error("Using video ID for a video that doesn't exist")
+				description = 'Check the video ID as it is incorrect'
+			} else {
+				console.error("Trying to hit a URL that doesn't exist.")
+				description = 'Using non existent YouTube API URL/Path'
+			}
 		} else if (this.ytError != null) {
 			console.error(`YouTube Data API (v3) returned with error: ${this.ytError.error.code} - ${this.ytError.error.message}`)
 
