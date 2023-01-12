@@ -53,7 +53,7 @@
 		"@types/cors": "2.8.13",
 		"@types/cucumber": "7.0.0",
 		"@types/express": "4.17.15",
-		"@types/jsonwebtoken": "9.0.0",
+		"@types/jsonwebtoken": "9.0.1",
 		"@types/lodash.sample": "4.2.7",
 		"@types/lodash.uniq": "4.5.7",
 		"@types/mocha": "10.0.1",
