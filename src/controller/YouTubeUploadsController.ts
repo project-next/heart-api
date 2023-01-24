@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
+import nanomemoize from 'nano-memoize'
 import { AxiosError, AxiosResponse } from 'axios'
 import Constants from '../helper/Constants.js'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
-import moize from 'moize'
 import HeartAPIError from '../error/HeartAPIError.js'
 import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes'
 import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/HeartAPIYouTubeTypes'
@@ -36,7 +36,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 /**
  * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
  */
-const memoizedYouTubeRequest = moize(
+const memoizedYouTubeRequest = nanomemoize(
 	async (channelId: string): Promise<YouTubeUploadsResponse | HeartAPIError> => {
 		let json: YouTubeUploadsResponse | HeartAPIError
 
@@ -66,5 +66,5 @@ const memoizedYouTubeRequest = moize(
 
 		return json!
 	},
-	{ maxAge: 1000 * 60 * 15, updateExpire: false }
+	{ maxAge: 1000 * 60 * 15 }
 )
