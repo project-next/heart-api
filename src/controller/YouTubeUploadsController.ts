@@ -46,20 +46,20 @@ const memoizedYouTubeRequest = moize(
 			},
 		})
 			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
-				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse | void => {
-					if (youTubeVidInfo.snippet.type === 'upload') {
-						const videoId = youTubeVidInfo.contentDetails.upload.videoId.toString()
+				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse => {
+					const videoId = youTubeVidInfo.id.videoId
+					const thumbnail = youTubeVidInfo.snippet.thumbnails.high?.url || '' // if undefined, default to empty string
 
-						return {
-							id: videoId,
-							title: youTubeVidInfo.snippet.title,
-							description: youTubeVidInfo.snippet.description,
-							publishedAt: youTubeVidInfo.snippet.publishedAt,
-							thumbnailUrl: youTubeVidInfo.snippet.thumbnails.high.url,
-							url: `https://www.youtube.com/watch?v=${videoId}`,
-						}
+					return {
+						id: videoId,
+						title: youTubeVidInfo.snippet.title,
+						description: youTubeVidInfo.snippet.description,
+						publishedAt: youTubeVidInfo.snippet.publishedAt,
+						thumbnailUrl: thumbnail,
+						url: `https://www.youtube.com/watch?v=${videoId}`,
 					}
-				}) as FormattedUploadResponse[]
+				})
+
 				json = { videos: formattedYtResponse, total: formattedYtResponse.length }
 			})
 			.catch((error: AxiosError) => (json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError()))
