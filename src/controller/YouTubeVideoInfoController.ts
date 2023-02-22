@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
+import nanomemoize from 'nano-memoize'
 import HeartAPIError from '../error/HeartAPIError.js'
 import { AxiosError, AxiosResponse } from 'axios'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
 import { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes'
 import { VideoInfoResponse } from '../types/HeartAPIYouTubeTypes'
-import moize from 'moize'
 import YouTubeAPIError from '../error/YouTubeAPIError.js'
 import Constants from '../helper/Constants.js'
 
@@ -26,7 +26,7 @@ export default async function youTubeVideoInfoControllerCB(req: Request, res: Re
 	}
 }
 
-const memoizedYouTubeRequest = moize(
+const memoizedYouTubeRequest = nanomemoize(
 	async (videoId: string): Promise<VideoInfoResponse | HeartAPIError> => {
 		let json: VideoInfoResponse | HeartAPIError
 
@@ -42,7 +42,7 @@ const memoizedYouTubeRequest = moize(
 
 		return json!
 	},
-	{ maxAge: 1000 * 60 * 10, updateExpire: false }
+	{ maxAge: 1000 * 60 * 10 }
 )
 
 function parseYouTubeResponse(YouTubeAPIUploadsResponse: YouTubeAPIUploadsResponse): VideoInfoResponse {
