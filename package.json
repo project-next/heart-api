@@ -41,7 +41,7 @@
 		"logger": "0.0.1",
 		"mongoose": "6.10.0",
 		"morgan": "1.10.0",
-		"nano-memoize": "2.0.0"
+		"nano-memoize": "3.0.8"
 	},
 	"devDependencies": {
 		"@cucumber/cucumber": "8.11.1",
