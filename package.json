@@ -44,7 +44,7 @@
 		"nano-memoize": "3.0.8"
 	},
 	"devDependencies": {
-		"@cucumber/cucumber": "9.0.0",
+		"@cucumber/cucumber": "9.0.1",
 		"@stryker-mutator/core": "6.4.1",
 		"@stryker-mutator/mocha-runner": "6.4.1",
 		"@stryker-mutator/typescript-checker": "6.4.1",
