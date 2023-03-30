@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import nanomemoize from 'nano-memoize'
+import moize from 'moize'
 import HeartAPIError from '../error/HeartAPIError.js'
 import { AxiosError, AxiosResponse } from 'axios'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
@@ -26,7 +26,7 @@ export default async function youTubeVideoInfoControllerCB(req: Request, res: Re
 	}
 }
 
-const memoizedYouTubeRequest = nanomemoize(
+const memoizedYouTubeRequest = moize(
 	async (videoId: string): Promise<VideoInfoResponse | HeartAPIError> => {
 		let json: VideoInfoResponse | HeartAPIError
 
