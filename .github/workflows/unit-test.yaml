@@ -27,10 +27,10 @@ jobs:
           node-version: '19.x'
 
       - name: Instal Dependencies
-        run: npm run fresh-install && sudo npm i -g env-cmd
+        run: npm run fresh-install && npm i -g env-cmd
 
       - name: Run Unit Tests
-        run: sudo npm run gh:test
+        run: npm run gh:test
         env:
           HEART_API_TEST_ENV: ${{secrets.HEART_API_TEST_ENV}}
           HEART_API_JWT_PRIVATE_KEY: ${{secrets.HEART_API_JWT_PRIVATE_KEY}}
