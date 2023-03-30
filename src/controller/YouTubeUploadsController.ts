@@ -38,9 +38,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
  */
 const memoizedYouTubeRequest = moize(
 	async (channelId: string): Promise<YouTubeUploadsResponse | HeartAPIError> => {
-		let json: YouTubeUploadsResponse | HeartAPIError
-
-		await YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG.get('', {
+		return await YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG.get('', {
 			params: {
 				channelId: channelId,
 			},
@@ -60,11 +58,11 @@ const memoizedYouTubeRequest = moize(
 					}
 				})
 
-				json = { videos: formattedYtResponse, total: formattedYtResponse.length }
+				return { videos: formattedYtResponse, total: formattedYtResponse.length }
 			})
-			.catch((error: AxiosError) => (json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError()))
-
-		return json!
+			.catch((error: AxiosError) => {
+				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+			})
 	},
 	{ maxAge: 1000 * 60 * 15 }
 )

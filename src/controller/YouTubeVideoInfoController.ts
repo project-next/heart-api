@@ -10,13 +10,12 @@ import Constants from '../helper/Constants.js'
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response, next: NextFunction) {
 	let status: number
-	let json: VideoInfoResponse | HeartAPIError
 
 	if (req.query?.videoId == null) {
 		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
 	} else {
-		json = await memoizedYouTubeRequest(req.query.videoId as string)
-		status = json! instanceof HeartAPIError ? json.code : 200
+		const json = await memoizedYouTubeRequest(req.query.videoId as string)
+		status = json instanceof HeartAPIError ? json.code : 200
 
 		if (json instanceof HeartAPIError) {
 			next(json)
@@ -28,19 +27,17 @@ export default async function youTubeVideoInfoControllerCB(req: Request, res: Re
 
 const memoizedYouTubeRequest = moize(
 	async (videoId: string): Promise<VideoInfoResponse | HeartAPIError> => {
-		let json: VideoInfoResponse | HeartAPIError
-
-		await YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG.get('', {
+		return await YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG.get('', {
 			params: {
 				id: videoId,
 			},
 		})
 			.then((ytResponse: AxiosResponse<YouTubeAPIUploadsResponse>) => {
-				json = ytResponse.data == null ? new HeartAPIError('YouTube API returned empty object', 500) : parseYouTubeResponse(ytResponse.data)
+				return ytResponse.data == null ? new HeartAPIError('YouTube API returned empty object', 500) : parseYouTubeResponse(ytResponse.data)
 			})
-			.catch((error: AxiosError) => (json = new YouTubeAPIError(error).convertYTErrorToHeartAPIError()))
-
-		return json!
+			.catch((error: AxiosError) => {
+				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+			})
 	},
 	{ maxAge: 1000 * 60 * 10 }
 )

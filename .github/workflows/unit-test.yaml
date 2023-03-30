@@ -38,3 +38,6 @@ jobs:
           HEART_API_SSL_CA_BUNDLE_CRT: ${{secrets.HEART_API_SSL_CA_BUNDLE_CRT}}
           HEART_API_SSL_CERTIFICATE_CRT: ${{secrets.HEART_API_SSL_CERTIFICATE_CRT}}
           HEART_API_SSL_PRIVATE_KEY: ${{secrets.HEART_API_SSL_PRIVATE_KEY}}
+
+      - name: Check Syntax (ES Lint)
+        run: npm run lint

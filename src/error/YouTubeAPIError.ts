@@ -4,13 +4,19 @@ import HeartAPIError from '../error/HeartAPIError.js'
 
 export default class YouTubeAPIError {
 	private ytError: YouTubeAPIGlobalError
-	private is404: boolean = false
+	private is404 = false
 
 	constructor(error: AxiosError) {
-		if (error.response?.status === 404) {
-			this.is404 = true
+		// this should not happen
+		if (error.response === undefined) {
+			console.log('YT request resulted in no response. This will probably cause breaking errors further up the stack.')
+			this.ytError = {} as YouTubeAPIGlobalError
+		} else {
+			if (error.response.status === 404) {
+				this.is404 = true
+			}
+			this.ytError = error.response.data as YouTubeAPIGlobalError
 		}
-		this.ytError = error.response!.data as YouTubeAPIGlobalError
 	}
 
 	convertYTErrorToHeartAPIError(): HeartAPIError {

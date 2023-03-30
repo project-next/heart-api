@@ -15,7 +15,7 @@ import YouTubeAPIError from '../error/YouTubeAPIError.js'
  */
 export default async function youTubeGiveAwayControllerCB(req: Request, res: Response, next: NextFunction) {
 	let json: GiveawayInfo | HeartAPIError
-	let potentialWinners: YouTubeComment[] = []
+	const potentialWinners: YouTubeComment[] = []
 
 	// get phrase and video id from clients request
 	const GIVEAWAY_CODE = req.query.giveAwayCode?.toString()
@@ -42,9 +42,14 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
 
 		// filter entries and get random winner
 		const filteredPotentialWinners = filterPotentialWinners(potentialWinners)
-		json = getRandomWinner(filteredPotentialWinners, GIVEAWAY_CODE)
-
-		res.status(200).json(json)
+		try {
+			json = getRandomWinner(filteredPotentialWinners, GIVEAWAY_CODE)
+			res.status(200).json(json)
+		} catch (err) {
+			if (err instanceof HeartAPIError) {
+				next(err)
+			}
+		}
 	}
 }
 
@@ -58,17 +63,7 @@ export default async function youTubeGiveAwayControllerCB(req: Request, res: Res
  * @returns the next page of comments or empty string if there are no further comments to parse.
  */
 async function getGiveawayEntries(potentialWinners: YouTubeComment[], giveAwayPhrase: string, videoId: string, pageToken?: string): Promise<string> {
-	const params =
-		pageToken == null
-			? {
-					searchTerms: giveAwayPhrase,
-					videoId: videoId,
-			  }
-			: {
-					searchTerms: giveAwayPhrase,
-					videoId: videoId,
-					pageToken: pageToken,
-			  }
+	const params = pageToken == null ? { searchTerms: giveAwayPhrase, videoId: videoId } : { searchTerms: giveAwayPhrase, videoId: videoId, pageToken: pageToken }
 
 	let nextPage = ''
 
@@ -127,7 +122,12 @@ function getRandomWinner(filteredPotentialWinners: readonly YouTubeComment[], gi
 			giveawayPhrase: giveAwayPhrase,
 		}
 	} else {
-		const randomWinner = sample(filteredPotentialWinners)! // get random winner
+		const randomWinner = sample(filteredPotentialWinners) // get random winner
+
+		if (randomWinner === undefined) {
+			console.error('Could not get random winner - lodash.sample failed to get random sample')
+			throw new HeartAPIError('Could not get random winner - lodash.sample error', 500)
+		}
 
 		return {
 			totalEntries: filteredPotentialWinners.length,
