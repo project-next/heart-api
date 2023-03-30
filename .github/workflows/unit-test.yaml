@@ -26,6 +26,15 @@ jobs:
         with:
           node-version: '19.x'
 
+      - name: Login To Doppler
+        uses: dopplerhq/secrets-fetch-action@v1.1.0
+        id: doppler
+        with:
+          doppler-token: ${{ secrets.HEART_API_PROD_DOPPLER_TOKEN }}
+
+      - name: Setup Env
+        run: npm run doppler:setup-env
+
       - name: Instal Dependencies
         run: npm run fresh-install && npm i -g env-cmd
 
@@ -33,3 +42,4 @@ jobs:
         run: npm run gh:test
         env:
           HEART_API_TEST_ENV: ${{secrets.HEART_API_TEST_ENV}}
+          X: ${{secrets.HEART_API_TEST_ENV}}
