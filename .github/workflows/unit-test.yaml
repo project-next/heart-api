@@ -32,9 +32,6 @@ jobs:
         with:
           doppler-token: ${{ secrets.HEART_API_PROD_DOPPLER_TOKEN }}
 
-      - name: Setup Env
-        run: npm run doppler:setup-env
-
       - name: Instal Dependencies
         run: npm run fresh-install && npm i -g env-cmd
 

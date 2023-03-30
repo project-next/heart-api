@@ -23,7 +23,7 @@
 		"docker-start": "npm run start-built-api",
 		"doppler:setup-env": "bash doppler-secrets-local-setup.sh prod",
 		"doppler:update-env": "bash doppler-update-secrets.sh prod",
-		"gh:test": "echo $HEART_API_TEST_ENV > .env-cmdrc.json && npm test"
+		"gh:test": "echo $HEART_API_TEST_ENV > .env-cmdrc.json && bash doppler-secrets-gh-setup.sh && npm test"
 	},
 	"keywords": [
 		"heart",
