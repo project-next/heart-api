@@ -4,5 +4,16 @@
 	"exclude": ["src/app.ts", "src/error/**", "src/types/**"],
 	"reporter": ["html", "text", "text-summary"],
 	"all": true,
-	"recursive": true
+	"recursive": true,
+	"check-coverage": true,
+	"branches": 85,
+	"functions": 40,
+	"lines": 55,
+	"statements": 55,
+	"watermarks": {
+		"branches": [50, 90],
+		"functions": [50, 90],
+		"lines": [50, 90],
+		"statements": [50, 90]
+	}
 }
