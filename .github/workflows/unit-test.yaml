@@ -30,4 +30,4 @@ jobs:
         run: npm run fresh-install && npm i -g env-cmd
 
       - name: Run Unit Tests
-        run: npm test
+        run: npm run gh:test
