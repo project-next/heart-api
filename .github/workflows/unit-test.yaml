@@ -27,7 +27,7 @@ jobs:
           node-version: '19.x'
 
       - name: Instal Dependencies
-        run: npm run fresh-install && npm i -g env-cmd
+        run: npm run fresh-install && sudo npm i -g env-cmd
 
       - name: Run Unit Tests
         run: npm run gh:test
