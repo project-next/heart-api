@@ -26,15 +26,10 @@ jobs:
         with:
           node-version: '19.x'
 
-      # - name: Instal Dependencies
-      #   run: npm run fresh-install && npm i -g env-cmd
+      - name: Instal Dependencies
+        run: npm run fresh-install && npm i -g env-cmd
 
       - name: Run Unit Tests
         run: npm run gh:test
-        env:
-          SSH_KEY: ${{secrets.HEART_API_TEST_ENV}}
-
-      - name: Run Unit Tests
-        run: echo $HEART_API_TEST_ENV
         env:
           SSH_KEY: ${{secrets.HEART_API_TEST_ENV}}
