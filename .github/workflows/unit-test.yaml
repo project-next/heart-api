@@ -1,4 +1,4 @@
-name: Execute Unit Tests
+name: Unit Test & Code Quality
 
 on:
   push:

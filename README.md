@@ -1,4 +1,5 @@
 # heart-api
+[![Unit Test & Code Quality](https://github.com/project-next/heart-api/actions/workflows/unit-test.yaml/badge.svg)](https://github.com/project-next/heart-api/actions/workflows/unit-test.yaml)
 
 ## Description
 
