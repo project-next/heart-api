@@ -5,7 +5,9 @@
 	"main": "./src/app.ts",
 	"type": "module",
 	"scripts": {
-		"fresh-install": "rm -rf node_modules; npm install --no-optional",
+		"preinstall": "npx force-resolutions",
+		"postinstall": "npm dedupe",
+		"fresh-install": "rm -rf node_modules package-lock.json && npm install",
 		"run-mocha-tests": "c8 -c './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
 		"test": "env-cmd -e test npm run run-mocha-tests",
 		"mutation": "NODE_OPTIONS='--loader ts-node/esm' env-cmd -e test stryker run config/stryker.conf.json",
