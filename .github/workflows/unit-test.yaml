@@ -30,10 +30,9 @@ jobs:
         run: npm run fresh-install && npm i -g env-cmd
 
       - name: Run Unit Tests
-        run: npm run gh:test
+        run: sudo npm run gh:test
         env:
           HEART_API_TEST_ENV: ${{secrets.HEART_API_TEST_ENV}}
-          X: ${{secrets.HEART_API_TEST_ENV}}
           HEART_API_JWT_PRIVATE_KEY: ${{secrets.HEART_API_JWT_PRIVATE_KEY}}
           HEART_API_JWT_PUBLIC_KEY: ${{secrets.HEART_API_JWT_PUBLIC_KEY}}
           HEART_API_MONGO_DB_SSL_CERT: ${{secrets.HEART_API_MONGO_DB_SSL_CERT}}
