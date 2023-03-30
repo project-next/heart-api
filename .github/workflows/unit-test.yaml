@@ -32,4 +32,4 @@ jobs:
       - name: Run Unit Tests
         run: npm run gh:test
         env:
-          SSH_KEY: ${{secrets.HEART_API_TEST_ENV}}
+          HEART_API_TEST_ENV: ${{secrets.HEART_API_TEST_ENV}}
