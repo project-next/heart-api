@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   heart-api:
-    image: "node:alpine"
+    image: "node:19-alpine"
     working_dir: /home/node/app/dist
     ports:
       - "443:443"
