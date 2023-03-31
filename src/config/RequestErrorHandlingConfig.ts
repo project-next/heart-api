@@ -19,7 +19,8 @@ export default class RequestErrorHandling {
 	 * @param app reference to Express API object that will be modified.
 	 */
 	private static setupGenericErrorHandling(app: Express) {
-		app.use(function (heartApiErr: HeartAPIError, req: Request, res: Response, _next: NextFunction) {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		app.use(function (heartApiErr: HeartAPIError, req: Request, res: Response, _: NextFunction) {
 			res.status(heartApiErr.code || 500).send(heartApiErr)
 		})
 	}

@@ -1,0 +1,43 @@
+name: Unit Test & Code Quality
+
+on:
+  push:
+    branches:
+      - release
+      - master
+    tags:
+      - v**
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19.x'
+
+      - name: Instal Dependencies
+        run: npm run fresh-install
+
+      - name: Run Unit Tests
+        run: npm run gh:test
+        env:
+          HEART_API_TEST_ENV: ${{secrets.HEART_API_TEST_ENV}}
+          HEART_API_JWT_PRIVATE_KEY: ${{secrets.HEART_API_JWT_PRIVATE_KEY}}
+          HEART_API_JWT_PUBLIC_KEY: ${{secrets.HEART_API_JWT_PUBLIC_KEY}}
+          HEART_API_MONGO_DB_SSL_CERT: ${{secrets.HEART_API_MONGO_DB_SSL_CERT}}
+          HEART_API_SSL_CA_BUNDLE_CRT: ${{secrets.HEART_API_SSL_CA_BUNDLE_CRT}}
+          HEART_API_SSL_CERTIFICATE_CRT: ${{secrets.HEART_API_SSL_CERTIFICATE_CRT}}
+          HEART_API_SSL_PRIVATE_KEY: ${{secrets.HEART_API_SSL_PRIVATE_KEY}}
+
+      - name: Check Syntax (ES Lint)
+        run: npm run lint
