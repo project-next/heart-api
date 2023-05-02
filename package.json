@@ -48,7 +48,7 @@
 		"morgan": "1.10.0"
 	},
 	"devDependencies": {
-		"@cucumber/cucumber": "9.1.0",
+		"@cucumber/cucumber": "9.1.1",
 		"@stryker-mutator/core": "6.4.2",
 		"@stryker-mutator/mocha-runner": "6.4.2",
 		"@stryker-mutator/typescript-checker": "6.4.2",
