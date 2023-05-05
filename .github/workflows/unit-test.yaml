@@ -23,7 +23,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '19.x'
+          node-version: '18.x'
 
       - name: Instal Dependencies
         run: npm run fresh-install
