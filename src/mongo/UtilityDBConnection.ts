@@ -25,9 +25,9 @@ export default function UtilityDBConnection() {
 	})
 
 	mongoose.connect(`${Constants.HEART_API_DB_BASE_URI}/${DB_NAME}`, {
+		tlsAllowInvalidCertificates: false,
+		tlsCertificateKeyFile: './certs/mongoDB-heart-api-X509.pem',
 		authMechanism: 'MONGODB-X509',
 		authSource: '$external',
-		sslKey: './certs/mongoDB-heart-api-X509.pem',
-		sslCert: './certs/mongoDB-heart-api-X509.pem',
 	})
 }
