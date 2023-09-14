@@ -5,15 +5,22 @@ export default class YouTubeAxiosConfig {
 	/**
 	 * Axios configuration for connecting to YouTube API to get uploaded videos.
 	 */
-	static readonly YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG = axios.create({
-		baseURL: `${Constants.YOUTUBE_API_URL}/search`, // documentation for endpoint -> https://developers.google.com/youtube/v3/docs/activities/list
+	static readonly YOUTUBE_PLAYLIST_CONTENTS_AXIOS_BASE_CONFIG = axios.create({
+		baseURL: `${Constants.YOUTUBE_API_URL}/playlistItems`, // documentation for endpoint -> https://developers.google.com/youtube/v3/docs/playlistItems/list
 		params: {
 			key: Constants.YOUTUBE_API_KEY,
-			kind: 'upload',
 			part: 'snippet',
-			order: 'date',
 			maxResults: 10,
-			type: 'video',
+		},
+	})
+	/**
+	 * Axios configuration for connecting to YouTube API to get channel info.
+	 */
+	static readonly YOUTUBE_CHANNEL_INFO_AXIOS_BASE_CONFIG = axios.create({
+		baseURL: `${Constants.YOUTUBE_API_URL}/channels`, // documentation for endpoint -> https://developers.google.com/youtube/v3/docs/channels/list
+		params: {
+			key: Constants.YOUTUBE_API_KEY,
+			part: 'snippet,contentDetails,statistics',
 		},
 	})
 

@@ -7,6 +7,7 @@ import HeartAPIError from '../error/HeartAPIError.js'
 import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes'
 import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/HeartAPIYouTubeTypes'
 import YouTubeAPIError from '../error/YouTubeAPIError.js'
+import { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js'
 
 /**
  * Exposes an endpoint that clients can use to get information about YouTube Video Uploads.
@@ -16,37 +17,67 @@ import YouTubeAPIError from '../error/YouTubeAPIError.js'
  */
 export default async function youTubeChannelActivityControllerCB(req: Request, res: Response, next: NextFunction) {
 	let json: YouTubeUploadsResponse | HeartAPIError
+	const CHANNEL_ID = req.query?.channelId
 
-	if (req.query?.channelId == null) {
+	if (CHANNEL_ID == null || typeof CHANNEL_ID !== 'string') {
 		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
-	} else if (!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(req.query.channelId.toString())) {
+	} else if (!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(CHANNEL_ID.toString())) {
 		// prevent malicious use of API
 		next(new HeartAPIError("This API cannot use provided channelId. Only certain Id's are permitted.", 401))
 	} else {
-		json = await memoizedYouTubeRequest(req.query.channelId.toString())
-
-		if (json instanceof HeartAPIError) {
-			next(json)
-		} else {
+		try {
+			const uploadsPlaylistId = await memoizedUploadsPlaylistId(CHANNEL_ID.toString())
+			json = await memoizedYouTubeRequest(uploadsPlaylistId)
 			res.status(200).json(json)
+		} catch (ex) {
+			next(ex)
 		}
 	}
 }
 
 /**
  * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
+ * This will fetch the playlist ID for a channels default playlist where all uploads reside.
+ */
+const memoizedUploadsPlaylistId = moize(
+	async (channelId: string): Promise<string> => {
+		console.log(`Getting upload playlist ID for channel with ID ${channelId}`)
+		return await YouTubeAxiosConfig.YOUTUBE_CHANNEL_INFO_AXIOS_BASE_CONFIG.get('', {
+			params: {
+				id: channelId,
+			},
+		})
+			.then((ytResponse: AxiosResponse<YouTubeAPIChannelInfoResponse>) => {
+				if (ytResponse.data.items.length < 1) {
+					console.log('Channel info request did not return correct data')
+					throw new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
+				}
+				const UPLOADS_PLAYLIST_ID = ytResponse.data?.items[0]?.contentDetails?.relatedPlaylists?.uploads
+				return UPLOADS_PLAYLIST_ID ?? new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
+			})
+			.catch((error: AxiosError) => {
+				console.log(`Error fetching channel info for channel with ID ${channelId}`)
+				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+			})
+	},
+	{ maxAge: 1000 * 60 * 60 * 24 }
+)
+
+/**
+ * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
+ * This will fetch recent uploads using the default "uploads" playlist of a channel. Caller should know this uploads playlist ID before calling the method.
  */
 const memoizedYouTubeRequest = moize(
-	async (channelId: string): Promise<YouTubeUploadsResponse | HeartAPIError> => {
-		return await YouTubeAxiosConfig.YOUTUBE_UPLOADS_AXIOS_BASE_CONFIG.get('', {
+	async (UPLOADS_PLAYLIST_ID: string): Promise<YouTubeUploadsResponse> => {
+		return await YouTubeAxiosConfig.YOUTUBE_PLAYLIST_CONTENTS_AXIOS_BASE_CONFIG.get('', {
 			params: {
-				channelId: channelId,
+				playlistId: UPLOADS_PLAYLIST_ID,
 			},
 		})
 			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
 				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse => {
-					const videoId = youTubeVidInfo.id.videoId
-					const thumbnail = youTubeVidInfo.snippet.thumbnails.high?.url || '' // if undefined, default to empty string
+					const videoId = youTubeVidInfo.snippet.resourceId.videoId
+					const thumbnail = youTubeVidInfo.snippet.thumbnails.high?.url ?? '' // if undefined, default to empty string
 
 					return {
 						id: videoId,
@@ -61,8 +92,8 @@ const memoizedYouTubeRequest = moize(
 				return { videos: formattedYtResponse, total: formattedYtResponse.length }
 			})
 			.catch((error: AxiosError) => {
-				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
-	{ maxAge: 1000 * 60 * 15 }
+	{ maxAge: 1000 * 60 * 10 }
 )

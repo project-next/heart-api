@@ -73,10 +73,7 @@ export type ThumbnailInfo = {
 export type YouTubeVideo = {
 	kind: string
 	etag: string
-	id: {
-		kind: string
-		videoId: string
-	}
+	id: string
 	snippet: {
 		publishedAt: string
 		channelId: string
@@ -92,6 +89,10 @@ export type YouTubeVideo = {
 		channelTitle: string
 		liveBroadcastContent: string
 		publishTime: string
+		resourceId: {
+			kind: string
+			videoId: string
+		}
 	}
 }
 
