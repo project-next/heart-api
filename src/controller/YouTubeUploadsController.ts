@@ -16,23 +16,29 @@ import { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js
  * @param router object that will be used to expose functionality.
  */
 export default async function youTubeChannelActivityControllerCB(req: Request, res: Response, next: NextFunction) {
-	let json: YouTubeUploadsResponse | HeartAPIError
 	const CHANNEL_ID = req.query?.channelId
 
 	if (CHANNEL_ID == null || typeof CHANNEL_ID !== 'string') {
 		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
+		return
 	} else if (!Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(CHANNEL_ID.toString())) {
 		// prevent malicious use of API
 		next(new HeartAPIError("This API cannot use provided channelId. Only certain Id's are permitted.", 401))
-	} else {
-		try {
-			const uploadsPlaylistId = await memoizedUploadsPlaylistId(CHANNEL_ID.toString())
-			json = await memoizedYouTubeRequest(uploadsPlaylistId)
-			res.status(200).json(json)
-		} catch (ex) {
-			next(ex)
-		}
+		return
 	}
+
+	const uploadsPlaylistIdRes = await memoizedUploadsPlaylistId(CHANNEL_ID.toString())
+	if (uploadsPlaylistIdRes instanceof HeartAPIError) {
+		next(uploadsPlaylistIdRes)
+		return
+	}
+	const json = await memoizedYouTubeRequest(uploadsPlaylistIdRes)
+	if (json instanceof HeartAPIError) {
+		next(json)
+		return
+	}
+
+	res.status(200).json(json)
 }
 
 /**
@@ -40,7 +46,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
  * This will fetch the playlist ID for a channels default playlist where all uploads reside.
  */
 const memoizedUploadsPlaylistId = moize(
-	async (channelId: string): Promise<string> => {
+	async (channelId: string): Promise<string | HeartAPIError> => {
 		console.log(`Getting upload playlist ID for channel with ID ${channelId}`)
 		return await YouTubeAxiosConfig.YOUTUBE_CHANNEL_INFO_AXIOS_CONFIG.get('', {
 			params: {
@@ -49,15 +55,15 @@ const memoizedUploadsPlaylistId = moize(
 		})
 			.then((ytResponse: AxiosResponse<YouTubeAPIChannelInfoResponse>) => {
 				if (ytResponse.data.items.length < 1) {
-					console.log('Channel info request did not return correct data')
-					throw new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
+					console.error('Channel info request did not return correct data')
+					return new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
 				}
 				const UPLOADS_PLAYLIST_ID = ytResponse.data?.items[0]?.contentDetails?.relatedPlaylists?.uploads
 				return UPLOADS_PLAYLIST_ID ?? new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
 			})
 			.catch((error: AxiosError) => {
-				console.log(`Error fetching channel info for channel with ID ${channelId}`)
-				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+				console.error(`Error fetching channel info for channel with ID ${channelId}`)
+				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
 	{ maxAge: 1000 * 60 * 60 * 24 }
@@ -68,7 +74,7 @@ const memoizedUploadsPlaylistId = moize(
  * This will fetch recent uploads using the default "uploads" playlist of a channel. Caller should know this uploads playlist ID before calling the method.
  */
 const memoizedYouTubeRequest = moize(
-	async (UPLOADS_PLAYLIST_ID: string): Promise<YouTubeUploadsResponse> => {
+	async (UPLOADS_PLAYLIST_ID: string): Promise<YouTubeUploadsResponse | HeartAPIError> => {
 		return await YouTubeAxiosConfig.YOUTUBE_PLAYLIST_CONTENTS_AXIOS_CONFIG.get('', {
 			params: {
 				playlistId: UPLOADS_PLAYLIST_ID,
@@ -92,7 +98,7 @@ const memoizedYouTubeRequest = moize(
 				return { videos: formattedYtResponse, total: formattedYtResponse.length }
 			})
 			.catch((error: AxiosError) => {
-				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
 	{ maxAge: 1000 * 60 * 10 }
