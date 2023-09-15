@@ -8,21 +8,21 @@ const signature: SignOptions = {
 	issuer: 'heart-api',
 	subject: 'authentication',
 	audience: 'skc',
-	expiresIn: "3d",
-	algorithm: "RS256",
-	jwtid: "id"
+	expiresIn: '3d',
+	algorithm: 'RS256',
+	jwtid: 'id',
 }
 
-export const createJwtControllerCB = (req: Request, res: Response) => {
+export const createJwtControllerCB = (_: Request, res: Response) => {
 	const payload = {
-		dev: 'javi'
+		dev: 'javi',
 	}
 
 	jwt.sign(payload, privateKey, signature, (err, token) => {
 		if (err) {
-			console.log(err)
+			console.log(`Could not create JWT: ${err}`)
 		}
-		res.json({jwt: token})
+		res.json({ jwt: token })
 		res.end()
 	})
 }

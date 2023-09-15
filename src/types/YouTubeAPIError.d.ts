@@ -2,14 +2,14 @@ export type YouTubeAPIGlobalError = {
 	error: {
 		errors: [
 			{
-				domain: string,
-				reason: string,
-				message: string,
-				locationType: string,
+				domain: string
+				reason: string
+				message: string
+				locationType: string
 				location: string
 			}
-		],
-		code: number,
+		]
+		code: number
 		message: string
 	}
 }
