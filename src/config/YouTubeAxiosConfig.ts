@@ -20,14 +20,14 @@ export default class YouTubeAxiosConfig {
 	})
 
 	static readonly YOUTUBE_VIDEO_INFO_AXIOS_CONFIG: AxiosInstance = axios.create({
-		baseURL: `${Constants.YOUTUBE_API_URL}/videos`,
+		baseURL: `${Constants.YOUTUBE_API_URL}/videos`, // documentation for endpoint -> https://developers.google.com/youtube/v3/docs/videos/list
 		params: {
 			key: Constants.YOUTUBE_API_KEY,
 			part: 'statistics,topicDetails',
 		},
 	})
 
-	static readonly YOUTUBE_GIVE_AWAY_AXIOS_CONFIG = axios.create({
+	static readonly YOUTUBE_COMMENTS_AXIOS_CONFIG = axios.create({
 		baseURL: `${Constants.YOUTUBE_API_URL}/commentThreads`,
 		params: {
 			key: Constants.YOUTUBE_API_KEY,

@@ -67,7 +67,7 @@ async function getGiveawayEntries(potentialWinners: YouTubeComment[], giveAwayPh
 
 	let nextPage = ''
 
-	await YouTubeAxiosConfig.YOUTUBE_GIVE_AWAY_AXIOS_CONFIG.get('', {
+	await YouTubeAxiosConfig.YOUTUBE_COMMENTS_AXIOS_CONFIG.get('', {
 		params: params,
 	})
 		.then(async (ytResponse: AxiosResponse) => {
