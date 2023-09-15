@@ -42,7 +42,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 const memoizedUploadsPlaylistId = moize(
 	async (channelId: string): Promise<string> => {
 		console.log(`Getting upload playlist ID for channel with ID ${channelId}`)
-		return await YouTubeAxiosConfig.YOUTUBE_CHANNEL_INFO_AXIOS_BASE_CONFIG.get('', {
+		return await YouTubeAxiosConfig.YOUTUBE_CHANNEL_INFO_AXIOS_CONFIG.get('', {
 			params: {
 				id: channelId,
 			},
@@ -69,7 +69,7 @@ const memoizedUploadsPlaylistId = moize(
  */
 const memoizedYouTubeRequest = moize(
 	async (UPLOADS_PLAYLIST_ID: string): Promise<YouTubeUploadsResponse> => {
-		return await YouTubeAxiosConfig.YOUTUBE_PLAYLIST_CONTENTS_AXIOS_BASE_CONFIG.get('', {
+		return await YouTubeAxiosConfig.YOUTUBE_PLAYLIST_CONTENTS_AXIOS_CONFIG.get('', {
 			params: {
 				playlistId: UPLOADS_PLAYLIST_ID,
 			},

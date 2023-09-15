@@ -16,7 +16,7 @@ describe('YouTubeVideoInfo tests', () => {
 	})
 
 	beforeEach(() => {
-		youtubeAxiosStub = sinon.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_BASE_CONFIG, 'get')
+		youtubeAxiosStub = sinon.stub(YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_CONFIG, 'get')
 	})
 
 	afterEach(() => {
