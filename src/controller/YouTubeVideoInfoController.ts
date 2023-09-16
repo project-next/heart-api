@@ -41,7 +41,7 @@ const memoizedYouTubeRequest = moize(
 				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
-	{ maxAge: 1000 * 60 * 10 }
+	{ maxAge: 1000 * 60 * 10, maxSize: 30 }
 )
 
 const parseYouTubeResponse = (YouTubeAPIUploadsResponse: YouTubeAPIUploadsResponse): VideoInfoResponse => {
