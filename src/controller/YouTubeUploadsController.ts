@@ -81,15 +81,7 @@ const memoizedPlaylistContentRequest = moize(
 	async (playlistId: string, pageToken: string | undefined): Promise<PlaylistContent> => {
 		console.log(`Getting playlist contents for playlist w/ ID ${playlistId} and pageToken ${pageToken}`)
 
-		const params =
-			pageToken === undefined
-				? {
-						playlistId: playlistId,
-				  }
-				: {
-						playlistId: playlistId,
-						pageToken: pageToken,
-				  }
+		const params = pageToken === undefined ? { playlistId: playlistId } : { playlistId: playlistId, pageToken: pageToken }
 		return await YouTubeAxiosConfig.YOUTUBE_PLAYLIST_CONTENTS_AXIOS_CONFIG.get('', {
 			params: params,
 		})
