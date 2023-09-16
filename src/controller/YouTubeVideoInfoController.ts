@@ -13,17 +13,17 @@ export default async function youTubeVideoInfoControllerCB(req: Request, res: Re
 		next(new HeartAPIError(Constants.MISSING_REQUIRED_PARAM_MESSAGE, 400))
 		return
 	}
-
-	const json = await memoizedYouTubeRequest(req.query.videoId as string)
-	if (json instanceof HeartAPIError) {
-		next(json)
-		return
+	try {
+		const json = await memoizedYouTubeRequest(req.query.videoId as string)
+		res.status(200).json(json)
+	} catch (err) {
+		console.error('Error retrieving YT vid info')
+		next(err)
 	}
-	res.status(200).json(json)
 }
 
 const memoizedYouTubeRequest = moize(
-	async (videoId: string): Promise<VideoInfoResponse | HeartAPIError> => {
+	async (videoId: string): Promise<VideoInfoResponse> => {
 		return await YouTubeAxiosConfig.YOUTUBE_VIDEO_INFO_AXIOS_CONFIG.get('', {
 			params: {
 				id: videoId,
@@ -32,13 +32,13 @@ const memoizedYouTubeRequest = moize(
 			.then((ytResponse: AxiosResponse<YouTubeAPIUploadsResponse>) => {
 				if (ytResponse.data == null) {
 					console.error(`Received empty body from /videos endpoint when using video ID ${videoId}`)
-					return new HeartAPIError('YT API returned empty object', 500)
+					throw new HeartAPIError('YT API returned empty object', 500)
 				}
 				return parseYouTubeResponse(ytResponse.data)
 			})
 			.catch((error: AxiosError) => {
 				console.error(`YT API returned with error when calling /videos endpoint with video ID ${videoId}`)
-				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
 	{ maxAge: 1000 * 60 * 10 }

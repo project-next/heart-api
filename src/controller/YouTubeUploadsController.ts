@@ -37,7 +37,8 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 			formattedYTVids = formattedYTVids.filter((vid) => vid.title?.toLocaleLowerCase().indexOf('#shorts') === -1) // don't send back shorts
 		} while (nextPageToken && formattedYTVids.length < 10)
 
-		res.status(200).json({ videos: formattedYTVids, total: formattedYTVids.length } as YouTubeUploadsResponse)
+		formattedYTVids = formattedYTVids.slice(0, 10)
+		res.status(200).json({ videos: formattedYTVids.slice(0, 10), total: formattedYTVids.length } as YouTubeUploadsResponse)
 	} catch (err) {
 		console.error('Error building uploads output')
 		next(err)
@@ -79,6 +80,8 @@ const memoizedUploadsPlaylistId = moize(
  */
 const memoizedPlaylistContentRequest = moize(
 	async (playlistId: string, pageToken: string | undefined, formattedYTVids: FormattedUploadResponse[]): Promise<string | undefined> => {
+		console.log(`Getting playlist contents for playlist w/ ID ${playlistId} and pageToken ${pageToken}`)
+
 		const params =
 			pageToken == undefined
 				? {
