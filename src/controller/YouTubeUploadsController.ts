@@ -9,6 +9,8 @@ import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/HeartA
 import YouTubeAPIError from '../error/YouTubeAPIError.js'
 import { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js'
 
+type PlaylistContent = { nextPageToken: string | undefined; vidsFromRequest: FormattedUploadResponse[] }
+
 /**
  * Exposes an endpoint that clients can use to get information about YouTube Video Uploads.
  * There will be checks to prevent unwanted users from using this API to prevent Quota Limit errors.
@@ -27,18 +29,19 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 		return
 	}
 
-	let nextPageToken: string | undefined = undefined
 	try {
-		const uploadsPlaylistIdRes = await memoizedUploadsPlaylistId(CHANNEL_ID.toString())
+		const uploadsPlaylistId = await memoizedUploadsPlaylistId(CHANNEL_ID.toString())
+
+		let playlistContent: PlaylistContent = { nextPageToken: undefined, vidsFromRequest: [] }
 		let formattedYTVids: FormattedUploadResponse[] = []
 
 		do {
-			nextPageToken = await memoizedPlaylistContentRequest(uploadsPlaylistIdRes, nextPageToken, formattedYTVids)
-			formattedYTVids = formattedYTVids.filter((vid) => vid.title?.toLocaleLowerCase().indexOf('#shorts') === -1) // don't send back shorts
-		} while (nextPageToken && formattedYTVids.length < 10)
+			playlistContent = await memoizedPlaylistContentRequest(uploadsPlaylistId, playlistContent.nextPageToken)
+			formattedYTVids.push(...playlistContent.vidsFromRequest.filter((vid) => vid.title?.toLocaleLowerCase().indexOf('#shorts') === -1)) // don't send back shorts
+		} while (playlistContent.nextPageToken && formattedYTVids.length <= 10)
 
 		formattedYTVids = formattedYTVids.slice(0, 10)
-		res.status(200).json({ videos: formattedYTVids.slice(0, 10), total: formattedYTVids.length } as YouTubeUploadsResponse)
+		res.status(200).json({ videos: formattedYTVids, total: formattedYTVids.length } as YouTubeUploadsResponse)
 	} catch (err) {
 		console.error('Error building uploads output')
 		next(err)
@@ -71,7 +74,7 @@ const memoizedUploadsPlaylistId = moize(
 				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
-	{ maxAge: 1000 * 60 * 60 * 24 }
+	{ maxAge: 1000 * 60 * 60 * 24, maxSize: 5 }
 )
 
 /**
@@ -79,31 +82,29 @@ const memoizedUploadsPlaylistId = moize(
  * This will fetch recent uploads using the default "uploads" playlist of a channel. Caller should know this uploads playlist ID before calling the method.
  */
 const memoizedPlaylistContentRequest = moize(
-	async (playlistId: string, pageToken: string | undefined, formattedYTVids: FormattedUploadResponse[]): Promise<string | undefined> => {
+	async (playlistId: string, pageToken: string | undefined): Promise<PlaylistContent> => {
 		console.log(`Getting playlist contents for playlist w/ ID ${playlistId} and pageToken ${pageToken}`)
 
 		const params =
-			pageToken == undefined
+			pageToken === undefined
 				? {
 						playlistId: playlistId,
-						pageToken: pageToken,
 				  }
 				: {
 						playlistId: playlistId,
+						pageToken: pageToken,
 				  }
 		return await YouTubeAxiosConfig.YOUTUBE_PLAYLIST_CONTENTS_AXIOS_CONFIG.get('', {
 			params: params,
 		})
 			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
-				formattedYTVids.push(...ytResponse.data.items.map(transformToYouTubeVid))
-
-				return ytResponse.data.nextPageToken
+				return { vidsFromRequest: ytResponse.data.items.map(transformToYouTubeVid), nextPageToken: ytResponse.data.nextPageToken }
 			})
 			.catch((error: AxiosError) => {
 				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
-	{ maxAge: 1000 * 60 * 10 }
+	{ maxAge: 1000 * 60 * 10, isPromise: true, isDeepEqual: true, maxSize: 30 }
 )
 
 const transformToYouTubeVid = (youTubeVidInfo: YouTubeVideo): FormattedUploadResponse => {
