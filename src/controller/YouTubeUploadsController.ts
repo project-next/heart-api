@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import moize from 'moize'
-import { AxiosError, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import Constants from '../helper/Constants.js'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
 import HeartAPIError from '../error/HeartAPIError.js'
 import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes'
 import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/HeartAPIYouTubeTypes'
-import YouTubeAPIError from '../error/YouTubeAPIError.js'
 import { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js'
 
 type PlaylistContent = { nextPageToken: string | undefined; vidsFromRequest: FormattedUploadResponse[] }
@@ -69,10 +68,7 @@ const memoizedUploadsPlaylistId = moize(
 				const UPLOADS_PLAYLIST_ID = ytResponse.data?.items[0]?.contentDetails?.relatedPlaylists?.uploads
 				return UPLOADS_PLAYLIST_ID ?? new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
 			})
-			.catch((error: AxiosError) => {
-				console.error(`Error fetching channel info for channel with ID ${channelId} -  cannot extract default uploads playlist ID`)
-				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
-			})
+			.catch(YouTubeAxiosConfig.handleYTRequestError)
 	},
 	{ maxAge: 1000 * 60 * 60 * 24, maxSize: 5 }
 )
@@ -100,9 +96,7 @@ const memoizedPlaylistContentRequest = moize(
 			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
 				return { vidsFromRequest: ytResponse.data.items.map(transformToYouTubeVid), nextPageToken: ytResponse.data.nextPageToken }
 			})
-			.catch((error: AxiosError) => {
-				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
-			})
+			.catch(YouTubeAxiosConfig.handleYTRequestError)
 	},
 	{ maxAge: 1000 * 60 * 10, isPromise: true, isDeepEqual: true, maxSize: 30 }
 )

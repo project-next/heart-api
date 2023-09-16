@@ -1,5 +1,7 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance } from 'axios'
 import Constants from '../helper/Constants.js'
+import HeartAPIError from '../error/HeartAPIError.js'
+import YouTubeAPIError from '../error/YouTubeAPIError.js'
 
 export default class YouTubeAxiosConfig {
 	static readonly YOUTUBE_PLAYLIST_CONTENTS_AXIOS_CONFIG = axios.create({
@@ -36,4 +38,11 @@ export default class YouTubeAxiosConfig {
 			textFormat: 'plainText',
 		},
 	})
+
+	static readonly handleYTRequestError = (error: AxiosError | HeartAPIError) => {
+		if (error instanceof HeartAPIError) {
+			throw error
+		}
+		throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+	}
 }

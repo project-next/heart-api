@@ -2,11 +2,10 @@ import { NextFunction, Request, Response } from 'express'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
 import Constants from '../helper/Constants.js'
 import HeartAPIError from '../error/HeartAPIError.js'
-import { AxiosError, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
 import { YouTubeAPIVideoCommentsResponse, YouTubeComment } from '../types/YouTubeAPIVideoTypes'
 import { GiveawayInfo } from '../types/HeartAPIYouTubeTypes'
-import YouTubeAPIError from '../error/YouTubeAPIError.js'
 
 /**
  * Logic for YouTube giveaway endpoint.
@@ -79,9 +78,7 @@ async function getGiveawayEntries(potentialWinners: YouTubeComment[], giveAwayPh
 				nextPage = response.nextPageToken
 			}
 		})
-		.catch((ytAPIError: AxiosError) => {
-			throw new YouTubeAPIError(ytAPIError).convertYTErrorToHeartAPIError()
-		})
+		.catch(YouTubeAxiosConfig.handleYTRequestError)
 
 	return nextPage
 }

@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import moize from 'moize'
 import HeartAPIError from '../error/HeartAPIError.js'
-import { AxiosError, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
 import { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes'
 import { VideoInfoResponse } from '../types/HeartAPIYouTubeTypes'
-import YouTubeAPIError from '../error/YouTubeAPIError.js'
 import Constants from '../helper/Constants.js'
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response, next: NextFunction) {
@@ -36,10 +35,7 @@ const memoizedYouTubeRequest = moize(
 				}
 				return parseYouTubeResponse(ytResponse.data)
 			})
-			.catch((error: AxiosError) => {
-				console.error(`YT API returned with error when calling /videos endpoint with video ID ${videoId}`)
-				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
-			})
+			.catch(YouTubeAxiosConfig.handleYTRequestError)
 	},
 	{ maxAge: 1000 * 60 * 10, maxSize: 30 }
 )
