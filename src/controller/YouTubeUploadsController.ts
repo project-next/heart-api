@@ -27,18 +27,22 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
 		return
 	}
 
-	const uploadsPlaylistIdRes = await memoizedUploadsPlaylistId(CHANNEL_ID.toString())
-	if (uploadsPlaylistIdRes instanceof HeartAPIError) {
-		next(uploadsPlaylistIdRes)
-		return
-	}
-	const json = await memoizedYouTubeRequest(uploadsPlaylistIdRes)
-	if (json instanceof HeartAPIError) {
-		next(json)
-		return
-	}
+	let nextPageToken: string | undefined = undefined
+	try {
+		const uploadsPlaylistIdRes = await memoizedUploadsPlaylistId(CHANNEL_ID.toString())
+		let formattedYTVids: FormattedUploadResponse[] = []
 
-	res.status(200).json(json)
+		do {
+			nextPageToken = await memoizedPlaylistContentRequest(uploadsPlaylistIdRes, nextPageToken, formattedYTVids)
+			formattedYTVids = formattedYTVids.filter((vid) => vid.title?.toLocaleLowerCase().indexOf('#shorts') === -1) // don't send back shorts
+		} while (nextPageToken && formattedYTVids.length < 10)
+
+		res.status(200).json({ videos: formattedYTVids, total: formattedYTVids.length } as YouTubeUploadsResponse)
+	} catch (err) {
+		console.error('Error building uploads output')
+		next(err)
+		return
+	}
 }
 
 /**
@@ -46,7 +50,7 @@ export default async function youTubeChannelActivityControllerCB(req: Request, r
  * This will fetch the playlist ID for a channels default playlist where all uploads reside.
  */
 const memoizedUploadsPlaylistId = moize(
-	async (channelId: string): Promise<string | HeartAPIError> => {
+	async (channelId: string): Promise<string> => {
 		console.log(`Getting upload playlist ID for channel with ID ${channelId}`)
 		return await YouTubeAxiosConfig.YOUTUBE_CHANNEL_INFO_AXIOS_CONFIG.get('', {
 			params: {
@@ -55,15 +59,15 @@ const memoizedUploadsPlaylistId = moize(
 		})
 			.then((ytResponse: AxiosResponse<YouTubeAPIChannelInfoResponse>) => {
 				if (ytResponse.data.items.length < 1) {
-					console.error('Channel info request did not return correct data')
-					return new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
+					console.error('Channel info request did not return correct data -  cannot extract default uploads playlist ID')
+					throw new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
 				}
 				const UPLOADS_PLAYLIST_ID = ytResponse.data?.items[0]?.contentDetails?.relatedPlaylists?.uploads
 				return UPLOADS_PLAYLIST_ID ?? new HeartAPIError('Could not determine "uploads" playlist ID.', 500)
 			})
 			.catch((error: AxiosError) => {
-				console.error(`Error fetching channel info for channel with ID ${channelId}`)
-				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+				console.error(`Error fetching channel info for channel with ID ${channelId} -  cannot extract default uploads playlist ID`)
+				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
 	{ maxAge: 1000 * 60 * 60 * 24 }
@@ -73,33 +77,42 @@ const memoizedUploadsPlaylistId = moize(
  * Function definition that uses memoization with expiration policy to prevent exceeding quota limits Google uses.
  * This will fetch recent uploads using the default "uploads" playlist of a channel. Caller should know this uploads playlist ID before calling the method.
  */
-const memoizedYouTubeRequest = moize(
-	async (UPLOADS_PLAYLIST_ID: string): Promise<YouTubeUploadsResponse | HeartAPIError> => {
+const memoizedPlaylistContentRequest = moize(
+	async (playlistId: string, pageToken: string | undefined, formattedYTVids: FormattedUploadResponse[]): Promise<string | undefined> => {
+		const params =
+			pageToken == undefined
+				? {
+						playlistId: playlistId,
+						pageToken: pageToken,
+				  }
+				: {
+						playlistId: playlistId,
+				  }
 		return await YouTubeAxiosConfig.YOUTUBE_PLAYLIST_CONTENTS_AXIOS_CONFIG.get('', {
-			params: {
-				playlistId: UPLOADS_PLAYLIST_ID,
-			},
+			params: params,
 		})
 			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
-				const formattedYtResponse: FormattedUploadResponse[] = ytResponse.data.items.map((youTubeVidInfo: YouTubeVideo): FormattedUploadResponse => {
-					const videoId = youTubeVidInfo.snippet.resourceId.videoId
-					const thumbnail = youTubeVidInfo.snippet.thumbnails.high?.url ?? '' // if undefined, default to empty string
+				formattedYTVids.push(...ytResponse.data.items.map(transformToYouTubeVid))
 
-					return {
-						id: videoId,
-						title: youTubeVidInfo.snippet.title,
-						description: youTubeVidInfo.snippet.description,
-						publishedAt: youTubeVidInfo.snippet.publishedAt,
-						thumbnailUrl: thumbnail,
-						url: `https://www.youtube.com/watch?v=${videoId}`,
-					}
-				})
-
-				return { videos: formattedYtResponse, total: formattedYtResponse.length }
+				return ytResponse.data.nextPageToken
 			})
 			.catch((error: AxiosError) => {
-				return new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
+				throw new YouTubeAPIError(error).convertYTErrorToHeartAPIError()
 			})
 	},
 	{ maxAge: 1000 * 60 * 10 }
 )
+
+const transformToYouTubeVid = (youTubeVidInfo: YouTubeVideo): FormattedUploadResponse => {
+	const videoId = youTubeVidInfo.snippet.resourceId.videoId
+	const thumbnail = youTubeVidInfo.snippet.thumbnails.high?.url ?? '' // if undefined, default to empty string
+
+	return {
+		id: videoId,
+		title: youTubeVidInfo.snippet.title,
+		description: youTubeVidInfo.snippet.description,
+		publishedAt: youTubeVidInfo.snippet.publishedAt,
+		thumbnailUrl: thumbnail,
+		url: `https://www.youtube.com/watch?v=${videoId}`,
+	}
+}

@@ -99,5 +99,6 @@ export type YouTubeVideo = {
 export type YouTubeVideoUploadsEndpointResponse = {
 	kind: string
 	etag: string
+	nextPageToken: string
 	items: YouTubeVideo[]
 }
