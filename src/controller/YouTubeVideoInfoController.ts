@@ -3,9 +3,9 @@ import moize from 'moize'
 import HeartAPIError from '../error/HeartAPIError.js'
 import { AxiosResponse } from 'axios'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
-import { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes'
-import { VideoInfoResponse } from '../types/HeartAPIYouTubeTypes'
+import { VideoInfoResponse } from '../types/YouTubeDataMapping.js'
 import Constants from '../helper/Constants.js'
+import { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes.js'
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response, next: NextFunction) {
 	if (req.query?.videoId == null) {

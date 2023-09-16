@@ -4,8 +4,8 @@ import Constants from '../helper/Constants.js'
 import HeartAPIError from '../error/HeartAPIError.js'
 import { AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
-import { YouTubeAPIVideoCommentsResponse, YouTubeComment } from '../types/YouTubeAPIVideoTypes'
-import { GiveawayInfo } from '../types/HeartAPIYouTubeTypes'
+import { GiveawayInfo } from '../types/YouTubeDataMapping.js'
+import { YouTubeAPIVideoCommentsResponse, YouTubeComment } from '../types/YouTubeAPIVideoTypes.js'
 
 /**
  * Logic for YouTube giveaway endpoint.

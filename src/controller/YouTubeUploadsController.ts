@@ -4,9 +4,9 @@ import { AxiosResponse } from 'axios'
 import Constants from '../helper/Constants.js'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
 import HeartAPIError from '../error/HeartAPIError.js'
-import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes'
-import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/HeartAPIYouTubeTypes'
+import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/YouTubeDataMapping.js'
 import { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js'
+import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes.js'
 
 type PlaylistContent = { nextPageToken: string | undefined; vidsFromRequest: FormattedUploadResponse[] }
 

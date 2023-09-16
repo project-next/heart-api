@@ -1,35 +1,22 @@
-import { ThumbnailInfo } from './YouTubeAPIVideoTypes.js'
+import { YouTubeAPIBaseResponse, YouTubeAPIBaseVideoSnippet } from './YouTubeAPICommonTypes.js'
 
-export type YouTubeAPIChannelInfoResponse = {
-	kind: string
-	etag: string
+export type YouTubeAPIChannelInfoResponse = YouTubeAPIBaseResponse & {
 	items: YouTubeAPIChannelInfoItem[]
 }
 
-export type YouTubeAPIChannelInfoItem = {
-	kind: string
-	etag: string
-	id: string
+export type YouTubeAPIChannelInfoItem = YouTubeAPIBaseResponse & {
 	snippet: YouTubeAPIChannelInfoItemSnippet
 	contentDetails: YouTubeAPIChannelInfoItemContentDetails
 	statistics: YouTubeAPIChannelInfoItemStats
 }
 
-export type YouTubeAPIChannelInfoItemSnippet = {
-	title: string
-	description: string
+export type YouTubeAPIChannelInfoItemSnippet = YouTubeAPIBaseVideoSnippet & {
 	customUrl: string
-	publishedAt: string
-	thumbnails: {
-		default: ThumbnailInfo | undefined
-		medium: ThumbnailInfo | undefined
-		high: ThumbnailInfo | undefined
-	}
+	country: string
 	localized: {
 		title: string
 		description: string
 	}
-	country: string
 }
 
 export type YouTubeAPIChannelInfoItemContentDetails = {
