@@ -39,6 +39,11 @@ export default class YouTubeAxiosConfig {
 		},
 	})
 
+	/**
+	 * Transforms errors received from YouTube API when called via Axios.
+	 * This method also handles HeartAPIErrors in case a HeartAPIError is thrown from the .then() method of Axios promise.
+	 * @param error Error to handle
+	 */
 	static readonly handleYTRequestError = (error: AxiosError | HeartAPIError) => {
 		if (error instanceof HeartAPIError) {
 			throw error

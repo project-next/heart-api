@@ -86,14 +86,19 @@ const memoizedPlaylistContentRequest = moize(
 			params: params,
 		})
 			.then((ytResponse: AxiosResponse<YouTubeVideoUploadsEndpointResponse>) => {
-				return { vidsFromRequest: ytResponse.data.items.map(transformToYouTubeVid), nextPageToken: ytResponse.data.nextPageToken }
+				return { vidsFromRequest: ytResponse.data.items.map(transformYouTubeVidOutput), nextPageToken: ytResponse.data.nextPageToken }
 			})
 			.catch(YouTubeAxiosConfig.handleYTRequestError)
 	},
 	{ maxAge: 1000 * 60 * 10, isPromise: true, isDeepEqual: true, maxSize: 30 }
 )
 
-const transformToYouTubeVid = (youTubeVidInfo: YouTubeVideo): FormattedUploadResponse => {
+/**
+ * Creates a FormattedUploadResponse object using information from YouTube response: YouTubeVideo
+ * @param youTubeVidInfo output from YouTube
+ * @returns new object containing info from YouTube
+ */
+const transformYouTubeVidOutput = (youTubeVidInfo: YouTubeVideo): FormattedUploadResponse => {
 	const videoId = youTubeVidInfo.snippet.resourceId.videoId
 	const thumbnail = youTubeVidInfo.snippet.thumbnails.high?.url ?? '' // if undefined, default to empty string
 
