@@ -10,5 +10,6 @@ ssh -i ~/.ssh/skc-server.pem "${user}@${server}" << EOF
 	cd heart-api
 	docker-compose kill
 	docker-compose rm -f
+	docker-compose pull
 	docker-compose up -d
 EOF
