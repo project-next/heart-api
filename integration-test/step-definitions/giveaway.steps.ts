@@ -6,8 +6,7 @@ let url: string
 let giveAwayEndpointSpec: Spec
 
 Given('user needs info about a giveaway for a certain video', () => {
-	// const HEART_API_HOST = 'https://heart-api.com'
-	const HEART_API_HOST = 'http://localhost:80'
+	const HEART_API_HOST = process.env.HEART_API_HOST
 	const ENDPOINT = '/api/v1/yt/video/giveaway'
 
 	url = `${HEART_API_HOST}${ENDPOINT}`

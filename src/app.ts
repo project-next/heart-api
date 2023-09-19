@@ -32,7 +32,7 @@ class App {
 			})
 		)
 
-		this.app.use(morgan(process.env.MORGAN_LOG_LEVEL || 'dev'))
+		this.app.use(morgan(process.env.MORGAN_LOG_LEVEL ?? 'dev'))
 		this.app.use(express.urlencoded({ extended: true }))
 		this.app.use(express.json())
 

@@ -1,4 +1,4 @@
-import { Express } from 'express'
+import { Express, RequestHandler } from 'express'
 import { getEventsControllerCB, createEventControllerCB, updateEventControllerCB } from '../controller/EventsController.js'
 import { createJwtControllerCB } from '../controller/JWTController.js'
 import { getMessagesControllerCB, addMessageControllerCB } from '../controller/MessageController.js'
@@ -14,20 +14,19 @@ export default class Routes {
 	static YT_FUNCTIONALITY_BASE_URI = `${Routes.BASE_URI}/yt`
 
 	/**
-	 * Configures Express API to open up routes using Router objects.
-	 * Each Router object should specify endpoints and HTTP methods each endpoint supports.
+	 * Configures Express API to open up routes.
 	 * @param app reference to Express API object that will be modified.
 	 */
 	static setupRoutes(app: Express): void {
 		app.get(`${Routes.BASE_URI}/status`, statusControllerCB)
-		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/channel/uploads`, youTubeChannelActivityControllerCB)
-		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/info`, validateJWTMiddleware, youTubeVideoInfoControllerCB)
-		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateJWTMiddleware, youTubeGiveAwayControllerCB)
+		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/channel/uploads`, youTubeChannelActivityControllerCB as RequestHandler)
+		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/info`, validateJWTMiddleware, youTubeVideoInfoControllerCB as RequestHandler)
+		app.get(`${Routes.YT_FUNCTIONALITY_BASE_URI}/video/giveaway`, validateJWTMiddleware, youTubeGiveAwayControllerCB as RequestHandler)
 		app.get(`${Routes.BASE_URI}/auth/jwt`, apiKeyAuthenticationMiddleware, createJwtControllerCB)
 
 		// message endpoints
-		app.get(`${Routes.BASE_URI}/message`, getMessagesControllerCB)
-		app.put(`${Routes.BASE_URI}/message`, validateJWTMiddleware, addMessageControllerCB)
+		app.get(`${Routes.BASE_URI}/message`, getMessagesControllerCB as RequestHandler)
+		app.put(`${Routes.BASE_URI}/message`, validateJWTMiddleware, addMessageControllerCB as RequestHandler)
 
 		// events endpoints
 		app.get(`${Routes.BASE_URI}/events`, getEventsControllerCB)

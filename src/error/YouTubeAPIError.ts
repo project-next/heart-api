@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
-import { YouTubeAPIGlobalError } from '../types/YouTubeAPIError'
 import HeartAPIError from '../error/HeartAPIError.js'
+import { YouTubeAPIGlobalError } from '../types/YouTubeAPICommonTypes.js'
 
 export default class YouTubeAPIError {
 	private ytError: YouTubeAPIGlobalError
@@ -23,7 +23,7 @@ export default class YouTubeAPIError {
 		let description = 'YouTube API call encountered error'
 
 		if (this.is404) {
-			if (this.ytError.error.message.startsWith('The video identified by the')) {
+			if (this.ytError?.error?.message?.startsWith('The video identified by the')) {
 				console.error("Using video ID for a video that doesn't exist")
 				description = 'Check the video ID as it is incorrect'
 			} else {

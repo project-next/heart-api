@@ -1,24 +1,13 @@
-export type YouTubeAPIVideoCommentsResponse = {
-	kind: string
-	etag: string
-	nextPageToken: string
-	pageInfo: {
-		totalResults: number
-		resultsPerPage: number
-	}
+import { YouTubeAPIBaseResponse, YouTubeAPIBaseVideoSnippet } from './YouTubeAPICommonTypes.js'
+
+export type YouTubeAPIVideoCommentsResponse = YouTubeAPIBaseResponse & {
 	items: YouTubeComment[]
 }
 
-export type YouTubeComment = {
-	kind: string
-	etag: string
-	id: string
+export type YouTubeComment = YouTubeAPIBaseResponse & {
 	snippet: {
 		videoId: string
-		topLevelComment: {
-			kind: string
-			etag: string
-			id: string
+		topLevelComment: YouTubeAPIBaseResponse & {
 			snippet: {
 				videoId: string
 				textDisplay: string
@@ -42,20 +31,11 @@ export type YouTubeComment = {
 	}
 }
 
-export type YouTubeAPIUploadsResponse = {
-	kind: string
-	etag: string
+export type YouTubeAPIUploadsResponse = YouTubeAPIBaseResponse & {
 	items: YouTubeUploadItem[]
-	pageInfo: {
-		totalResults: number
-		resultsPerPage: number
-	}
 }
 
-export type YouTubeUploadItem = {
-	kind: string
-	etag: string
-	id: string
+export type YouTubeUploadItem = YouTubeAPIBaseResponse & {
 	statistics: {
 		viewCount: string
 		likeCount: string
@@ -64,39 +44,20 @@ export type YouTubeUploadItem = {
 		commentCount: string
 	}
 }
-export type ThumbnailInfo = {
-	url: string
-	width: string
-	height: string
-}
 
-export type YouTubeVideo = {
-	kind: string
-	etag: string
-	id: {
-		kind: string
-		videoId: string
-	}
-	snippet: {
-		publishedAt: string
+export type YouTubeVideo = YouTubeAPIBaseResponse & {
+	snippet: YouTubeAPIBaseVideoSnippet & {
 		channelId: string
-		title: string
-		description: string
-		thumbnails: {
-			default: ThumbnailInfo | undefined
-			medium: ThumbnailInfo | undefined
-			high: ThumbnailInfo | undefined
-			standard: ThumbnailInfo | undefined
-			maxres: ThumbnailInfo | undefined
-		}
 		channelTitle: string
 		liveBroadcastContent: string
 		publishTime: string
+		resourceId: {
+			kind: string
+			videoId: string
+		}
 	}
 }
 
-export type YouTubeVideoUploadsEndpointResponse = {
-	kind: string
-	etag: string
+export type YouTubeVideoUploadsEndpointResponse = YouTubeAPIBaseResponse & {
 	items: YouTubeVideo[]
 }
