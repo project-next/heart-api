@@ -60,7 +60,7 @@
 		"@types/jsonwebtoken": "9.0.3",
 		"@types/lodash.sample": "4.2.7",
 		"@types/lodash.uniq": "4.5.7",
-		"@types/mocha": "10.0.1",
+		"@types/mocha": "10.0.2",
 		"@types/morgan": "1.9.5",
 		"@types/node": "18.18.0",
 		"@types/sinon": "10.0.17",
