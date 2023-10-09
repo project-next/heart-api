@@ -50,7 +50,7 @@
 		"morgan": "1.10.0"
 	},
 	"devDependencies": {
-		"@cucumber/cucumber": "9.6.0",
+		"@cucumber/cucumber": "10.0.0",
 		"@stryker-mutator/core": "7.2.0",
 		"@stryker-mutator/mocha-runner": "7.2.0",
 		"@stryker-mutator/typescript-checker": "7.2.0",
