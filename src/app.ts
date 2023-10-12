@@ -1,6 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
+import compression from 'compression'
 
 import HttpConfig from './config/HttpConfig.js'
 import RequestErrorHandling from './config/RequestErrorHandlingConfig.js'
@@ -31,6 +32,8 @@ class App {
 				methods: ['get', 'put', 'options'],
 			})
 		)
+
+		this.app.use(compression({ level: 6 }))
 
 		this.app.use(morgan(process.env.MORGAN_LOG_LEVEL ?? 'dev'))
 		this.app.use(express.urlencoded({ extended: true }))
