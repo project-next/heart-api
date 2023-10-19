@@ -62,7 +62,7 @@
 		"@types/jsonwebtoken": "9.0.4",
 		"@types/lodash.sample": "4.2.8",
 		"@types/lodash.uniq": "4.5.8",
-		"@types/mocha": "10.0.2",
+		"@types/mocha": "10.0.3",
 		"@types/morgan": "1.9.6",
 		"@types/node": "18.18.5",
 		"@types/sinon": "10.0.20",
