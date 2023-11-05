@@ -9,7 +9,7 @@ services:
     restart: always
     volumes:
       - './dist:/home/node/app/dist'
-    command: sh -c "npm run docker-start"
+    command: sh -c "npm run start:docker"
     deploy:
       resources:
         limits:
