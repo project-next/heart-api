@@ -12,6 +12,7 @@ on:
       - opened
       - edited
       - reopened
+      - synchronize
 
 jobs:
   unit-test:
