@@ -62,7 +62,7 @@
 		"@types/lodash.sample": "4.2.8",
 		"@types/lodash.uniq": "4.5.8",
 		"@types/mocha": "10.0.3",
-		"@types/morgan": "1.9.7",
+		"@types/morgan": "1.9.8",
 		"@types/node": "20.8.10",
 		"@types/sinon": "17.0.0",
 		"@types/supertest": "2.0.15",
