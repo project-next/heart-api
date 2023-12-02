@@ -20,9 +20,7 @@
 		"start:prod-build": "npm run build && cd ./dist && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"start:docker": "npm install --global env-cmd && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist && cp ./tsconfig.json ./dist",
-		"upload:prod": "npm run build && bash artifact-transfer.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
-		"restage:prod": "bash docker-restage.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
-		"deploy:prod": "npm run upload:prod && npm run restage:prod",
+		"deploy:prod": "bash deploy.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
 		"doppler:setup-env": "bash doppler-secrets-local-setup.sh prod",
 		"doppler:update-env": "bash doppler-update-secrets.sh prod",
 		"lint": "eslint src --ext .ts"
