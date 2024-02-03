@@ -1,6 +1,6 @@
 {
 	"name": "heart-api",
-	"version": "1.4.3",
+	"version": "1.4.4",
 	"description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
 	"main": "./src/app.ts",
 	"type": "module",
@@ -20,7 +20,7 @@
 		"start:prod-build": "npm run build && cd ./dist && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"start:docker": "npm install --global env-cmd && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist && cp ./tsconfig.json ./dist",
-		"deploy:prod": "npm run build && bash deploy.sh 'ec2-3-20-117-123.us-east-2.compute.amazonaws.com'",
+		"deploy:prod": "npm run build && bash deploy.sh $PROJECT_NEXT_SERVER",
 		"doppler:setup-env": "bash doppler-secrets-local-setup.sh prod",
 		"doppler:update-env": "bash doppler-update-secrets.sh prod",
 		"lint": "eslint src --ext .ts"
