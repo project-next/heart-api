@@ -12,7 +12,7 @@ echo "Using server $SERVER and directory $DIR_ON_SERVER to sync prod API"
 
 echo "Uploading API files"
 rsync -avz -e "ssh -i ~/.ssh/project-next.pem" docker-compose.yml "${USER}@${SERVER}:${DIR_ON_SERVER}/"
-rsync -avz --delete -e "ssh -i ~/.ssh/project-next.pem" -r dist/ "${USER}@${SERVER}:${DIR_ON_SERVER}/dist/"
+rsync -avz --delete --exclude node_modules -e "ssh -i ~/.ssh/project-next.pem" -r dist/ "${USER}@${SERVER}:${DIR_ON_SERVER}/dist/"
 
 echo "Restaging API"
 ssh -i ~/.ssh/project-next.pem "${USER}@${SERVER}" << EOF
