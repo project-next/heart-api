@@ -1,8 +1,8 @@
-version: '3.8'
+version: '3.9'
 
 services:
   heart-api:
-    image: 'node:20-alpine'
+    image: 'node:lts-alpine'
     working_dir: /home/node/app/dist
     ports:
       - '443:443'
@@ -13,5 +13,4 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.3'
-          memory: 200M
+          memory: 250M
