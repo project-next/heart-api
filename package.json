@@ -72,7 +72,7 @@
 		"env-cmd": "10.1.0",
 		"eslint": "8.56.0",
 		"mocha": "10.2.0",
-		"mocha-suppress-logs": "0.4.1",
+		"mocha-suppress-logs": "0.5.0",
 		"nodemon": "3.0.3",
 		"pactum": "3.6.0",
 		"sinon": "17.0.1",
