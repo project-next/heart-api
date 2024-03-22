@@ -30,7 +30,5 @@ DB_HOST=$(aws secretsmanager get-secret-value --secret-id "/prod/project-next/he
   | jq -c "with_entries(select(.key | startswith(\"DB_HOST\")))")
 createEnvFile dev "$DB_HOST"
 createEnvFile prod "$DB_HOST"
-cp .env.dev.json .env.test.json
 
-jq --tab -s '{"dev": .[0], "test": .[1], "prod": .[2]}' .env.dev.json .env.test.json .env.prod.json > .env-cmdrc.json
-rm .env.dev.json .env.test.json .env.prod.json
+jq --tab -s '{"dev": .[0], "test": .[1], "prod": .[2]}' .env.dev.json .env.dev.json .env.prod.json > .env-cmdrc.json && rm .env.dev.json .env.prod.json
