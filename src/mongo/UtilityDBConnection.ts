@@ -13,7 +13,7 @@ export default function UtilityDBConnection() {
 	})
 
 	mongoose.connection.once('open', () => {
-		console.log(`Connection successfully established with ${Constants.HEART_API_DB_BASE_URI}:${DB_NAME} MongoDB`)
+		console.log(`Connection successfully established with ${Constants.DB_HOST}:${DB_NAME} MongoDB`)
 
 		MessageModel.init().catch((err) => {
 			console.log(`Error occurred initializing MessageModel: ${err}`)
@@ -24,7 +24,7 @@ export default function UtilityDBConnection() {
 		})
 	})
 
-	mongoose.connect(`${Constants.HEART_API_DB_BASE_URI}/${DB_NAME}`, {
+	mongoose.connect(`${Constants.DB_HOST}/${DB_NAME}`, {
 		tlsAllowInvalidCertificates: false,
 		tlsCertificateKeyFile: './certs/mongoDB-heart-api-X509.pem',
 		authMechanism: 'MONGODB-X509',

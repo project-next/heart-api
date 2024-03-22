@@ -10,7 +10,7 @@
 		"fresh-install": "rm -rf node_modules package-lock.json && npm install",
 		"run-mocha-tests": "c8 -c './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
 		"test": "env-cmd -e test npm run run-mocha-tests",
-		"gh:test": "echo $HEART_API_TEST_ENV > .env-cmdrc.json && bash doppler-secrets-gh-setup.sh && sudo npm test",
+		"gh:test": "echo $HEART_API_TEST_ENV > .env-cmdrc.json && bash secrets-gh-setup.sh && sudo npm test",
 		"mutation": "NODE_OPTIONS='--loader ts-node/esm' env-cmd -e test stryker run config/stryker.conf.json",
 		"integration-test": "source integration-test/jwt.sh && NODE_OPTIONS='--loader ts-node/esm' env-cmd -e test cucumber-js --config config/cucumber.mjs",
 		"integration-test:local": "export HEART_API_HOST='http://localhost:80' && npm run integration-test",
@@ -21,8 +21,8 @@
 		"start:docker": "npm install && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist && cp ./tsconfig.json ./dist",
 		"deploy:prod": "npm run build && bash deploy.sh $PROJECT_NEXT_SERVER",
-		"doppler:setup-env": "bash doppler-secrets-local-setup.sh prod",
-		"doppler:update-env": "bash doppler-update-secrets.sh prod",
+		"setup-env": "bash aws-secrets-local-setup.sh",
+		"update-env": "bash aws-secrets-sync.sh",
 		"lint": "eslint src --ext .ts"
 	},
 	"keywords": [
