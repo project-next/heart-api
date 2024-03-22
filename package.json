@@ -1,6 +1,6 @@
 {
 	"name": "heart-api",
-	"version": "1.4.4",
+	"version": "1.4.5",
 	"description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
 	"main": "./src/app.ts",
 	"type": "module",
