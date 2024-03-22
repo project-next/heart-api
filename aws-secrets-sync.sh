@@ -22,11 +22,11 @@ JWT_SECRET_STRING=$(aws secretsmanager get-secret-value --secret-id "$JWT_SECRET
 aws secretsmanager put-secret-value --secret-id "$JWT_SECRET_MANAGER_ID" --region us-east-2 --secret-string "$JWT_SECRET_STRING" --no-cli-pager --version-stages "$(date +%F)" "AWSCURRENT"
 
 #############################################
-JWT_SECRET_MANAGER_ID="/prod/project-next/heart-api/db"
+DB_SECRET_MANAGER_ID="/prod/project-next/heart-api/db"
 
 # AWS will remove new line characters, which are needed in below files - converting to base64 at the time of saving will resolve this issue
 DB_PEM=$(base64 certs/mongoDB-heart-api-X509.pem)
 
 DB_VALUES="{\"DB_PEM\": \"$DB_PEM\"}"
-DB_SECRET_STRING=$(aws secretsmanager get-secret-value --secret-id "$JWT_SECRET_MANAGER_ID" --region us-east-2 | jq -r  '.SecretString' | jq  ".  + $DB_VALUES")
-aws secretsmanager put-secret-value --secret-id "$JWT_SECRET_MANAGER_ID" --region us-east-2 --secret-string "$DB_SECRET_STRING" --no-cli-pager --version-stages "$(date +%F)" "AWSCURRENT"
+DB_SECRET_STRING=$(aws secretsmanager get-secret-value --secret-id "$DB_SECRET_MANAGER_ID" --region us-east-2 | jq -r  '.SecretString' | jq  ".  + $DB_VALUES")
+aws secretsmanager put-secret-value --secret-id "$DB_SECRET_MANAGER_ID" --region us-east-2 --secret-string "$DB_SECRET_STRING" --no-cli-pager --version-stages "$(date +%F)" "AWSCURRENT"
