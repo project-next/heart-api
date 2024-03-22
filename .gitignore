@@ -111,6 +111,7 @@ dist
 .vscode-test
 
 # yarn v2
+
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
@@ -121,7 +122,7 @@ dist
 .env*
 
 # Certs
-**/certs/
+**certs**
 
 **/.vscode/
 

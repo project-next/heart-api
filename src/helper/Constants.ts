@@ -3,7 +3,7 @@ export default class Constants {
 	static readonly YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY
 	static readonly HEART_API_KEY = process.env.HEART_API_KEY
 
-	static readonly HEART_API_DB_BASE_URI = process.env.HEART_API_DB_BASE_URI
+	static readonly DB_HOST = process.env.DB_HOST
 
 	static readonly SKC_CHANNEL_ID = 'UCBZ_1wWyLQI3SV9IgLbyiNQ'
 	static readonly RBF_CHANNEL_ID = 'UCKSWgpqi8BnNgDYh_jwYQNw'
