@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   heart-api:
     image: 'node:lts-alpine'
