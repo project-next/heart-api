@@ -7,7 +7,7 @@
 	"scripts": {
 		"preinstall": "npx force-resolutions",
 		"postinstall": "npm dedupe",
-		"fresh-install": "rm -rf node_modules package-lock.json && npm install",
+		"fresh-install": "rm -rf node_modules package-lock.json && npm install --omit=optional",
 		"run-mocha-tests": "c8 -c './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
 		"test": "env-cmd -e test npm run run-mocha-tests",
 		"gh:test": "echo $HEART_API_TEST_ENV > .env-cmdrc.json && bash secrets-gh-setup.sh && sudo npm test",
