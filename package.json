@@ -74,7 +74,7 @@
 		"mocha": "10.4.0",
 		"mocha-suppress-logs": "0.5.1",
 		"nodemon": "3.1.0",
-		"pactum": "3.6.7",
+		"pactum": "3.6.8",
 		"sinon": "17.0.1",
 		"supertest": "7.0.0",
 		"ts-node": "10.9.2",
