@@ -21,7 +21,7 @@ You will need to create a new cert from ZeroSSL and validate the domain is yours
 
 You will need to upload a new cert when the old one expires in AWS. The cert location is us-east-2 (Ohio).
 
-## NPM Scripts
+## Scripts
 
 Like all NPM applications, package.json will contain all scripts needed to run, test and deploy this API. Check the table below for info on each script.
 
