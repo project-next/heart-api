@@ -27,10 +27,10 @@ jobs:
           node-version: '18.x'
 
       - name: Instal Dependencies
-        run: npm run fresh-install
+        run: yarn run fresh-install
 
       - name: Run Unit Tests
-        run: npm run gh:test
+        run: yarn run gh:test
         env:
           HEART_API_TEST_ENV: ${{secrets.HEART_API_TEST_ENV}}
           HEART_API_JWT_PRIVATE_KEY: ${{secrets.HEART_API_JWT_PRIVATE_KEY}}
@@ -41,4 +41,4 @@ jobs:
           HEART_API_SSL_PRIVATE_KEY: ${{secrets.HEART_API_SSL_PRIVATE_KEY}}
 
       - name: Check Syntax (ES Lint)
-        run: npm run lint
+        run: yarn run lint

@@ -1,6 +1,6 @@
 {
 	"$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
-	"packageManager": "npm",
+	"packageManager": "yarn",
 	"reporters": ["html", "clear-text", "progress"],
 	"concurrency": 10,
 	"testRunner": "mocha",
