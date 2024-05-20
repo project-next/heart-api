@@ -7,8 +7,8 @@ services:
     restart: always
     volumes:
       - './dist:/home/node/app/dist'
-    command: sh -c "npm run start:docker"
+    command: sh -c "yarn run start:docker"
     deploy:
       resources:
         limits:
-          memory: 300M
+          memory: 200M
