@@ -21,7 +21,7 @@ export async function addEventToDB(name: string, notes: string, location: string
 		throw new HeartAPIError('Error updating DB', 500)
 	})
 
-	return event._id
+	return event.id
 }
 
 export async function updateEvent(eventId: string, updatedEvent: Event): Promise<[number, Event | undefined]> {
