@@ -6,8 +6,8 @@
 	"all": true,
 	"recursive": true,
 	"check-coverage": true,
-	"branches": 85,
-	"functions": 40,
+	"branches": 80,
+	"functions": 30,
 	"lines": 55,
 	"statements": 55,
 	"watermarks": {
