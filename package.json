@@ -42,7 +42,7 @@
 		"lodash.uniq": "4.5.0",
 		"logger": "0.0.1",
 		"moize": "6.1.6",
-		"mongoose": "8.3.5",
+		"mongoose": "8.4.1",
 		"morgan": "1.10.0"
 	},
 	"devDependencies": {
@@ -77,5 +77,8 @@
 		"supertest": "7.0.0",
 		"ts-node": "10.9.2",
 		"typescript": "5.4.5"
+	},
+	"resolutions": {
+		"braces": "3.0.3"
 	}
 }
