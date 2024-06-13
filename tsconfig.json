@@ -13,8 +13,8 @@
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 
-		"noEmit": true, // true will prevent output from being generated
-		"allowImportingTsExtensions": true, // importing local code with .ts instead of .js is allowed
+		"noEmit": false, // true will prevent output from being generated
+		"allowImportingTsExtensions": false, // importing local code with .ts instead of .js is allowed
 
 		"strict": true,
 		//  turn on below configs individually to override strict true
