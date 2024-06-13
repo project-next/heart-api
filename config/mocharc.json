@@ -5,5 +5,5 @@
 	"bail": true,
 	"exit": true,
 	"package": "./package.json",
-	"node-option": ["experimental-specifier-resolution=node", "loader=ts-node/esm"]
+	"node-option": ["experimental-specifier-resolution=node", "import=./register.js"]
 }

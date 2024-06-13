@@ -13,6 +13,9 @@
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 
+		"noEmit": false, // true will prevent output from being generated
+		"allowImportingTsExtensions": false, // importing local code with .ts instead of .js is allowed
+
 		"strict": true,
 		//  turn on below configs individually to override strict true
 		//  "noImplicitAny": true,
@@ -26,7 +29,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
 		// "isolatedModules": true,
-		"noEmit": false, // true will prevent output from being generated
 		"noFallthroughCasesInSwitch": true,
 		"noUnusedLocals": true,
 
@@ -37,7 +39,8 @@
 	"exclude": ["node_modules", ".vscode"],
 	"ts-node": {
 		"esm": true,
-		"experimentalSpecifierResolution": "node"
+		"experimentalSpecifierResolution": "node",
+		"transpileOnly": false // set to true if there are ts typing issues to temporarily debug
 		// "compilerOptions": {
 		// 	// should be enabled when this PR is live https://github.com/TypeStrong/ts-node/pull/1585
 		// 	"paths": {

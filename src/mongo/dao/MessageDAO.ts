@@ -21,5 +21,5 @@ export async function addMessageToDB(title: string, content: string, service: st
 		throw new HeartAPIError('Error updating DB', 500)
 	})
 
-	return messageRecord._id
+	return messageRecord.id
 }
