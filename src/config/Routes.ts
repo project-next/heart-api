@@ -10,8 +10,8 @@ import apiKeyAuthenticationMiddleware from '../middleware/APIKeyAuthentication.j
 import validateJWTMiddleware from '../middleware/JWTAuthentication.js'
 
 export default class Routes {
-	static BASE_URI = '/api/v1'
-	static YT_FUNCTIONALITY_BASE_URI = `${Routes.BASE_URI}/yt`
+	static readonly BASE_URI = '/api/v1'
+	static readonly YT_FUNCTIONALITY_BASE_URI = `${Routes.BASE_URI}/yt`
 
 	/**
 	 * Configures Express API to open up routes.
