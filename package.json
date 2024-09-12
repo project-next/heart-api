@@ -11,7 +11,7 @@
 		"start:prod-build": "yarn run build && cd ./dist && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"start:docker": "yarn global add env-cmd && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"build": "rm -rf dist && tsc && cp ./package.json ./dist && cp ./.env-cmdrc.json ./dist && cp -r ./certs ./dist && cp ./tsconfig.json ./dist",
-		"deploy:prod": "yarn run build && bash deploy.sh $PROJECT_NEXT_SERVER",
+		"deploy:prod": "yarn run build && bash deploy.sh $SKC_SERVER",
 		"setup-env": "bash aws-secrets-local-setup.sh",
 		"update-env": "bash aws-secrets-sync.sh",
 		"lint": "eslint src --ext .ts",
