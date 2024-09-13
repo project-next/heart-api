@@ -17,7 +17,7 @@ services:
       com.datadoghq.ad.instances: '[{"host":"%%host%%", "port": "%%port%%"}]'
       com.datadoghq.ad.logs: >-
         [{
-          "source": "node",
+          "source": "nodejs",
           "service": "heart-api",
           "auto_multi_line_detection": true,
           "log_processing_rules": [{
