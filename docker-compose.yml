@@ -12,3 +12,19 @@ services:
       resources:
         limits:
           memory: 200M
+    labels:
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port": "%%port%%"}]'
+      com.datadoghq.ad.logs: >-
+        [{
+          "source": "nodejs",
+          "service": "heart-api",
+          "auto_multi_line_detection": true,
+          "log_processing_rules": [{
+            "type": "exclude_at_match",
+            "name": "exclude_health_check",
+            "pattern" : "/api/v1/status"
+          }]
+        }]
+      com.datadoghq.tags.env: 'prod'
+      com.datadoghq.tags.service: 'heart-api'
