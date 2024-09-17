@@ -71,7 +71,7 @@
 		"eslint": "8.57.1",
 		"mocha": "10.7.3",
 		"mocha-suppress-logs": "0.5.1",
-		"nodemon": "3.1.4",
+		"nodemon": "3.1.5",
 		"pactum": "3.7.1",
 		"sinon": "19.0.2",
 		"supertest": "7.0.0",
