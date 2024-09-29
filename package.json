@@ -47,9 +47,9 @@
 	},
 	"devDependencies": {
 		"@cucumber/cucumber": "11.0.1",
-		"@stryker-mutator/core": "8.5.0",
-		"@stryker-mutator/mocha-runner": "8.5.0",
-		"@stryker-mutator/typescript-checker": "8.5.0",
+		"@stryker-mutator/core": "8.6.0",
+		"@stryker-mutator/mocha-runner": "8.6.0",
+		"@stryker-mutator/typescript-checker": "8.6.0",
 		"@types/chai": "5.0.0",
 		"@types/compression": "1.7.5",
 		"@types/cors": "2.8.17",
