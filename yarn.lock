@@ -1513,10 +1513,10 @@ centra@^2.7.0:
   dependencies:
     follow-redirects "^1.15.6"
 
-chai-http@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-5.0.0.tgz#e4f18892b6d860a830430739a0d2c3b74f4651cd"
-  integrity sha512-nWtyQ0/+VSayMEESPbBE2v5HYd24Jh67Alh9/dxecfZ4viFAsGN3leFwy3EsNu1DbEi/HsTVW+9pT8p79a2J+g==
+chai-http@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-5.1.1.tgz#de3435e19b9e5ef235c186673da10b823e6c76f1"
+  integrity sha512-h+QZNfYdlcoyIyOb26N71S7700CP4EY+CQ1X15AsX1RD2xMLAWbMniS7yUTOEC6DzC5yydGV37wu81AGNm8esA==
   dependencies:
     charset "^1.0.1"
     cookiejar "^2.1.4"
