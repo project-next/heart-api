@@ -3494,10 +3494,10 @@ pactum-matchers@^1.1.7:
   resolved "https://registry.yarnpkg.com/pactum-matchers/-/pactum-matchers-1.1.7.tgz#049f8b21c9e4cda4cdc1eb98fe93dc96bac24597"
   integrity sha512-RqwewcUje6vhcYQGbPfdSXkcp/Vtwn4WmmTWLSmqp0CGxBroCEqRg3JMIjkjQTZCd2VmG+tTcQw+n4P/iuqv3Q==
 
-pactum@3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/pactum/-/pactum-3.7.1.tgz#c7babc3f3aa38648fb0cbb3babf5d6619cc231d2"
-  integrity sha512-r+R1dMy2MfRCQpAHohMyICusiMz14t0E+bhnLDScl2x4lXJKQAvQUGV/WWKUUxN2DS0Jdm0PUj6KjblfcSk1GA==
+pactum@3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/pactum/-/pactum-3.7.2.tgz#83c442761a29cd75ae3aa2c502faef0d1b3aa03a"
+  integrity sha512-VomPB7WZaK3N3rE/3WLhOq6a15V9WRUoxBYWP3Pio2mG1umfaIOzBzSWef+bUx2TO6xIMTwH/Ngr8mWz/1H8Xg==
   dependencies:
     "@exodus/schemasafe" "^1.3.0"
     deep-override "^1.0.2"
@@ -3508,7 +3508,7 @@ pactum@3.7.1:
     openapi-fuzzer-core "^1.0.6"
     pactum-matchers "^1.1.7"
     parse-graphql "^1.0.0"
-    phin "^3.7.0"
+    phin "^3.7.1"
     polka "^0.5.2"
 
 pad-right@^0.2.2:
@@ -3595,7 +3595,7 @@ pathval@^2.0.0:
   resolved "https://registry.yarnpkg.com/pathval/-/pathval-2.0.0.tgz#7e2550b422601d4f6b8e26f1301bc8f15a741a25"
   integrity sha512-vE7JKRyES09KiunauX7nd2Q9/L7lhok4smP9RZTDeD4MVs72Dp2qNFVz39Nz5a0FVEW0BJR6C0DYrq6unoziZA==
 
-phin@^3.7.0:
+phin@^3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/phin/-/phin-3.7.1.tgz#bf841da75ee91286691b10e41522a662aa628fd6"
   integrity sha512-GEazpTWwTZaEQ9RhL7Nyz0WwqilbqgLahDM3D0hxWwmVDI52nXEybHqiN6/elwpkJBhcuj+WbBu+QfT0uhPGfQ==
