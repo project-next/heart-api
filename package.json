@@ -76,7 +76,7 @@
 		"sinon": "20.0.0",
 		"supertest": "7.1.0",
 		"ts-node": "10.9.2",
-		"typescript": "5.8.2"
+		"typescript": "5.8.3"
 	},
 	"resolutions": {
 		"braces": "3.0.3",
