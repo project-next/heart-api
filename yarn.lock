@@ -719,6 +719,11 @@
   dependencies:
     sparse-bitfield "^3.0.3"
 
+"@noble/hashes@^1.1.5":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.8.0.tgz#cee43d801fcef9644b11b8194857695acd5f815a"
+  integrity sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -739,6 +744,13 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
+
+"@paralleldrive/cuid2@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@paralleldrive/cuid2/-/cuid2-2.2.2.tgz#7f91364d53b89e2c9cb9e02e8dd0f129e834455f"
+  integrity sha512-ZOBkgDwEdoYVlSeRbYYXs0S9MejQofiVYoTbKzy/6GQa39/q5tQU2IX46+shYnUkpEl3wc+J6wRlar7r2EK2xA==
+  dependencies:
+    "@noble/hashes" "^1.1.5"
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
@@ -1083,7 +1095,7 @@
   resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-8.1.5.tgz#5fd3592ff10c1e9695d377020c033116cc2889f2"
   integrity sha512-mQkU2jY8jJEF7YHjHvsQO8+3ughTL1mcnn96igfhONmR+fUPSKIkefQYpSe8bsly2Ep7oQbn/6VG5/9/0qcArQ==
 
-"@types/superagent@^8.1.0":
+"@types/superagent@^8.1.0", "@types/superagent@^8.1.7":
   version "8.1.9"
   resolved "https://registry.yarnpkg.com/@types/superagent/-/superagent-8.1.9.tgz#28bfe4658e469838ed0bf66d898354bcab21f49f"
   integrity sha512-pTVjI73witn+9ILmoJdajHGW2jkSaOzhiFYF1Rd3EQ94kymLqB9PjD9ISg7WaALC7+dCHT0FGe9T2LktLq/3GQ==
@@ -1517,17 +1529,18 @@ centra@^2.7.0:
   dependencies:
     follow-redirects "^1.15.6"
 
-chai-http@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-5.1.1.tgz#de3435e19b9e5ef235c186673da10b823e6c76f1"
-  integrity sha512-h+QZNfYdlcoyIyOb26N71S7700CP4EY+CQ1X15AsX1RD2xMLAWbMniS7yUTOEC6DzC5yydGV37wu81AGNm8esA==
+chai-http@5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-5.1.2.tgz#af491a70576d767f50db2969c1383e59aa661b2f"
+  integrity sha512-UFup7mUGkkjmi9bGA7F6vfp3lzGQZjtL//CEd+a4C+vlynSv756XHDUK8PoYk/UpTBBXqSghjQaJOUMUxJXNaA==
   dependencies:
+    "@types/superagent" "^8.1.7"
     charset "^1.0.1"
     cookiejar "^2.1.4"
     is-ip "^5.0.1"
     methods "^1.1.2"
     qs "^6.12.1"
-    superagent "^9"
+    superagent "^10.0.0"
 
 chai@5.2.0:
   version "5.2.0"
@@ -2297,6 +2310,15 @@ formidable@^3.5.1:
   dependencies:
     dezalgo "^1.0.4"
     hexoid "^2.0.0"
+    once "^1.4.0"
+
+formidable@^3.5.2:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/formidable/-/formidable-3.5.4.tgz#ac9a593b951e829b3298f21aa9a2243932f32ed9"
+  integrity sha512-YikH+7CUTOtP44ZTnUhR7Ic2UASBPOqmaRkRKxRbywPTe5VxF7RRCck4af9wutiZ/QKM5nME9Bie2fFaPz5Gug==
+  dependencies:
+    "@paralleldrive/cuid2" "^2.2.2"
+    dezalgo "^1.0.4"
     once "^1.4.0"
 
 forwarded@0.2.0:
@@ -4003,7 +4025,22 @@ super-regex@^0.2.0:
     function-timeout "^0.1.0"
     time-span "^5.1.0"
 
-superagent@^9, superagent@^9.0.1:
+superagent@^10.0.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/superagent/-/superagent-10.2.0.tgz#28f262a0a56433e0df53db978ceaa51f23e762ab"
+  integrity sha512-IKeoGox6oG9zyDeizaezkJ2/aK0wc5la9st7WsAKyrAkfJ56W3whVbVtF68k6wuc87/y9T85NyON5FLz7Mrzzw==
+  dependencies:
+    component-emitter "^1.3.0"
+    cookiejar "^2.1.4"
+    debug "^4.3.4"
+    fast-safe-stringify "^2.1.1"
+    form-data "^4.0.0"
+    formidable "^3.5.2"
+    methods "^1.1.2"
+    mime "2.6.0"
+    qs "^6.11.0"
+
+superagent@^9.0.1:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/superagent/-/superagent-9.0.2.tgz#a18799473fc57557289d6b63960610e358bdebc1"
   integrity sha512-xuW7dzkUpcJq7QnhOsnNUgtYp3xRwpt2F7abdRYIpCsAt0hhUqia0EdxyXZQQpNmGtsCzYHryaKSV3q3GJnq7w==
