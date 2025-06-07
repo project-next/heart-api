@@ -52,7 +52,7 @@
 		"@stryker-mutator/typescript-checker": "9.0.1",
 		"@types/chai": "5.2.2",
 		"@types/compression": "1.8.1",
-		"@types/cors": "2.8.18",
+		"@types/cors": "2.8.19",
 		"@types/express": "5.0.1",
 		"@types/jsonwebtoken": "9.0.9",
 		"@types/lodash.sample": "4.2.9",
