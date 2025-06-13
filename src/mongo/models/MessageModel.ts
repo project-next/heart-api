@@ -1,6 +1,6 @@
-import { Schema, Document, model } from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-export type Message = Document & {
+export type Message = {
 	title: string
 	content: string
 	service?: string
@@ -9,7 +9,7 @@ export type Message = Document & {
 	updatedAt?: Date
 }
 
-const MessageSchema: Schema = new Schema(
+const MessageSchema: Schema = new Schema<Message>(
 	{
 		title: { type: String, required: true, unique: true },
 		content: { type: String, required: true, unique: false },
