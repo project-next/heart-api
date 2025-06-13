@@ -33,7 +33,7 @@
 		"axios": "1.9.0",
 		"compression": "1.8.0",
 		"cors": "2.8.5",
-		"express": "4.21.2",
+		"express": "5.1.0",
 		"fs": "0.0.2",
 		"http": "0.0.1-security",
 		"https": "1.0.0",
@@ -53,7 +53,7 @@
 		"@types/chai": "5.2.2",
 		"@types/compression": "1.8.1",
 		"@types/cors": "2.8.19",
-		"@types/express": "5.0.1",
+		"@types/express": "5.0.3",
 		"@types/jsonwebtoken": "9.0.9",
 		"@types/lodash.sample": "4.2.9",
 		"@types/lodash.uniq": "4.5.9",
@@ -81,8 +81,8 @@
 	"resolutions": {
 		"braces": "3.0.3",
 		"micromatch": "4.0.8",
-		"send": "0.19.1",
-		"path-to-regexp": "1.9.0",
+		"send": "1.2.0",
+		"path-to-regexp": "8.2.0",
 		"cross-spawn": "7.0.6"
 	}
 }
