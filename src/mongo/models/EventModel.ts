@@ -1,18 +1,18 @@
-import { model, Schema, Document } from 'mongoose'
+import { model, Schema } from 'mongoose'
 
-export type Event = Document & {
+export type Event = {
 	name: string
 	notes?: string
 	location?: string
 	eventDate: Date
-	url: Date
+	url: string
 	service: string
 	tags: string[]
 	createdAt?: Date
 	updatedAt?: Date
 }
 
-const EventSchema: Schema = new Schema(
+const EventSchema: Schema = new Schema<Event>(
 	{
 		name: { type: String, required: true, unique: true },
 		notes: { type: String, required: false, unique: false },
