@@ -3057,10 +3057,10 @@ mkdirp@^2.1.5:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-2.1.6.tgz#964fbcb12b2d8c5d6fbc62a963ac95a273e2cc19"
   integrity sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==
 
-mocha-suppress-logs@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/mocha-suppress-logs/-/mocha-suppress-logs-0.5.1.tgz#a1ef9baa71b901434cdeffaa7d165ba8e905305a"
-  integrity sha512-f4BhMiCABgCt3tlXiOcRydWreNCkfvgXgNL2ZclfXPdLNcY7jfyNy3Oi5wwPuxx++UyuNiIx3F7orvckAfrKzw==
+mocha-suppress-logs@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/mocha-suppress-logs/-/mocha-suppress-logs-0.6.0.tgz#c5e255defec79d282036e2076d64cff409294e48"
+  integrity sha512-cDn7TwkxlcWeXKDYfKrQliGBljTNPKB1/k5doF4TGzAVC/edKGbAM28vsYRTA57h0Y+yaVQbgSmIqYySBNEmfQ==
   dependencies:
     clone "^2.1.2"
 
