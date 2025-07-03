@@ -1651,6 +1651,11 @@ component-emitter@^1.3.0:
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.3.1.tgz#ef1d5796f7d93f135ee6fb684340b26403c97d17"
   integrity sha512-T0+barUSQRTUQASh8bx02dl+DhF54GtIDY13Y3m9oWTklKbb3Wv974meRpeZ3lp1JpLVECWWNHC4vaG2XHXouQ==
 
+component-type@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/component-type/-/component-type-2.0.0.tgz#bb11dbdeb772e6ad0f98b0d08322793d46ece7f9"
+  integrity sha512-/1+d/k0Al0uzg4rFAz9fbYOTnT20JYgN7SoaRr5x2cz7kH4Mtj+GQPh7W9UocpzFtxSL8flv6qAOOfJvQGqUjg==
+
 compressible@~2.0.18:
   version "2.0.18"
   resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.18.tgz#af53cca6b070d4c3c0750fbd77286a6d7cc46fba"
@@ -1697,6 +1702,11 @@ convert-source-map@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-2.0.0.tgz#4b560f649fc4e918dd0ab75cf4961e8bc882d82a"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
+
+cookie-lite@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/cookie-lite/-/cookie-lite-0.0.1.tgz#e026564440b03945d053ad2c60a2762f62250a16"
+  integrity sha512-jczNOBIPFsep1+HVBh/RDVU/sdIyTOfpP90jy+D8SwQ4jh8GOJJzXOY0Rs9mogg+gIWeKyREOGt/4xLHdIqtHA==
 
 cookie-signature@^1.2.1:
   version "1.2.2"
@@ -2803,11 +2813,6 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lightcookie@^1.0.25:
-  version "1.0.25"
-  resolved "https://registry.yarnpkg.com/lightcookie/-/lightcookie-1.0.25.tgz#7905eca0ed3fe6d4a3e18a1102f7d074116b785e"
-  integrity sha512-SrY/+eBPaKAMnsn7mCsoOMZzoQyCyHHHZlFCu2fjo28XxSyCLjlooKiTxyrXTg8NPaHp1YzWi0lcGG1gDi6KHw==
-
 locate-path@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-6.0.0.tgz#55321eb309febbc59c4801d931a72452a681d286"
@@ -3342,17 +3347,18 @@ pactum-matchers@^1.1.7:
   resolved "https://registry.yarnpkg.com/pactum-matchers/-/pactum-matchers-1.1.7.tgz#049f8b21c9e4cda4cdc1eb98fe93dc96bac24597"
   integrity sha512-RqwewcUje6vhcYQGbPfdSXkcp/Vtwn4WmmTWLSmqp0CGxBroCEqRg3JMIjkjQTZCd2VmG+tTcQw+n4P/iuqv3Q==
 
-pactum@3.7.6:
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/pactum/-/pactum-3.7.6.tgz#5336b5deb4c0344e6129e7a3a5498375d18d4bf3"
-  integrity sha512-LopFf+CwhdoHhBGK8VYWuyfSn6ICCOEWoPzBlMkou9iFWsZN47lZyFXJEfK8UOtdI1fZaFx2JxZcls+RfYAgAA==
+pactum@3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/pactum/-/pactum-3.8.0.tgz#921aad4286193a2f882a7910735077127436bcdb"
+  integrity sha512-zMVXkhdNf0RYaTPkH8GWJTtf10MzDoA/+8wtdJBFu+lg4CbB+Zk6WxQw3isowTstKM+MNmKgWcdUnFYNW6B5Mw==
   dependencies:
     "@exodus/schemasafe" "^1.3.0"
+    component-type "^2.0.0"
+    cookie-lite "^0.0.1"
     deep-override "^1.0.2"
     form-data-lite "^1.0.3"
     json-query "^2.2.2"
     klona "^2.0.6"
-    lightcookie "^1.0.25"
     openapi-fuzzer-core "^1.0.6"
     pactum-matchers "^1.1.7"
     parse-graphql "^1.0.0"
