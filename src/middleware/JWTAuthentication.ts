@@ -1,17 +1,15 @@
 import HeartAPIError from '../error/HeartAPIError.js'
 import { Request, Response, NextFunction } from 'express'
 import fs from 'fs'
-import jwt, { SignOptions } from 'jsonwebtoken'
+import jwt, { VerifyOptions } from 'jsonwebtoken'
 
 const publicKey = fs.readFileSync('./certs/jwt.pub')
 
-const signature: SignOptions = {
+const opts: VerifyOptions = {
 	issuer: 'heart-api',
 	subject: 'authentication',
 	audience: 'skc',
-	expiresIn: '15m',
-	algorithm: 'RS256',
-	jwtid: 'id',
+	algorithms: ['RS256'],
 }
 
 export default function validateJWTMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -20,7 +18,7 @@ export default function validateJWTMiddleware(req: Request, res: Response, next:
 	const token = authorizationHeaderTokens.length === 2 ? authorizationHeaderTokens[1] : ''
 
 	try {
-		jwt.verify(token, publicKey, signature) // return value is payload, update code if payload is needed
+		jwt.verify(token, publicKey, opts) // return value is payload, update code if payload is needed
 		next() // no errors
 	} catch (err) {
 		if (err instanceof jwt.TokenExpiredError) {
