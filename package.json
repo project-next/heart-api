@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"fresh-install": "rm -rf node_modules yarn.lock && yarn install --ignore-optional",
-		"start": "env-cmd -e dev nodemon --ext ts --exec node --import=./register.js ./src/app.ts",
+		"start": "tsc --noEmit && env-cmd -e dev nodemon --ext ts --exec node --import=./register.js ./src/app.ts",
 		"start:prod": "env-cmd -e prod nodemon --ext ts --exec node --import=./register.js ./src/app.ts",
 		"start:prod-build": "yarn run build && cd ./dist && env-cmd -e prod node -r ts-node/register ./src/app.js",
 		"start:docker": "yarn global add env-cmd && env-cmd -e prod node -r ts-node/register ./src/app.js",
