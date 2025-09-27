@@ -1549,10 +1549,10 @@ chai-http@5.1.2:
     qs "^6.12.1"
     superagent "^10.0.0"
 
-chai@6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/chai/-/chai-6.0.1.tgz#88c2b4682fb56050647e222d2cf9d6772f2607b3"
-  integrity sha512-/JOoU2//6p5vCXh00FpNgtlw0LjvhGttaWc+y7wpW9yjBm3ys0dI8tSKZxIOgNruz5J0RleccatSIC3uxEZP0g==
+chai@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/chai/-/chai-6.1.0.tgz#55bb29968dafdda651b1ec7626636efb57359a11"
+  integrity sha512-AMqnsoEd9fQwUrbFfq8DOSpF22Iyi3vIto3aUcyPal1jMTr7lLuI9FkrfuqucC/f7JHRZt9+m6Al/T76sTBXBA==
 
 chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.2:
   version "4.1.2"
