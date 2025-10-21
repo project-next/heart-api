@@ -1,6 +1,6 @@
 {
 	"name": "heart-api",
-	"version": "1.4.14",
+	"version": "1.4.15",
 	"description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
 	"main": "./src/app.ts",
 	"type": "module",
@@ -18,7 +18,7 @@
 		"run-mocha-tests": "c8 -c './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
 		"test": "env-cmd -e test -- yarn run run-mocha-tests",
 		"gh:test": "echo $HEART_API_TEST_ENV > .env-cmdrc.json && bash secrets-gh-setup.sh && sudo yarn test",
-		"mutation": "NODE_OPTIONS='--import=./register.js' env-cmd -e test stryker run config/stryker.conf.json",
+		"mutation": "NODE_OPTIONS='--import=./register.js' env-cmd -e test -- stryker run config/stryker.conf.json",
 		"integration-test": "source integration-test/jwt.sh && NODE_OPTIONS='--import=./register.js' env-cmd -e test -- cucumber-js --config config/cucumber.mjs",
 		"integration-test:local": "export HEART_API_HOST='http://localhost:80' && yarn run integration-test",
 		"integration-test:prod": "export HEART_API_HOST='https://heart-api.com' && yarn run integration-test"
