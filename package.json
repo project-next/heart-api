@@ -50,7 +50,7 @@
 		"@stryker-mutator/core": "9.2.0",
 		"@stryker-mutator/mocha-runner": "9.2.0",
 		"@stryker-mutator/typescript-checker": "9.2.0",
-		"@types/chai": "5.2.2",
+		"@types/chai": "5.2.3",
 		"@types/compression": "1.8.1",
 		"@types/cors": "2.8.19",
 		"@types/express": "5.0.3",
