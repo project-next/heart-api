@@ -69,7 +69,7 @@
 		"chai-http": "5.1.2",
 		"env-cmd": "11.0.0",
 		"eslint": "8.57.1",
-		"mocha": "11.7.4",
+		"mocha": "11.7.5",
 		"mocha-suppress-logs": "0.6.0",
 		"nodemon": "3.1.10",
 		"pactum": "3.8.0",
