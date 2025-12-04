@@ -37,7 +37,7 @@
 		"fs": "0.0.2",
 		"http": "0.0.1-security",
 		"https": "1.0.0",
-		"jsonwebtoken": "9.0.2",
+		"jsonwebtoken": "9.0.3",
 		"lodash.sample": "4.2.1",
 		"lodash.uniq": "4.5.0",
 		"logger": "0.0.1",
