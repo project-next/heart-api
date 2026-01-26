@@ -54,7 +54,7 @@ export function createEventControllerCB(req: Request, res: Response, next: NextF
 }
 
 export function updateEventControllerCB(req: Request, res: Response, next: NextFunction) {
-	const eventId = req.params.eventId
+	const eventId = typeof req.params.eventId === 'string' ? req.params.eventId : req.params.eventId.length > 0 ? req.params.eventId[0] : ''
 
 	updateEvent(eventId, req.body)
 		.then((updateResult: [number, Event | undefined]) => {
