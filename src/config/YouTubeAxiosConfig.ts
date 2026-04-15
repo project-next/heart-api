@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosInstance } from 'axios'
+import axios, { AxiosError } from 'axios'
+import type { AxiosInstance } from 'axios'
 import Constants from '../helper/Constants.js'
 import HeartAPIError from '../error/HeartAPIError.js'
 import YouTubeAPIError from '../error/YouTubeAPIError.js'

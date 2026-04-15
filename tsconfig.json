@@ -1,12 +1,12 @@
 {
 	"compilerOptions": {
-		"module": "ESNext",
-		"target": "ESNext",
-		"lib": ["ESNext", "DOM"],
+		"module": "NodeNext",
+		"target": "ES2023",
+		"lib": ["ESNext"],
 		"sourceMap": true,
 		"allowJs": false,
 		"checkJs": false,
-		"moduleResolution": "node",
+		"moduleResolution": "nodenext",
 		"rootDir": "./",
 		"noImplicitReturns": true,
 		"skipLibCheck": false,
@@ -26,16 +26,16 @@
 		"strictFunctionTypes": false,
 		//  "strictPropertyInitialization": true,
 
+		"verbatimModuleSyntax": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
-		// "isolatedModules": true,
+		"isolatedModules": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUnusedLocals": true,
 
-		"outDir": "dist",
-		"baseUrl": "./"
+		"outDir": "dist"
 	},
-	"include": ["src/**/*", "unit-test/**/*"],
+	"include": ["src/**/*"],
 	"exclude": ["node_modules", ".vscode"],
 	"ts-node": {
 		"esm": true,

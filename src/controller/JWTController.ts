@@ -1,6 +1,7 @@
-import { Request, Response } from 'express'
+import type { Request, Response } from 'express'
 import fs from 'fs'
-import jwt, { SignOptions } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
+import type { SignOptions } from 'jsonwebtoken'
 
 const privateKey = fs.readFileSync('./certs/jwt.key')
 

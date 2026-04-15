@@ -1,4 +1,4 @@
-import { Express, RequestHandler } from 'express'
+import type { Express, RequestHandler } from 'express'
 import { getEventsControllerCB, createEventControllerCB, updateEventControllerCB } from '../controller/EventsController.js'
 import { createJwtControllerCB } from '../controller/JWTController.js'
 import { getMessagesControllerCB, addMessageControllerCB } from '../controller/MessageController.js'

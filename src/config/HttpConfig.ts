@@ -1,4 +1,4 @@
-import { Express } from 'express'
+import type { Express } from 'express'
 import http from 'http'
 import https from 'https'
 import fs from 'fs'

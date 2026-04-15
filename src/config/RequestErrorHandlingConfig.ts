@@ -1,4 +1,4 @@
-import { Express, Request, Response, NextFunction } from 'express'
+import type { Express, Request, Response, NextFunction } from 'express'
 import HeartAPIError from '../error/HeartAPIError.js'
 
 /**

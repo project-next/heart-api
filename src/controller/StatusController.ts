@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
-
+import type { Request, Response } from 'express'
 
 const statusMessage = {
 	status: 'API up and running',
-	version: process.env.npm_package_version
+	version: process.env.npm_package_version,
 }
 
 /**

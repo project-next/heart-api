@@ -1,12 +1,15 @@
-import { NextFunction, Request, Response } from 'express'
-import moize from 'moize'
-import { AxiosResponse } from 'axios'
+import type { NextFunction, Request, Response } from 'express'
+import type { AxiosResponse } from 'axios'
 import Constants from '../helper/Constants.js'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
 import HeartAPIError from '../error/HeartAPIError.js'
-import { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/YouTubeDataMapping.js'
-import { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js'
-import { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes.js'
+import type { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/YouTubeDataMapping.js'
+import type { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js'
+import type { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes.js'
+
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const moize = require('moize')
 
 type PlaylistContent = { nextPageToken: string | undefined; vidsFromRequest: FormattedUploadResponse[] }
 
@@ -70,7 +73,7 @@ const memoizedUploadsPlaylistId = moize(
 			})
 			.catch(YouTubeAxiosConfig.handleYTRequestError)
 	},
-	{ maxAge: 1000 * 60 * 60 * 24, maxSize: 5 }
+	{ maxAge: 1000 * 60 * 60 * 24, maxSize: 5 },
 )
 
 /**
@@ -90,7 +93,7 @@ const memoizedPlaylistContentRequest = moize(
 			})
 			.catch(YouTubeAxiosConfig.handleYTRequestError)
 	},
-	{ maxAge: 1000 * 60 * 10, isPromise: true, isDeepEqual: true, maxSize: 30 }
+	{ maxAge: 1000 * 60 * 10, isPromise: true, isDeepEqual: true, maxSize: 30 },
 )
 
 /**
