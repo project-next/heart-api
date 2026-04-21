@@ -41,11 +41,5 @@
 		"esm": true,
 		"experimentalSpecifierResolution": "node",
 		"transpileOnly": false // set to true if there are ts typing issues to temporarily debug
-		// "compilerOptions": {
-		// 	// should be enabled when this PR is live https://github.com/TypeStrong/ts-node/pull/1585
-		// 	"paths": {
-		// 		"src/*": ["./src/*"]
-		// 	}
-		// }
 	}
 }
