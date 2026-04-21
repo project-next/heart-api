@@ -68,7 +68,7 @@
 		"chai": "6.2.2",
 		"chai-http": "5.1.2",
 		"env-cmd": "11.0.0",
-		"eslint": "8.57.1",
+		"eslint": "10.2.1",
 		"eslint-plugin-chai-friendly": "1.2.0",
 		"mocha": "11.7.5",
 		"mocha-suppress-logs": "0.6.0",
