@@ -1,10 +1,11 @@
 import { expect } from 'chai'
 import request from 'supertest'
-import app from '../../src/app'
-import YouTubeAxiosConfig from '../../src/config/YouTubeAxiosConfig'
-import sinon, { SinonStub } from 'sinon'
-import { YouTubeAPIUploadsResponse } from '../../src/types/YouTubeAPIVideoTypes'
-import Constants from '../../src/helper/Constants'
+import app from '../../src/app.js'
+import YouTubeAxiosConfig from '../../src/config/YouTubeAxiosConfig.js'
+import sinon from 'sinon'
+import type { SinonStub } from 'sinon'
+import type { YouTubeAPIUploadsResponse } from '../../src/types/YouTubeAPIVideoTypes.js'
+import Constants from '../../src/helper/Constants.js'
 import jwt from 'jsonwebtoken'
 
 describe('YouTubeVideoInfo tests', () => {
@@ -80,7 +81,7 @@ describe('YouTubeVideoInfo tests', () => {
 			})
 	})
 
-	it('Calling Video Info endpoint - success', (done) => {
+	it('Calling Video Info endpoint - success', (done: () => void) => {
 		const returnData = {
 			kind: 'youtube#videoListResponse',
 			etag: 'NaZTcIozauhocCaldlq6PDK3f4s',
@@ -123,7 +124,7 @@ describe('YouTubeVideoInfo tests', () => {
 			})
 	})
 
-	it('Calling Video Info endpoint - YouTube server error', (done) => {
+	it('Calling Video Info endpoint - YouTube server error', (done: () => void) => {
 		youtubeAxiosStub.rejects({ code: 403, response: { error: { status: 403 } } })
 
 		request(app)

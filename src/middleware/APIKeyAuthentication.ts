@@ -1,6 +1,6 @@
 import HeartAPIError from '../error/HeartAPIError.js'
 import Constants from '../helper/Constants.js'
-import { Request, Response, NextFunction } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 
 export default function apiKeyAuthenticationMiddleware(req: Request, res: Response, next: NextFunction): void {
 	const headers = req?.headers

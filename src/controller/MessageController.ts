@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import { addMessageToDB, getMessagesFromDB } from '../mongo/dao/MessageDAO.js'
-import { Message } from '../mongo/models/MessageModel.js'
+import type { Message } from '../mongo/models/MessageModel.js'
 import HeartAPIError from '../error/HeartAPIError.js'
 import uniq from 'lodash.uniq'
 

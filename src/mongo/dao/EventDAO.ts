@@ -1,5 +1,6 @@
 import HeartAPIError from '../../error/HeartAPIError.js'
-import EventModel, { Event } from '../models/EventModel.js'
+import EventModel from '../models/EventModel.js'
+import type { Event } from '../models/EventModel.js'
 
 export async function getEventsFromDB(service: string, tags: string[]): Promise<Event[]> {
 	return EventModel.find(
@@ -9,7 +10,7 @@ export async function getEventsFromDB(service: string, tags: string[]): Promise<
 			sort: {
 				eventDate: 1,
 			},
-		}
+		},
 	)
 }
 

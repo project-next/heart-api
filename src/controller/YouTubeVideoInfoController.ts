@@ -1,11 +1,14 @@
-import { NextFunction, Request, Response } from 'express'
-import moize from 'moize'
+import type { NextFunction, Request, Response } from 'express'
 import HeartAPIError from '../error/HeartAPIError.js'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
-import { VideoInfoResponse } from '../types/YouTubeDataMapping.js'
+import type { VideoInfoResponse } from '../types/YouTubeDataMapping.js'
 import Constants from '../helper/Constants.js'
-import { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes.js'
+import type { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes.js'
+
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const moize = require('moize')
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response, next: NextFunction) {
 	if (req.query?.videoId == null) {
@@ -37,7 +40,7 @@ const memoizedYouTubeRequest = moize(
 			})
 			.catch(YouTubeAxiosConfig.handleYTRequestError)
 	},
-	{ maxAge: 1000 * 60 * 10, maxSize: 30 }
+	{ maxAge: 1000 * 60 * 10, maxSize: 30 },
 )
 
 const parseYouTubeResponse = (YouTubeAPIUploadsResponse: YouTubeAPIUploadsResponse): VideoInfoResponse => {

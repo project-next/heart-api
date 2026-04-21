@@ -1,5 +1,6 @@
 import HeartAPIError from '../../error/HeartAPIError.js'
-import MessageModel, { Message } from '../models/MessageModel.js'
+import MessageModel from '../models/MessageModel.js'
+import type { Message } from '../models/MessageModel.js'
 
 export async function getMessagesFromDB(service: string, tags: string[]): Promise<Message[]> {
 	return MessageModel.find(
@@ -9,7 +10,7 @@ export async function getMessagesFromDB(service: string, tags: string[]): Promis
 			sort: {
 				createdAt: -1,
 			},
-		}
+		},
 	)
 }
 

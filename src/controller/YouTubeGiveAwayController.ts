@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import YouTubeAxiosConfig from '../config/YouTubeAxiosConfig.js'
 import Constants from '../helper/Constants.js'
 import HeartAPIError from '../error/HeartAPIError.js'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 import sample from 'lodash.sample'
-import { GiveawayInfo } from '../types/YouTubeDataMapping.js'
-import { YouTubeAPIVideoCommentsResponse, YouTubeComment } from '../types/YouTubeAPIVideoTypes.js'
+import type { GiveawayInfo } from '../types/YouTubeDataMapping.js'
+import type { YouTubeAPIVideoCommentsResponse, YouTubeComment } from '../types/YouTubeAPIVideoTypes.js'
 
 /**
  * Logic for YouTube giveaway endpoint.
@@ -93,13 +93,13 @@ async function getGiveawayEntries(potentialWinners: YouTubeComment[], giveAwayPh
 function filterPotentialWinners(potentialWinners: readonly YouTubeComment[]): YouTubeComment[] {
 	// remove comments that I might make - preventing me from winning my own giveaway 🥴
 	potentialWinners = potentialWinners.filter(
-		(potentialWinner) => !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value)
+		(potentialWinner) => !Constants.VALID_YOUTUBE_CHANNEL_IDS.includes(potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value),
 	)
 
 	// Uses channel id as a unique identifier so a user can only "enter" once. This will prevent a user from making multiple comments to try to win.
 	// Takes advantage of Map objects key uniqueness to save both the original entry information as the value and the channel id as the key.
 	const uniqueEntries: Map<string, YouTubeComment> = new Map(
-		potentialWinners.map((potentialWinner: YouTubeComment) => [potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value, potentialWinner])
+		potentialWinners.map((potentialWinner: YouTubeComment) => [potentialWinner.snippet.topLevelComment.snippet.authorChannelId.value, potentialWinner]),
 	)
 
 	return Array.from(uniqueEntries.values())

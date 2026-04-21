@@ -1,5 +1,6 @@
 {
-	"require": ["mocha-suppress-logs", "ts-node/register"],
+	"require": ["mocha-suppress-logs"],
+	"loader": "ts-node/esm",
 	"parallel": true,
 	"timeout": 1000,
 	"bail": true,

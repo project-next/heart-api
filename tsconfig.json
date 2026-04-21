@@ -1,12 +1,12 @@
 {
 	"compilerOptions": {
-		"module": "ESNext",
-		"target": "ESNext",
-		"lib": ["ESNext", "DOM"],
+		"module": "NodeNext",
+		"target": "ES2023",
+		"lib": ["ESNext"],
 		"sourceMap": true,
 		"allowJs": false,
 		"checkJs": false,
-		"moduleResolution": "node",
+		"moduleResolution": "nodenext",
 		"rootDir": "./",
 		"noImplicitReturns": true,
 		"skipLibCheck": false,
@@ -26,26 +26,20 @@
 		"strictFunctionTypes": false,
 		//  "strictPropertyInitialization": true,
 
+		"verbatimModuleSyntax": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
-		// "isolatedModules": true,
+		"isolatedModules": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUnusedLocals": true,
 
-		"outDir": "dist",
-		"baseUrl": "./"
+		"outDir": "dist"
 	},
-	"include": ["src/**/*", "unit-test/**/*"],
+	"include": ["src/**/*"],
 	"exclude": ["node_modules", ".vscode"],
 	"ts-node": {
 		"esm": true,
 		"experimentalSpecifierResolution": "node",
 		"transpileOnly": false // set to true if there are ts typing issues to temporarily debug
-		// "compilerOptions": {
-		// 	// should be enabled when this PR is live https://github.com/TypeStrong/ts-node/pull/1585
-		// 	"paths": {
-		// 		"src/*": ["./src/*"]
-		// 	}
-		// }
 	}
 }
