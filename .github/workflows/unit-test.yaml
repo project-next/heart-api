@@ -27,7 +27,7 @@ jobs:
           node-version: '24.x'
 
       - name: Instal Dependencies
-        run: yarn run fresh-install
+        run: yarn install --frozen-lockfile
 
       - name: Run Unit Tests
         run: yarn run gh:test
