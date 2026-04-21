@@ -15,7 +15,7 @@
 		"setup-env": "bash aws-secrets-local-setup.sh",
 		"update-env": "bash aws-secrets-sync.sh",
 		"lint": "eslint src --ext .ts",
-		"run-mocha-tests": "c8 -c './config/.nycrc.json' mocha --config './config/mocharc.json' 'unit-test/**/*.ts'",
+		"run-mocha-tests": "c8 -c './config/.nycrc.json' mocha --no-parallel --config './config/mocharc.json' 'unit-test/**/*.ts'",
 		"test": "env-cmd -e test -- yarn run run-mocha-tests",
 		"gh:test": "echo $HEART_API_TEST_ENV > .env-cmdrc.json && bash secrets-gh-setup.sh && sudo yarn test",
 		"mutation": "NODE_OPTIONS='--import=./register.js' env-cmd -e test -- stryker run config/stryker.conf.json",
