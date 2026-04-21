@@ -2,7 +2,8 @@
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
 		"types": ["mocha", "node"],
-		"verbatimModuleSyntax": false
+		"verbatimModuleSyntax": false,
+		"isolatedModules": false
 	},
 	"include": ["../src/**/*", "**/*"]
 }
