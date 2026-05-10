@@ -1,6 +1,5 @@
 {
 	"extends": ["config:base"],
-	"packageManager": "yarn",
 	"assigneesFromCodeOwners": true,
 	"automergeStrategy": "squash",
 	"packageRules": [

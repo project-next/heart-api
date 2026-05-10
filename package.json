@@ -1,6 +1,6 @@
 {
 	"name": "heart-api",
-	"version": "1.5.0",
+	"version": "1.5.1",
 	"description": "API that can be used to retrieve various data that is found in a variety of places. An ideal use case is to retrieve social media information for specific services.",
 	"main": "./src/app.ts",
 	"type": "module",
@@ -30,7 +30,7 @@
 	"author": "Javi Gomez",
 	"license": "ISC",
 	"dependencies": {
-		"axios": "1.15.1",
+		"axios": "1.16.0",
 		"compression": "1.8.1",
 		"cors": "2.8.6",
 		"express": "5.2.1",
@@ -42,11 +42,11 @@
 		"lodash.uniq": "4.5.0",
 		"logger": "0.0.1",
 		"moize": "6.1.7",
-		"mongoose": "9.5.0",
+		"mongoose": "9.6.2",
 		"morgan": "1.10.1"
 	},
 	"devDependencies": {
-		"@cucumber/cucumber": "12.8.1",
+		"@cucumber/cucumber": "12.8.3",
 		"@eslint/eslintrc": "3.3.5",
 		"@eslint/js": "10.0.1",
 		"@stryker-mutator/core": "9.6.1",
@@ -61,23 +61,23 @@
 		"@types/lodash.uniq": "4.5.9",
 		"@types/mocha": "10.0.10",
 		"@types/morgan": "1.9.10",
-		"@types/node": "24.12.2",
+		"@types/node": "24.12.3",
 		"@types/sinon": "21.0.1",
 		"@types/supertest": "7.2.0",
-		"@typescript-eslint/eslint-plugin": "8.59.0",
-		"@typescript-eslint/parser": "8.59.0",
+		"@typescript-eslint/eslint-plugin": "8.59.2",
+		"@typescript-eslint/parser": "8.59.2",
 		"c8": "11.0.0",
 		"chai": "6.2.2",
 		"chai-http": "5.1.2",
 		"env-cmd": "11.0.0",
-		"eslint": "10.2.1",
+		"eslint": "10.3.0",
 		"eslint-plugin-chai-friendly": "1.2.0",
-		"globals": "17.5.0",
+		"globals": "17.6.0",
 		"mocha": "11.7.5",
 		"mocha-suppress-logs": "0.6.0",
 		"nodemon": "3.1.14",
 		"pactum": "3.9.1",
-		"sinon": "21.1.2",
+		"sinon": "22.0.0",
 		"supertest": "7.2.2",
 		"ts-node": "10.9.2",
 		"typescript": "6.0.3"
@@ -89,6 +89,7 @@
 		"path-to-regexp": "8.4.2",
 		"cross-spawn": "7.0.6",
 		"qs": "6.15.1",
-		"serialize-javascript": "7.0.5"
+		"serialize-javascript": "7.0.5",
+		"fast-uri": "3.1.2"
 	}
 }
