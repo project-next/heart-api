@@ -89,6 +89,7 @@
 		"path-to-regexp": "8.4.2",
 		"cross-spawn": "7.0.6",
 		"qs": "6.15.1",
-		"serialize-javascript": "7.0.5"
+		"serialize-javascript": "7.0.5",
+		"fast-uri": "3.1.2"
 	}
 }
