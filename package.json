@@ -73,7 +73,7 @@
 		"eslint": "10.4.0",
 		"eslint-plugin-chai-friendly": "1.2.0",
 		"globals": "17.6.0",
-		"mocha": "11.7.5",
+		"mocha": "11.7.6",
 		"mocha-suppress-logs": "0.6.0",
 		"nodemon": "3.1.14",
 		"pactum": "3.9.1",
