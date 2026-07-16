@@ -46,7 +46,7 @@
 		"morgan": "1.11.0"
 	},
 	"devDependencies": {
-		"@cucumber/cucumber": "13.1.0",
+		"@cucumber/cucumber": "13.1.1",
 		"@eslint/eslintrc": "3.3.6",
 		"@eslint/js": "10.0.1",
 		"@stryker-mutator/core": "9.6.1",
