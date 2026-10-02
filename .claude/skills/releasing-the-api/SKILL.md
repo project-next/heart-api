@@ -40,6 +40,7 @@ Things that are easy to get wrong here:
 The default branch is `release`. Run from an up-to-date checkout of it.
 
 ```bash
+git fetch --tags --prune
 grep -n '"version"' package.json
 PREV=$(git tag --list 'v*' --sort=-v:refname | head -1)
 git log --oneline "$PREV"..HEAD
@@ -47,6 +48,19 @@ git diff --stat "$PREV"..HEAD
 yarn test
 yarn lint
 ```
+
+**`git fetch --tags --prune` first, and it is not optional.** `git tag --list` reads local refs
+only, so on a checkout that hasn't fetched recently `$PREV` resolves one release behind and you will
+conclude a version needs cutting that is already published. Then confirm the target tag and release
+don't already exist:
+
+```bash
+git ls-remote --tags origin "refs/tags/vX.Y.Z"
+gh release view vX.Y.Z --repo project-next/heart-api
+```
+
+Empty output from the first and `release not found` from the second mean it is safe to continue. If
+either finds something, this release is already cut — **stop.**
 
 **The `package.json` version is the source of truth — read it first.** If it already names an
 unreleased version (says `1.5.4` while the newest tag is `v1.5.3`), that is the version to cut.
@@ -96,7 +110,8 @@ releases. Don't revive the `: Dependency Updates` suffix; it was dropped after `
 **Body**, in this order:
 
 1. `## What's Changed` — one `*` bullet per human change, two-space-indented sub-bullets for
-   detail. Omit this heading entirely when the release is nothing but dependency bumps.
+   detail. Omit this heading entirely when the release is nothing but dependency bumps — the body
+   then starts directly with `### PR's`, with no leading blank line.
 2. Blank line, then `### PR's` — the Renovate lines as GitHub writes them
    (`* <title> by @renovate[bot] in <PR url>`), plus a hand-written `*` bullet for any bump that has
    no Renovate PR.
@@ -113,6 +128,10 @@ gh api repos/project-next/heart-api/releases/generate-notes \
 
 Take the bot lines and the footer from that output and restructure them. Don't publish it as-is: it
 files every Renovate bullet under `## What's Changed` and says nothing about what actually changed.
+
+Keep the bot lines in the order GitHub returns them, even where that isn't ascending by PR number —
+it orders by merge date, so `#1542` can precede `#1541`. Published releases preserve that order;
+don't re-sort them.
 
 That generated list is not purely bot lines. A human PR shows up in it too — a release-branch merge
 appears as `* v1.5.0 by @rtomyj in <PR url>`. Those don't belong under `### PR's`: summarize the
@@ -154,12 +173,14 @@ version is corrected with another release, not an edit.
 
 ## Common mistakes
 
-- **`git tag -a`.** Every tag in this repo is lightweight (`git cat-file -t v1.5.3` → `commit`). An
-  annotated tag carries a message nobody reads; the notes belong in the GitHub Release.\
+- **`git tag -a`.** Every tag from `v1.4.3` onward is lightweight (`git cat-file -t v1.5.3` →
+  `commit`); the 11 annotated tags in this repo all predate it, so don't take an old one as
+  precedent. An annotated tag carries a message nobody reads; the notes belong in the GitHub
+  Release.
 - **Tagging before the version bump is committed.** The tag and the version the deployed build
   reports at `/api/v1/status` silently disagree, and nothing catches it until someone hits the
   endpoint.
-- **Publishing generated notes wholesale.** That is what `v1.5.3` is: 53 Renovate bullets under
+- **Publishing generated notes wholesale.** That is what `v1.5.3` is: a wall of Renovate bullets under
   `## What's Changed`, with no indication of what changed. Generate them to borrow the bot lines and
   the footer, then write the summary by hand.
 - **Dropping the Full Changelog footer.** `v1.4.16` has none. It is the last line of every release.
