@@ -2171,10 +2171,10 @@ fast-string-width@^3.0.2:
   dependencies:
     fast-string-truncated-width "^3.0.2"
 
-fast-uri@4.2.1, fast-uri@^3.0.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/fast-uri/-/fast-uri-4.2.1.tgz#816fb0fd61f511adcc35aadbbc1bcbf656d9e72a"
-  integrity sha512-TmHQgewjHtMq1E5QKA0tOE0yeYGQs25KZC/ziJpubRtWI15W92e6vPFydWOeZBVROSHBYw/QhD9d5OefdD6LDg==
+fast-uri@4.2.2, fast-uri@^3.0.1:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/fast-uri/-/fast-uri-4.2.2.tgz#428437b7ff49d069f1e16be3bdb6597e8cd72cb9"
+  integrity sha512-EwVpUMzLVNOmcWW0zi5G3JJwkopB6XXjnVvNBGfqrMMsVew2hkQWl5e/pe/CfYUeS6jt4cIO2MnamEW7v/7wPw==
 
 fast-wrap-ansi@^0.2.0:
   version "0.2.2"
