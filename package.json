@@ -90,6 +90,6 @@
 		"cross-spawn": "7.0.6",
 		"qs": "6.16.1",
 		"serialize-javascript": "7.1.2",
-		"fast-uri": "4.2.2"
+		"fast-uri": "4.2.3"
 	}
 }
