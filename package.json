@@ -62,7 +62,7 @@
 		"@types/mocha": "10.0.10",
 		"@types/morgan": "1.9.10",
 		"@types/node": "24.19.2",
-		"@types/sinon": "22.0.1",
+		"@types/sinon": "22.0.2",
 		"@types/supertest": "7.2.1",
 		"@typescript-eslint/eslint-plugin": "8.72.0",
 		"@typescript-eslint/parser": "8.72.0",
