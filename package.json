@@ -88,7 +88,7 @@
 		"send": "1.2.1",
 		"path-to-regexp": "9.0.0",
 		"cross-spawn": "7.0.6",
-		"qs": "6.17.0",
+		"qs": "6.17.1",
 		"serialize-javascript": "7.1.4",
 		"fast-uri": "4.2.3"
 	}
