@@ -68,7 +68,7 @@
 		"@typescript-eslint/parser": "8.72.1",
 		"c8": "12.0.0",
 		"chai": "6.3.0",
-		"chai-http": "5.1.2",
+		"chai-http": "5.2.1",
 		"env-cmd": "11.0.0",
 		"eslint": "10.13.0",
 		"eslint-plugin-chai-friendly": "1.2.1",

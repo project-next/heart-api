@@ -1580,17 +1580,17 @@ centra@2.7.0:
   dependencies:
     follow-redirects "^1.15.6"
 
-chai-http@5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-5.1.2.tgz#af491a70576d767f50db2969c1383e59aa661b2f"
-  integrity sha512-UFup7mUGkkjmi9bGA7F6vfp3lzGQZjtL//CEd+a4C+vlynSv756XHDUK8PoYk/UpTBBXqSghjQaJOUMUxJXNaA==
+chai-http@5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-5.2.1.tgz#83e83da0ac465cbbd7d7748b49f204d7e8e120a6"
+  integrity sha512-RD0YerjlS5FA/j2yuJUNb9OjmLmwR7Fm708xiKlZn9LU49c6eEUBgVbecJ3GrF1fTG6oNgSkpI20fyKYGy2H3Q==
   dependencies:
     "@types/superagent" "^8.1.7"
     charset "^1.0.1"
     cookiejar "^2.1.4"
     is-ip "^5.0.1"
     methods "^1.1.2"
-    qs "^6.12.1"
+    picoquery "^2.0.0"
     superagent "^10.0.0"
 
 chai@6.3.0:
@@ -3389,6 +3389,11 @@ picomatch@^4.0.4:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-4.0.7.tgz#6313360034ccb36b3dc61ecbdff78121f90fe21f"
   integrity sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==
 
+picoquery@^2.0.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/picoquery/-/picoquery-2.5.0.tgz#1bd2e5df85706f92bc54fd55b5075764c1101f91"
+  integrity sha512-j1kgOFxtaCyoFCkpoYG2Oj3OdGakadO7HZ7o5CqyRazlmBekKhbDoUnNnXASE07xSY4nDImWZkrZv7toSxMi/g==
+
 polka@^0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/polka/-/polka-0.5.2.tgz#588bee0c5806dbc6c64958de3a1251860e9f2e26"
@@ -3449,7 +3454,7 @@ qified@^0.10.1:
   dependencies:
     hookified "^2.1.1"
 
-qs@6.15.1, qs@6.17.0, qs@^6.12.1, qs@^6.14.1, qs@^6.15.2, qs@^6.16.0:
+qs@6.15.1, qs@6.17.0, qs@^6.14.1, qs@^6.15.2, qs@^6.16.0:
   version "6.17.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.17.0.tgz#317fa93f17a6a735622718a6a5aa00356e7db673"
   integrity sha512-5LK5BZ2XDHMvcUJaf0CQ5HL3aVgKbpklvByC7qLSxYkfE8COEEbJg5xCHWCTqzqi0Gs4Jn5Mv5v3R38W6edscA==
