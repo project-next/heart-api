@@ -33,8 +33,6 @@ jobs:
         run: yarn run gh:test
         env:
           HEART_API_TEST_ENV: ${{secrets.HEART_API_TEST_ENV}}
-          HEART_API_JWT_PRIVATE_KEY: ${{secrets.HEART_API_JWT_PRIVATE_KEY}}
-          HEART_API_JWT_PUBLIC_KEY: ${{secrets.HEART_API_JWT_PUBLIC_KEY}}
           HEART_API_MONGO_DB_SSL_CERT: ${{secrets.HEART_API_MONGO_DB_SSL_CERT}}
           HEART_API_SSL_CA_BUNDLE_CRT: ${{secrets.HEART_API_SSL_CA_BUNDLE_CRT}}
           HEART_API_SSL_CERTIFICATE_CRT: ${{secrets.HEART_API_SSL_CERTIFICATE_CRT}}

@@ -6,14 +6,14 @@ import sinon from 'sinon'
 import type { SinonStub } from 'sinon'
 import type { YouTubeAPIUploadsResponse } from '../../src/types/YouTubeAPIVideoTypes.js'
 import Constants from '../../src/helper/Constants.js'
-import jwt from 'jsonwebtoken'
+import { signTestJWT } from '../helper/JWT.js'
 
 describe('YouTubeVideoInfo tests', () => {
 	let youtubeAxiosStub: SinonStub
-	let jwtStub: SinonStub
+	let authorization: string
 
-	before(() => {
-		jwtStub = sinon.stub(jwt, 'verify').callsFake(() => {})
+	before(async () => {
+		authorization = `Bearer ${await signTestJWT()}`
 	})
 
 	beforeEach(() => {
@@ -22,12 +22,12 @@ describe('YouTubeVideoInfo tests', () => {
 
 	afterEach(() => {
 		youtubeAxiosStub.restore()
-		jwtStub.resetHistory()
 	})
 
 	it('Calling Video Info endpoint - missing videoId param', (done) => {
 		request(app)
 			.get(`/api/v1/yt/video/info`)
+			.set('Authorization', authorization)
 			.end((err, res) => {
 				expect(res.status).to.equal(400)
 
@@ -45,6 +45,7 @@ describe('YouTubeVideoInfo tests', () => {
 
 		request(app)
 			.get(`/api/v1/yt/video/info?videoId=okINSj2Okxw`)
+			.set('Authorization', authorization)
 			.then((res) => {
 				expect(res.status).to.equal(500)
 
@@ -70,6 +71,7 @@ describe('YouTubeVideoInfo tests', () => {
 
 		request(app)
 			.get(`/api/v1/yt/video/info?videoId=RANDOM`)
+			.set('Authorization', authorization)
 			.end((err, res) => {
 				expect(res.status).to.equal(200)
 
@@ -108,6 +110,7 @@ describe('YouTubeVideoInfo tests', () => {
 
 		request(app)
 			.get(`/api/v1/yt/video/info?videoId=RANDOM-2`)
+			.set('Authorization', authorization)
 			.end((err, res) => {
 				expect(res.status).to.equal(200)
 
@@ -129,6 +132,7 @@ describe('YouTubeVideoInfo tests', () => {
 
 		request(app)
 			.get(`/api/v1/yt/video/info?videoId=YOUTUBE-ERROR`)
+			.set('Authorization', authorization)
 			.end((err, res) => {
 				expect(res.status).to.equal(500)
 

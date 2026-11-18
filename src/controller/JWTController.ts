@@ -1,29 +1,30 @@
-import type { Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import fs from 'fs'
-import jwt from 'jsonwebtoken'
-import type { SignOptions } from 'jsonwebtoken'
+import { createPrivateKey } from 'crypto'
+import { SignJWT } from 'jose'
+import HeartAPIError from '../error/HeartAPIError.js'
 
-const privateKey = fs.readFileSync('./certs/jwt.key')
+// createPrivateKey accepts PKCS#1 keys (BEGIN RSA PRIVATE KEY), jose's importPKCS8 doesn't
+const privateKey = createPrivateKey(fs.readFileSync('./certs/jwt.key'))
 
-const signature: SignOptions = {
-	issuer: 'heart-api',
-	subject: 'authentication',
-	audience: 'skc',
-	expiresIn: '15m',
-	algorithm: 'RS256',
-	jwtid: 'id',
-}
-
-export const createJwtControllerCB = (_: Request, res: Response) => {
+export const createJwtControllerCB = async (_: Request, res: Response, next: NextFunction) => {
 	const payload = {
 		dev: 'javi',
 	}
 
-	jwt.sign(payload, privateKey, signature, (err, token) => {
-		if (err) {
-			console.log(`Could not create JWT: ${err}`)
-		}
+	try {
+		const token = await new SignJWT(payload)
+			.setProtectedHeader({ alg: 'RS256', typ: 'JWT' })
+			.setIssuer('heart-api')
+			.setSubject('authentication')
+			.setAudience('skc')
+			.setIssuedAt()
+			.setExpirationTime('15m')
+			.setJti('id')
+			.sign(privateKey)
 		res.json({ jwt: token })
-		res.end()
-	})
+	} catch (err) {
+		console.log(`Could not create JWT: ${err}`)
+		next(new HeartAPIError('Could not create JWT', 500))
+	}
 }
