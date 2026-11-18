@@ -7,10 +7,27 @@ services:
       - '443:443'
     sysctls:
       - net.ipv4.ip_unprivileged_port_start=0 # lets non-root user bind to ports 80 and 443
-    restart: always
+    cap_drop: [ALL] # port binding is handled by sysctl above, no other privileges are needed
+    security_opt: ['no-new-privileges:true']
+    read_only: true # app doesn't write to disk
+    tmpfs: [/tmp]
+    init: true # forwards stop signals to node and reaps zombie processes - node as PID 1 ignores SIGTERM
+    restart: unless-stopped
     volumes:
       - './dist:/home/node/app/dist:ro'
     command: node --env-file=.env --enable-source-maps app.mjs
+    healthcheck:
+      # uses the HTTP server (port 80) inside the container so cert hostname doesn't matter, wget is included in alpine
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://localhost/api/v1/status']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m # default driver has no limit, request logs would eventually fill the disk
+        max-file: '3'
     deploy:
       resources:
         limits:
