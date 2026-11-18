@@ -5,7 +5,7 @@ import type { Message } from '../models/MessageModel.js'
 export async function getMessagesFromDB(service: string, tags: string[]): Promise<Message[]> {
 	return MessageModel.find(
 		{ $and: [{ tags: { $in: tags } }, { service: { $eq: service } }] },
-		['-_id', 'title', 'content', 'tags', 'createdAt', 'updatedAt'], // -_id removes _id field from result
+		{ _id: 0, title: 1, content: 1, tags: 1, createdAt: 1, updatedAt: 1 }, // _id: 0 removes _id field from result
 		{
 			sort: {
 				createdAt: -1,
