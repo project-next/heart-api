@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
 import fs from 'fs'
-import { createPrivateKey } from 'crypto'
+import { createPrivateKey, randomUUID } from 'crypto'
 import { SignJWT } from 'jose'
 import HeartAPIError from '../error/HeartAPIError.js'
 
@@ -20,7 +20,7 @@ export const createJwtControllerCB = async (_: Request, res: Response, next: Nex
 			.setAudience('skc')
 			.setIssuedAt()
 			.setExpirationTime('15m')
-			.setJti('id')
+			.setJti(randomUUID())
 			.sign(privateKey)
 		res.json({ jwt: token })
 	} catch (err) {

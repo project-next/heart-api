@@ -1,9 +1,16 @@
 import { expect } from 'chai'
 import { generateKeyPairSync } from 'crypto'
 import type { NextFunction, Request, Response } from 'express'
+import { decodeJwt } from 'jose'
 import validateJWTMiddleware from '../../src/middleware/JWTAuthentication.js'
 import { createJwtControllerCB } from '../../src/controller/JWTController.js'
 import { signTestJWT } from '../helper/JWT.js'
+
+// resolves to the JWT the controller responds with
+const issueControllerJWT = () =>
+	new Promise<string>((resolve) => {
+		createJwtControllerCB({} as Request, { json: (body: { jwt: string }) => resolve(body.jwt) } as unknown as Response, (() => {}) as NextFunction)
+	})
 
 // resolves to the error passed to next(), or undefined if the request was let through
 const runMiddleware = async (authorization?: string) => {
@@ -16,11 +23,14 @@ const runMiddleware = async (authorization?: string) => {
 
 describe('JWTAuthentication tests', () => {
 	it('JWT created by controller is accepted', async () => {
-		const token = await new Promise<string>((resolve) => {
-			createJwtControllerCB({} as Request, { json: (body: { jwt: string }) => resolve(body.jwt) } as unknown as Response, (() => {}) as NextFunction)
-		})
+		expect(await runMiddleware(`Bearer ${await issueControllerJWT()}`)).to.be.undefined
+	})
 
-		expect(await runMiddleware(`Bearer ${token}`)).to.be.undefined
+	it('JWTs created by controller have unique IDs', async () => {
+		const [firstJti, secondJti] = (await Promise.all([issueControllerJWT(), issueControllerJWT()])).map((token) => decodeJwt(token).jti)
+
+		expect(firstJti).to.be.a('string').and.not.be.empty
+		expect(firstJti).to.not.equal(secondJti)
 	})
 
 	it('Missing JWT is rejected', async () => {
