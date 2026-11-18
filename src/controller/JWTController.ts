@@ -8,16 +8,12 @@ import HeartAPIError from '../error/HeartAPIError.js'
 const privateKey = createPrivateKey(fs.readFileSync('./certs/jwt.key'))
 
 export const createJwtControllerCB = async (_: Request, res: Response, next: NextFunction) => {
-	const payload = {
-		dev: 'javi',
-	}
-
 	try {
-		const token = await new SignJWT(payload)
+		const token = await new SignJWT({})
 			.setProtectedHeader({ alg: 'RS256', typ: 'JWT' })
 			.setIssuer('heart-api')
-			.setSubject('authentication')
-			.setAudience('skc')
+			.setSubject('skc')
+			.setAudience('heart-api')
 			.setIssuedAt()
 			.setExpirationTime('15m')
 			.setJti(randomUUID())

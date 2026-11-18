@@ -6,8 +6,8 @@ import { SignJWT } from 'jose'
 export const jwtPrivateKey = createPrivateKey(fs.readFileSync('./certs/jwt.key'))
 
 // signs a JWT with the claims heart-api expects, override params to create invalid tokens - null expiration omits exp claim
-export const signTestJWT = (key: KeyObject = jwtPrivateKey, audience = 'skc', expiration: string | number | null = '15m') => {
-	const jwt = new SignJWT({ dev: 'javi' }).setProtectedHeader({ alg: 'RS256' }).setIssuer('heart-api').setSubject('authentication').setAudience(audience)
+export const signTestJWT = (key: KeyObject = jwtPrivateKey, audience = 'heart-api', expiration: string | number | null = '15m') => {
+	const jwt = new SignJWT({}).setProtectedHeader({ alg: 'RS256' }).setIssuer('heart-api').setSubject('skc').setAudience(audience)
 
 	if (expiration !== null) {
 		jwt.setExpirationTime(expiration)

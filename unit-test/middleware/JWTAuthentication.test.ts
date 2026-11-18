@@ -26,6 +26,15 @@ describe('JWTAuthentication tests', () => {
 		expect(await runMiddleware(`Bearer ${await issueControllerJWT()}`)).to.be.undefined
 	})
 
+	it('JWT created by controller only has registered claims', async () => {
+		const payload = decodeJwt(await issueControllerJWT())
+
+		expect(payload).to.have.all.keys('iss', 'sub', 'aud', 'iat', 'exp', 'jti')
+		expect(payload.iss).to.equal('heart-api')
+		expect(payload.sub).to.equal('skc') // client the token was issued to
+		expect(payload.aud).to.equal('heart-api') // service that accepts the token
+	})
+
 	it('JWTs created by controller have unique IDs', async () => {
 		const [firstJti, secondJti] = (await Promise.all([issueControllerJWT(), issueControllerJWT()])).map((token) => decodeJwt(token).jti)
 
@@ -53,14 +62,15 @@ describe('JWTAuthentication tests', () => {
 	})
 
 	it('Expired JWT is rejected', async () => {
-		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, 'skc', Math.floor(Date.now() / 1000) - 60)}`)
+		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, undefined, Math.floor(Date.now() / 1000) - 60)}`)
 		expect(err?.code).to.equal(401)
 		expect(err?.description).to.equal('Provided JWT has expired - no access granted')
 	})
 
-	it('JWT for a different audience is rejected', async () => {
-		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, 'not-skc')}`)
+	it('JWT for a different audience (including the pre-payload-change audience) is rejected', async () => {
+		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, 'skc')}`)
 		expect(err?.code).to.equal(401)
+		expect(err?.description).to.contain('"aud"')
 	})
 
 	it('JWT sent with a scheme other than Bearer is rejected', async () => {
@@ -74,7 +84,8 @@ describe('JWTAuthentication tests', () => {
 	})
 
 	it('JWT without an expiration is rejected', async () => {
-		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, 'skc', null)}`)
+		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, undefined, null)}`)
 		expect(err?.code).to.equal(401)
+		expect(err?.description).to.contain('"exp"')
 	})
 })

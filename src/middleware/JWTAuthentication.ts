@@ -9,8 +9,8 @@ const publicKey = createPublicKey(fs.readFileSync('./certs/jwt.pub'))
 
 const opts: JWTVerifyOptions = {
 	issuer: 'heart-api',
-	subject: 'authentication',
-	audience: 'skc',
+	subject: 'skc', // client the token was issued to
+	audience: 'heart-api', // only heart-api accepts its tokens
 	algorithms: ['RS256'],
 	requiredClaims: ['exp'], // tokens without an expiration would otherwise never expire
 }
