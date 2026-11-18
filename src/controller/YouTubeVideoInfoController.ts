@@ -6,9 +6,8 @@ import type { VideoInfoResponse } from '../types/YouTubeDataMapping.js'
 import Constants from '../helper/Constants.js'
 import type { YouTubeAPIUploadsResponse, YouTubeUploadItem } from '../types/YouTubeAPIVideoTypes.js'
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
-const moize = require('moize')
+import moizeModule from 'moize'
+const moize = moizeModule as unknown as typeof moizeModule.default
 
 export default async function youTubeVideoInfoControllerCB(req: Request, res: Response, next: NextFunction) {
 	if (req.query?.videoId == null) {

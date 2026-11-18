@@ -7,9 +7,8 @@ import type { YouTubeUploadsResponse, FormattedUploadResponse } from '../types/Y
 import type { YouTubeAPIChannelInfoResponse } from '../types/YouTubeAPIChannelInfo.js'
 import type { YouTubeVideo, YouTubeVideoUploadsEndpointResponse } from '../types/YouTubeAPIVideoTypes.js'
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
-const moize = require('moize')
+import moizeModule from 'moize'
+const moize = moizeModule as unknown as typeof moizeModule.default
 
 type PlaylistContent = { nextPageToken: string | undefined; vidsFromRequest: FormattedUploadResponse[] }
 
