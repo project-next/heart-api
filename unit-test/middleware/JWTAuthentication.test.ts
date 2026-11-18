@@ -53,6 +53,16 @@ describe('JWTAuthentication tests', () => {
 		expect(err?.code).to.equal(401)
 	})
 
+	it('JWT sent with a scheme other than Bearer is rejected', async () => {
+		const err = await runMiddleware(`Basic ${await signTestJWT()}`)
+		expect(err?.code).to.equal(401)
+		expect(err?.description).to.equal('jwt must be provided')
+	})
+
+	it('Bearer scheme is case-insensitive', async () => {
+		expect(await runMiddleware(`bearer ${await signTestJWT()}`)).to.be.undefined
+	})
+
 	it('JWT without an expiration is rejected', async () => {
 		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, 'skc', null)}`)
 		expect(err?.code).to.equal(401)

@@ -18,7 +18,8 @@ const opts: JWTVerifyOptions = {
 export default async function validateJWTMiddleware(req: Request, res: Response, next: NextFunction) {
 	const authorizationHeader = req.headers?.authorization
 	const authorizationHeaderTokens: string[] = authorizationHeader == undefined ? [] : authorizationHeader.split(' ')
-	const token = authorizationHeaderTokens.length === 2 ? authorizationHeaderTokens[1] : ''
+	const isBearer = authorizationHeaderTokens.length === 2 && authorizationHeaderTokens[0].toLowerCase() === 'bearer' // auth schemes are case-insensitive
+	const token = isBearer ? authorizationHeaderTokens[1] : ''
 
 	if (token === '') {
 		console.error('Client did not provide a JWT.')
