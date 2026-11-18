@@ -26,14 +26,20 @@ const statusMessage = {
 }
 ```
 
-`npm_package_version` is injected by yarn at script launch, so `/api/v1/status` serves whatever
-`package.json` shipped in the deployed build. The `package.json` string has no `v` prefix; the tag
-does.
+Prod runs the esbuild bundle with plain `node`, not through yarn, so nothing injects
+`npm_package_version` at runtime. `build.mjs` replaces `process.env.npm_package_version` with the
+`package.json` version at build time (esbuild `define`). Locally, `yarn start` and `yarn test` get it
+from yarn as usual. Either way `/api/v1/status` reports the `package.json` version — in prod, the one
+at the moment `dist/` was built. The `package.json` string has no `v` prefix; the tag does.
 
 Things that are easy to get wrong here:
 
 - **Tagging does not deploy.** Pushing a tag only re-runs the test workflow. Deployment is a
-  separate, manual `yarn deploy:prod` — an rsync of `dist/` to the EC2 box — and it reads no git tag.
+  separate, manual `yarn deploy:prod` — it rebuilds the bundle, rsyncs `dist/` to the EC2 box and
+  restarts the container — and it reads no git tag.
+- **Shipping a stale `dist/`.** The version is baked into `dist/app.mjs` when it's built. Always
+  deploy with `yarn deploy:prod` (which runs `yarn build` first) rather than running `deploy.sh`
+  on its own, or a build from before the version bump goes out reporting the previous version.
 
 ## Pre-flight
 
