@@ -1,13 +1,16 @@
 services:
   heart-api:
     image: 'node:lts-alpine'
+    user: node
     working_dir: /home/node/app/dist
     ports:
       - '443:443'
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0 # lets non-root user bind to ports 80 and 443
     restart: always
     volumes:
-      - './dist:/home/node/app/dist'
-    command: sh -c "yarn run start:docker"
+      - './dist:/home/node/app/dist:ro'
+    command: node --env-file=.env --enable-source-maps app.mjs
     deploy:
       resources:
         limits:
