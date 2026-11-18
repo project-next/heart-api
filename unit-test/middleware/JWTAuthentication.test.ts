@@ -52,4 +52,9 @@ describe('JWTAuthentication tests', () => {
 		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, 'not-skc')}`)
 		expect(err?.code).to.equal(401)
 	})
+
+	it('JWT without an expiration is rejected', async () => {
+		const err = await runMiddleware(`Bearer ${await signTestJWT(undefined, 'skc', null)}`)
+		expect(err?.code).to.equal(401)
+	})
 })

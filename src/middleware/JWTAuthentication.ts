@@ -12,6 +12,7 @@ const opts: JWTVerifyOptions = {
 	subject: 'authentication',
 	audience: 'skc',
 	algorithms: ['RS256'],
+	requiredClaims: ['exp'], // tokens without an expiration would otherwise never expire
 }
 
 export default async function validateJWTMiddleware(req: Request, res: Response, next: NextFunction) {
